@@ -66,6 +66,11 @@
         .theme-unicorn { background: linear-gradient(135deg, #fce7f3 0%, #f472b6 50%, #c084fc 100%); }
         .theme-dino { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 50%, #86efac 100%); }
         .theme-candy { background: linear-gradient(135deg, #ecfeff 0%, #fbcfe8 100%); }
+
+        /* SAFETY BLOCKER: Disable inner events during active sorting to allow clean drops */
+        .dragging-active .velcro-card * {
+            pointer-events: none !important;
+        }
     </style>
 </head>
 <body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
@@ -382,20 +387,19 @@
             }
         }
 
-        function handleAutoScroll(e) {
+        function handleAutoScroll(clientY) {
             const threshold = 120; // px boundaries from outer viewports
             const scrollVelocity = 14; 
             const windowHeight = window.innerHeight;
-            const cursorY = e.clientY;
 
-            if (cursorY < threshold) {
+            if (clientY < threshold) {
                 // Dragging close to top edge -> scroll up
                 if (!scrollInterval) {
                     scrollInterval = setInterval(() => {
                         window.scrollBy(0, -scrollVelocity);
                     }, 15);
                 }
-            } else if (cursorY > windowHeight - threshold) {
+            } else if (clientY > windowHeight - threshold) {
                 // Dragging close to bottom edge -> scroll down
                 if (!scrollInterval) {
                     scrollInterval = setInterval(() => {
@@ -410,7 +414,7 @@
         // Global Event bindings for drag-to-scroll unblocking
         document.addEventListener('dragover', (e) => {
             if (draggedIndex !== null) {
-                handleAutoScroll(e);
+                handleAutoScroll(e.clientY);
             }
         });
         document.addEventListener('dragend', () => {
@@ -539,12 +543,14 @@
                     draggedIndex = index;
                     e.dataTransfer.effectAllowed = 'move';
                     e.dataTransfer.setData('text/plain', index);
+                    document.getElementById('activityWrapper').classList.add('dragging-active');
                 });
                 card.addEventListener('dragover', (e) => {
                     e.preventDefault();
                 });
                 card.addEventListener('drop', (e) => {
                     e.preventDefault();
+                    document.getElementById('activityWrapper').classList.remove('dragging-active');
                     if (draggedIndex !== null && draggedIndex !== index) {
                         const items = schedules[currentTargetDay];
                         const movedItem = items.splice(draggedIndex, 1)[0];
@@ -556,6 +562,7 @@
                 });
                 card.addEventListener('dragend', () => {
                     draggedIndex = null;
+                    document.getElementById('activityWrapper').classList.remove('dragging-active');
                     stopAutoScroll();
                 });
 
@@ -1154,3 +1161,4 @@
     </script>
 </body>
 </html>
+```
