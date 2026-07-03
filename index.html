@@ -6,16 +6,20 @@
     <title>Tactile Visual Routine Board</title>
     <!-- Tailwind CSS CDN for modern adaptive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Kid-Friendly and Highly Legible Google Fonts -->
+    <!-- Kid-Friendly and Highly Legible Google Fonts (Including newly expanded fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Comfortaa:wght@400;700&family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         /* Typography overrides */
         .font-rounded { font-family: 'Fredoka', 'Comic Neue', sans-serif; }
         .font-comic { font-family: 'Comic Neue', sans-serif; }
         .font-dyslexic { font-family: 'Comic Neue', sans-serif; letter-spacing: 0.12em; word-spacing: 0.22em; }
         .font-pixel { font-family: monospace; font-weight: bold; letter-spacing: -0.02em; }
+        .font-comfortaa { font-family: 'Comfortaa', sans-serif; }
+        .font-quicksand { font-family: 'Quicksand', sans-serif; }
+        .font-balsamiq { font-family: 'Balsamiq Sans', cursive; }
 
         /* Tactile Velcro Board Styling */
         .velcro-card {
@@ -51,16 +55,20 @@
             background-color: rgba(15, 23, 42, 0.6);
         }
 
-        /* High-Contrast Interactive Themes */
+        /* High-Contrast Interactive Themes (Including newly expanded child-friendly themes) */
         .theme-pastel { background: linear-gradient(135deg, #fef08a 0%, #fae8ff 100%); }
         .theme-space { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f1f5f9; }
         .theme-jungle { background: linear-gradient(135deg, #dcfce7 0%, #fef08a 100%); }
         .theme-ocean { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
         .theme-arcade { background: linear-gradient(135deg, #111827 0%, #312e81 100%); color: #38bdf8; }
         .theme-dark { background: linear-gradient(135deg, #030712 0%, #111827 100%); color: #f3f4f6; }
+        .theme-desert { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 50%, #fdba74 100%); }
+        .theme-unicorn { background: linear-gradient(135deg, #fce7f3 0%, #f472b6 50%, #c084fc 100%); }
+        .theme-dino { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 50%, #86efac 100%); }
+        .theme-candy { background: linear-gradient(135deg, #ecfeff 0%, #fbcfe8 100%); }
     </style>
 </head>
-<body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
+<body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800 animate-fadeIn" id="appBody">
 
     <!-- MAIN DASHBOARD -->
     <div class="max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 text-slate-800" id="boardContainer">
@@ -109,22 +117,29 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
             <div>
                 <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">Board Theme:</label>
-                <select onchange="updateTheme(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700">
+                <select onchange="updateTheme(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700 focus:outline-none">
                     <option value="theme-pastel">🌈 Calming Pastel</option>
                     <option value="theme-space">🚀 Galactic Space</option>
                     <option value="theme-jungle">🌴 Playful Jungle</option>
                     <option value="theme-ocean">🐠 Deep Ocean Reef</option>
                     <option value="theme-arcade">👾 Retro Arcade Grid</option>
                     <option value="theme-dark">🌌 Midnight Dark Mode</option>
+                    <option value="theme-desert">🌵 Sunset Desert</option>
+                    <option value="theme-unicorn">🦄 Unicorn Magic</option>
+                    <option value="theme-dino">🦕 Dinosaur Era</option>
+                    <option value="theme-candy">🍬 Sweet Candyland</option>
                 </select>
             </div>
             <div>
                 <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">Dyslexic / Font Mode:</label>
-                <select onchange="updateFont(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700">
+                <select onchange="updateFont(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700 focus:outline-none">
                     <option value="font-rounded">Fredoka Bubble Rounded</option>
                     <option value="font-comic">Comic Readable Neue</option>
                     <option value="font-dyslexic">OpenDyslexic (Weighted)</option>
                     <option value="font-pixel">Retro Pixel Mono</option>
+                    <option value="font-comfortaa">Comfortaa Cozy Sans</option>
+                    <option value="font-quicksand">Quicksand Neat</option>
+                    <option value="font-balsamiq">Balsamiq Handdrawn</option>
                 </select>
             </div>
             <div class="col-span-2 md:col-span-1 flex items-end">
@@ -292,12 +307,59 @@
 
         let draggedIndex = null;
         let countdownIntervals = {};
+        let scrollInterval = null;
 
         function commitToDisk() {
             localStorage.setItem('routine_coins', coinBank.toString());
             localStorage.setItem('routine_alternatives', JSON.stringify(alternativePool));
             localStorage.setItem('routine_schedules', JSON.stringify(schedules));
         }
+
+        // DYNAMIC DRAG SORT AUTO-SCROLLER MODULE
+        function stopAutoScroll() {
+            if (scrollInterval) {
+                clearInterval(scrollInterval);
+                scrollInterval = null;
+            }
+        }
+
+        function handleAutoScroll(e) {
+            const threshold = 120; // px boundaries from outer viewports
+            const scrollVelocity = 14; 
+            const windowHeight = window.innerHeight;
+            const cursorY = e.clientY;
+
+            if (cursorY < threshold) {
+                // Dragging item close to top edge -> scroll up
+                if (!scrollInterval) {
+                    scrollInterval = setInterval(() => {
+                        window.scrollBy(0, -scrollVelocity);
+                    }, 15);
+                }
+            } else if (cursorY > windowHeight - threshold) {
+                // Dragging item close to bottom edge -> scroll down
+                if (!scrollInterval) {
+                    scrollInterval = setInterval(() => {
+                        window.scrollBy(0, scrollVelocity);
+                    }, 15);
+                }
+            } else {
+                stopAutoScroll();
+            }
+        }
+
+        // Global Event bindings for drag-to-scroll unblocking
+        document.addEventListener('dragover', (e) => {
+            if (draggedIndex !== null) {
+                handleAutoScroll(e);
+            }
+        });
+        document.addEventListener('dragend', () => {
+            stopAutoScroll();
+        });
+        document.addEventListener('drop', () => {
+            stopAutoScroll();
+        });
 
         // WORKSPACE RENDER ENGINE
         function renderSchedule() {
@@ -321,8 +383,13 @@
                 card.className = `p-4 flex flex-col gap-3 relative border-4 border-slate-300 bg-white velcro-card text-slate-800 ${isCheck ? 'opacity-70 bg-emerald-50/50 border-emerald-400' : ''} ${isCross ? 'opacity-70 bg-rose-50/50 border-rose-400' : ''}`;
                 card.setAttribute('draggable', 'true');
 
-                // NATIVE DESKTOP/TABLET DRAG AND DROP HANDLERS
+                // DRAG SORTING HANDLERS
                 card.addEventListener('dragstart', (e) => {
+                    // Prevent drag starting on input blocks
+                    if (!e.target.closest('.drag-grip')) {
+                        e.preventDefault();
+                        return;
+                    }
                     draggedIndex = index;
                     e.dataTransfer.effectAllowed = 'move';
                     e.dataTransfer.setData('text/plain', index);
@@ -370,12 +437,12 @@
                     timerDisplaySec = `
                         <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-2.5 rounded-xl text-xs">
                             <span class="font-extrabold text-slate-500">Timer Setup:</span>
-                            <input type="number" id="input-timer-min-${act.id}" value="${Math.floor(act.duration || 0)}" min="0" class="w-10 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
+                            <input type="number" id="input-timer-min-${act.id}" value="${Math.floor(act.duration || 0)}" min="0" class="w-12 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
                             <span class="text-slate-400">min</span>
-                            <input type="number" id="input-timer-sec-${act.id}" value="0" min="0" max="59" class="w-10 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
+                            <input type="number" id="input-timer-sec-${act.id}" value="0" min="0" max="59" class="w-12 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
                             <span class="text-slate-400">sec</span>
                             <button onclick="setTimerVal(${act.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-2 py-1 rounded">Set</button>
-                            <span class="font-black text-slate-800 tracking-wide ml-auto bg-white px-2 py-1 rounded border border-slate-200 text-sm">${shownMin}:${shownSec}</span>
+                            <span class="font-black text-slate-800 tracking-wide ml-auto bg-white px-2.5 py-1 rounded border border-slate-200 text-sm">${shownMin}:${shownSec}</span>
                             <button onclick="toggleTimer(${act.id})" class="px-3 py-1 rounded font-black ${act.timerActive ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white'}">${act.timerActive ? '⏸ Pause' : '▶ Start'}</button>
                             <button onclick="resetTimer(${act.id})" class="bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold px-2 py-1 rounded">Reset</button>
                         </div>
@@ -516,6 +583,8 @@
                 const act = list.find(a => a.id === activeSwapCardId);
                 if (act) {
                     act.title = alternativeTitle;
+                    // Resetting rating upon action swap (Frustrated / Swapped Activity flow)
+                    act.mood = null;
                     const el = document.getElementById(`card-act-${act.id}`);
                     if (el) {
                         el.classList.add('border-dashed', 'border-indigo-400');
