@@ -50,12 +50,20 @@
             backdrop-filter: blur(8px);
             background-color: rgba(15, 23, 42, 0.6);
         }
+
+        /* High-Contrast Interactive Themes */
+        .theme-pastel { background: linear-gradient(135deg, #fef08a 0%, #fae8ff 100%); }
+        .theme-space { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f1f5f9; }
+        .theme-jungle { background: linear-gradient(135deg, #dcfce7 0%, #fef08a 100%); }
+        .theme-ocean { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
+        .theme-arcade { background: linear-gradient(135deg, #111827 0%, #312e81 100%); color: #38bdf8; }
+        .theme-dark { background: linear-gradient(135deg, #030712 0%, #111827 100%); color: #f3f4f6; }
     </style>
 </head>
-<body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 bg-gradient-to-b from-yellow-50 to-purple-100 text-slate-800" id="appBody">
+<body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
 
     <!-- MAIN DASHBOARD -->
-    <div class="max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50" id="boardContainer">
+    <div class="max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 text-slate-800" id="boardContainer">
         
         <!-- CALENDAR DATE HEADER -->
         <div class="flex items-center justify-between border-b-4 border-dashed border-slate-200 pb-5 mb-5 select-none">
@@ -171,8 +179,8 @@
         </div>
 
         <!-- TAB CONTENT: ALTERNATIVES CONFIG -->
-        <div id="alternativesTab" class="hidden space-y-4 bg-slate-50 p-6 rounded-3xl border border-slate-200">
-            <h2 class="text-xl font-extrabold text-slate-800">✏️ Edit Alternative Activites Pool</h2>
+        <div id="alternativesTab" class="hidden space-y-4 bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800">
+            <h2 class="text-xl font-extrabold text-slate-800">✏️ Edit Alternative Activities Pool</h2>
             <p class="text-xs text-slate-500">Modify these names to customize what choices show up under "Other Options" on the cards and on the visual swap popup overlay.</p>
             <div id="alternativesInputGroup" class="space-y-2.5"></div>
             <button onclick="addCustomAlternative()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-4 rounded-xl">+ Add New Choice Card</button>
@@ -194,7 +202,7 @@
     </div>
 
     <!-- DIALOG OVERLAY MODAL: INLINE SWAP WORKSPACE -->
-    <div id="swapOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden">
+    <div id="swapOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-6 border-4 border-indigo-400 shadow-2xl relative">
             <button onclick="closeSwapOverlay()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
             <span class="block text-xs font-extrabold text-indigo-500 uppercase tracking-widest mb-1">Swap Activity</span>
@@ -306,9 +314,12 @@
                 const isCross = act.completed === 'x';
                 const isExpanded = act.expanded;
 
+                // Ensure fallback for subtasks property
+                act.subtasks = act.subtasks || [];
+
                 const card = document.createElement('div');
                 card.id = `card-act-${act.id}`;
-                card.className = `p-4 flex flex-col gap-3 relative border-4 border-slate-300 bg-white velcro-card ${isCheck ? 'opacity-70 bg-emerald-50/50 border-emerald-400' : ''} ${isCross ? 'opacity-70 bg-rose-50/50 border-rose-400' : ''}`;
+                card.className = `p-4 flex flex-col gap-3 relative border-4 border-slate-300 bg-white velcro-card text-slate-800 ${isCheck ? 'opacity-70 bg-emerald-50/50 border-emerald-400' : ''} ${isCross ? 'opacity-70 bg-rose-50/50 border-rose-400' : ''}`;
                 card.setAttribute('draggable', 'true');
 
                 // DRAG HANDLE EXCLUSIVE dragstart LISTENER
@@ -416,7 +427,7 @@
                             <button onclick="applyCompletion(${act.id}, 'check')" class="px-4 py-2 rounded-2xl font-black text-sm flex items-center gap-1 shadow-sm transition-all active:scale-95 ${isCheck ? 'bg-emerald-600 text-white' : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800'}">
                                 <span>✔️</span> <span>Done (+${act.tokens * 2})</span>
                             </button>
-                            <button onclick="applyCompletion(${act.id}, 'x')" class="px-4 py-2 rounded-2xl font-black text-sm flex items-center gap-1 shadow-sm transition-all active:scale-95 ${isFailed ? 'bg-rose-600 text-white' : 'bg-rose-100 hover:bg-rose-200 text-rose-800'}">
+                            <button onclick="applyCompletion(${act.id}, 'x')" class="px-4 py-2 rounded-2xl font-black text-sm flex items-center gap-1 shadow-sm transition-all active:scale-95 ${isCross ? 'bg-rose-600 text-white' : 'bg-rose-100 hover:bg-rose-200 text-rose-800'}">
                                 <span>❌</span> <span>Skip (0)</span>
                             </button>
                         </div>
@@ -524,16 +535,18 @@
         // STATIC OUT-CARDS CONTRAST ALTERNATIVE PANEL
         function renderAlternativeShelf() {
             const shelf = document.getElementById('mainAlternativeShelf');
+            if (!shelf) return;
             shelf.innerHTML = "";
             alternativePool.forEach(opt => {
                 const node = document.createElement('div');
-                node.className = "bg-white/80 p-3 rounded-2xl border-2 border-dashed border-indigo-200 text-center font-extrabold text-xs text-indigo-800 shadow-sm";
+                node.className = "bg-white border-2 border-dashed border-indigo-200 p-3 rounded-2xl text-center font-extrabold text-xs text-indigo-800 shadow-sm";
                 node.innerText = opt;
                 shelf.appendChild(node);
             });
 
             // Synchronize the setup panel input elements
             const inputsGroup = document.getElementById('alternativesInputGroup');
+            if (!inputsGroup) return;
             inputsGroup.innerHTML = "";
             alternativePool.forEach((opt, idx) => {
                 inputsGroup.innerHTML += `
@@ -751,6 +764,15 @@
             }
         }
 
+        function toggleExpand(id) {
+            const act = schedules[currentTargetDay].find(a => a.id === id);
+            if (act) {
+                act.expanded = !act.expanded;
+                commitToDisk();
+                renderSchedule();
+            }
+        }
+
         // INFINITE DATES ALGORITHMIC MATRIX
         function changeDate(daysOffset) {
             const currentDateObj = new Date(currentTargetDay);
@@ -766,6 +788,7 @@
 
         function updateTheme(themeClass) {
             const body = document.getElementById('appBody');
+            // Cleanly remove any previously applied custom theme layout classes
             body.className = "font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 " + themeClass;
         }
 
@@ -817,11 +840,9 @@
             const input = document.getElementById('musicUrl').value;
             const container = document.getElementById('musicConsole');
             if (input.includes('spotify') || input.includes('iframe')) {
-                // If they pasted iframe code directly
                 if (input.startsWith('<iframe')) {
                     container.innerHTML = input;
                 } else {
-                    // Try to generate standard Spotify embed iframe structure cleanly
                     const trackId = input.split('/').pop().split('?')[0];
                     container.innerHTML = `<iframe src="https://open.spotify.com/embed/playlist/${trackId}" width="100%" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`;
                 }
