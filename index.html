@@ -6,7 +6,7 @@
     <title>Tactile Visual Routine Board</title>
     <!-- Tailwind CSS CDN for modern adaptive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Kid-Friendly and Highly Legible Google Fonts (Including newly expanded fonts) -->
+    <!-- Kid-Friendly and Highly Legible Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Comfortaa:wght@400;700&family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
@@ -55,7 +55,7 @@
             background-color: rgba(15, 23, 42, 0.6);
         }
 
-        /* High-Contrast Interactive Themes (Including newly expanded child-friendly themes) */
+        /* High-Contrast Interactive Themes */
         .theme-pastel { background: linear-gradient(135deg, #fef08a 0%, #fae8ff 100%); }
         .theme-space { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f1f5f9; }
         .theme-jungle { background: linear-gradient(135deg, #dcfce7 0%, #fef08a 100%); }
@@ -68,19 +68,27 @@
         .theme-candy { background: linear-gradient(135deg, #ecfeff 0%, #fbcfe8 100%); }
     </style>
 </head>
-<body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800 animate-fadeIn" id="appBody">
+<body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
 
     <!-- MAIN DASHBOARD -->
     <div class="max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 text-slate-800" id="boardContainer">
         
         <!-- CALENDAR DATE HEADER -->
-        <div class="flex items-center justify-between border-b-4 border-dashed border-slate-200 pb-5 mb-5 select-none">
+        <div class="flex items-center justify-between border-b-4 border-dashed border-slate-200 pb-5 mb-3 select-none">
             <button onclick="changeDate(-1)" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold text-2xl w-14 h-14 rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-md">◀</button>
             <div class="text-center">
                 <span class="block text-xs uppercase font-extrabold tracking-widest text-indigo-400">Daily Schedule</span>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight drop-shadow-sm" id="dateLabel">Friday, July 3, 2026</h1>
             </div>
             <button onclick="changeDate(1)" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold text-2xl w-14 h-14 rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-md">▶</button>
+        </div>
+
+        <!-- QUICK-CLICK FUTURE DATE PLANNING CAROUSEL -->
+        <div class="mb-6">
+            <span class="block text-[10px] font-black uppercase text-slate-400 tracking-wider mb-2 text-center">📅 Quick-Click Day Planner</span>
+            <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-none justify-start md:justify-center" id="dateQuickStrip">
+                <!-- Buttons populated dynamically -->
+            </div>
         </div>
 
         <!-- FIRST / THEN TRANSITION BAR -->
@@ -100,6 +108,7 @@
             <div class="flex flex-wrap gap-2">
                 <button onclick="switchTab('schedule')" id="tab-schedule" class="bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50">📅 Schedule</button>
                 <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Edit Alternatives</button>
+                <button onclick="switchTab('templates')" id="tab-templates" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">📋 Schedule Manager</button>
                 <button onclick="switchTab('music')" id="tab-music" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">🎵 Music Connect</button>
             </div>
             
@@ -117,7 +126,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
             <div>
                 <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">Board Theme:</label>
-                <select onchange="updateTheme(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700 focus:outline-none">
+                <select onchange="updateTheme(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700">
                     <option value="theme-pastel">🌈 Calming Pastel</option>
                     <option value="theme-space">🚀 Galactic Space</option>
                     <option value="theme-jungle">🌴 Playful Jungle</option>
@@ -132,7 +141,7 @@
             </div>
             <div>
                 <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">Dyslexic / Font Mode:</label>
-                <select onchange="updateFont(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700 focus:outline-none">
+                <select onchange="updateFont(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700">
                     <option value="font-rounded">Fredoka Bubble Rounded</option>
                     <option value="font-comic">Comic Readable Neue</option>
                     <option value="font-dyslexic">OpenDyslexic (Weighted)</option>
@@ -201,6 +210,31 @@
             <button onclick="addCustomAlternative()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-4 rounded-xl">+ Add New Choice Card</button>
         </div>
 
+        <!-- TAB CONTENT: SCHEDULES & TEMPLATES MANAGER -->
+        <div id="templatesTab" class="hidden space-y-6 bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-800 mb-1">📋 Schedule Templates & Layout Manager</h2>
+                <p class="text-xs text-slate-500">Save your current schedule as a template (e.g., "Standard School Day" or "Weekend Plan") and load it onto any date instantly.</p>
+            </div>
+
+            <!-- SAVE NEW TEMPLATE -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">💾 Save Active Day's Routine as Template</span>
+                <div class="flex gap-2">
+                    <input type="text" id="newTemplateName" placeholder="Template Name (e.g., Home Schedule, School Day)" class="flex-grow bg-slate-50 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-400">
+                    <button onclick="saveCurrentAsTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs shadow-md transition-all active:scale-95">Save Template</button>
+                </div>
+            </div>
+
+            <!-- LOAD SAVED TEMPLATES -->
+            <div class="space-y-3">
+                <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">⚡ Load a Saved Schedule Template</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="templateListGrid">
+                    <!-- Template cards loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
         <!-- TAB CONTENT: MUSIC CONNECTOR -->
         <div id="musicTab" class="hidden bg-slate-900 text-white p-6 rounded-3xl text-center space-y-4">
             <h3 class="text-lg font-bold text-emerald-400">🎵 Spotify Music Connect Portal</h3>
@@ -225,6 +259,16 @@
             <div class="grid grid-cols-2 gap-3" id="overlayAlternativesGrid">
                 <!-- Loaded dynamically -->
             </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM NON-BLOCKING DIALOG OVERLAY (ALERT ALTERNATIVE) -->
+    <div id="notificationOverlay" class="fixed inset-0 z-[100] flex items-center justify-center modal-blur p-4 hidden text-slate-800">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 border-4 border-emerald-400 shadow-2xl text-center space-y-4">
+            <div class="text-4xl">✨</div>
+            <h3 class="text-xl font-black text-slate-900" id="notificationTitle">Success!</h3>
+            <p class="text-xs text-slate-500 leading-relaxed font-bold" id="notificationMessage"></p>
+            <button onclick="closeNotification()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-2.5 px-4 rounded-xl shadow-lg active:scale-95 transition-all">Got it!</button>
         </div>
     </div>
 
@@ -305,17 +349,32 @@
             ]
         }));
 
+        // Default layout templates seed
+        let scheduleTemplates = JSON.parse(localStorage.getItem('routine_templates') || JSON.stringify({
+            "Standard Home Day": [
+                { id: 11, title: "Morning Routine", start: "8:00 AM", end: "8:30 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
+                { id: 12, title: "Reading", start: "10:00 AM", end: "11:00 AM", tokens: 2, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [] },
+                { id: 13, title: "Free Playtime", start: "12:00 PM", end: "1:00 PM", tokens: 1, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Arcade Blip", subtasks: [] }
+            ],
+            "School Schedule Routine": [
+                { id: 21, title: "Get Ready for School", start: "7:00 AM", end: "7:45 AM", tokens: 2, swappable: false, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
+                { id: 22, title: "Travel to School", start: "8:00 AM", end: "8:30 AM", tokens: 1, swappable: false, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [] },
+                { id: 23, title: "Homework Block", start: "4:00 PM", end: "5:00 PM", tokens: 3, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] }
+            ]
+        }));
+
         let draggedIndex = null;
-        let countdownIntervals = {};
         let scrollInterval = null;
 
-        function commitToDisk() {
-            localStorage.setItem('routine_coins', coinBank.toString());
-            localStorage.setItem('routine_alternatives', JSON.stringify(alternativePool));
-            localStorage.setItem('routine_schedules', JSON.stringify(schedules));
-        }
+        // TRACK LAST TOUCH/CLICK ELEMENT GLOBALLY TO UNBLOCK DRAG HANDLE SECURITY
+        let lastMousedownTarget = null;
+        document.addEventListener('mousedown', (e) => {
+            lastMousedownTarget = e.target;
+        }, true);
+        document.addEventListener('touchstart', (e) => {
+            lastMousedownTarget = e.target;
+        }, true);
 
-        // DYNAMIC DRAG SORT AUTO-SCROLLER MODULE
         function stopAutoScroll() {
             if (scrollInterval) {
                 clearInterval(scrollInterval);
@@ -330,14 +389,14 @@
             const cursorY = e.clientY;
 
             if (cursorY < threshold) {
-                // Dragging item close to top edge -> scroll up
+                // Dragging close to top edge -> scroll up
                 if (!scrollInterval) {
                     scrollInterval = setInterval(() => {
                         window.scrollBy(0, -scrollVelocity);
                     }, 15);
                 }
             } else if (cursorY > windowHeight - threshold) {
-                // Dragging item close to bottom edge -> scroll down
+                // Dragging close to bottom edge -> scroll down
                 if (!scrollInterval) {
                     scrollInterval = setInterval(() => {
                         window.scrollBy(0, scrollVelocity);
@@ -360,6 +419,94 @@
         document.addEventListener('drop', () => {
             stopAutoScroll();
         });
+
+        // TOAST INTERFACE REPLACING "ALERT"
+        function showNotification(title, message) {
+            document.getElementById('notificationTitle').innerText = title;
+            document.getElementById('notificationMessage').innerText = message;
+            document.getElementById('notificationOverlay').classList.remove('hidden');
+        }
+
+        function closeNotification() {
+            document.getElementById('notificationOverlay').classList.add('hidden');
+        }
+
+        // SAVE SCHEDULES SYSTEM
+        function saveCurrentAsTemplate() {
+            const input = document.getElementById('newTemplateName');
+            const name = input.value.trim();
+            if (!name) {
+                showNotification("A Name is Required!", "Please enter a descriptive label for this schedule template.");
+                return;
+            }
+
+            const activeDaySchedule = schedules[currentTargetDay] || [];
+            if (activeDaySchedule.length === 0) {
+                showNotification("Empty Schedule!", "You cannot save an empty day as a layout template. Add some tasks first!");
+                return;
+            }
+
+            // Create clean copies without active timers or completion status
+            const cleanBackupList = activeDaySchedule.map((act, i) => ({
+                id: Date.now() + i,
+                title: act.title,
+                start: act.start,
+                end: act.end,
+                tokens: act.tokens,
+                swappable: act.swappable,
+                completed: null,
+                mood: null,
+                duration: act.duration,
+                timerActive: false,
+                timeRemaining: null,
+                sound: act.sound,
+                subtasks: JSON.parse(JSON.stringify(act.subtasks || []))
+            }));
+
+            scheduleTemplates[name] = cleanBackupList;
+            localStorage.setItem('routine_templates', JSON.stringify(scheduleTemplates));
+            input.value = "";
+            renderTemplatesTab();
+            showNotification("Schedule Saved!", `Template "${name}" has been successfully added to your layouts.`);
+        }
+
+        function loadTemplate(templateName) {
+            if (!scheduleTemplates[templateName]) return;
+
+            // Stop any countdown timers currently running
+            for (let id in countdownIntervals) {
+                clearInterval(countdownIntervals[id]);
+            }
+            countdownIntervals = {};
+
+            // Clone template activities with safe, unique IDs
+            const clonedTemplate = scheduleTemplates[templateName].map((act, i) => ({
+                id: Date.now() + i,
+                title: act.title,
+                start: act.start,
+                end: act.end,
+                tokens: act.tokens,
+                swappable: act.swappable,
+                completed: null,
+                mood: null,
+                duration: act.duration,
+                timerActive: false,
+                timeRemaining: null,
+                sound: act.sound,
+                subtasks: JSON.parse(JSON.stringify(act.subtasks || []))
+            }));
+
+            schedules[currentTargetDay] = clonedTemplate;
+            commitToDisk();
+            renderSchedule();
+            showNotification("Schedule Loaded!", `Loaded the "${templateName}" layout onto ${currentTargetDay}.`);
+        }
+
+        function deleteTemplate(templateName) {
+            delete scheduleTemplates[templateName];
+            localStorage.setItem('routine_templates', JSON.stringify(scheduleTemplates));
+            renderTemplatesTab();
+        }
 
         // WORKSPACE RENDER ENGINE
         function renderSchedule() {
@@ -385,8 +532,7 @@
 
                 // DRAG SORTING HANDLERS
                 card.addEventListener('dragstart', (e) => {
-                    // Prevent drag starting on input blocks
-                    if (!e.target.closest('.drag-grip')) {
+                    if (!lastMousedownTarget || !lastMousedownTarget.closest('.drag-grip')) {
                         e.preventDefault();
                         return;
                     }
@@ -407,6 +553,10 @@
                         commitToDisk();
                         renderSchedule();
                     }
+                });
+                card.addEventListener('dragend', () => {
+                    draggedIndex = null;
+                    stopAutoScroll();
                 });
 
                 // Generate sub-activity inline checklist markup
@@ -437,12 +587,12 @@
                     timerDisplaySec = `
                         <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-2.5 rounded-xl text-xs">
                             <span class="font-extrabold text-slate-500">Timer Setup:</span>
-                            <input type="number" id="input-timer-min-${act.id}" value="${Math.floor(act.duration || 0)}" min="0" class="w-12 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
+                            <input type="number" id="input-timer-min-${act.id}" value="${Math.floor(act.duration || 0)}" min="0" class="w-10 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
                             <span class="text-slate-400">min</span>
-                            <input type="number" id="input-timer-sec-${act.id}" value="0" min="0" max="59" class="w-12 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
+                            <input type="number" id="input-timer-sec-${act.id}" value="0" min="0" max="59" class="w-10 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
                             <span class="text-slate-400">sec</span>
                             <button onclick="setTimerVal(${act.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-2 py-1 rounded">Set</button>
-                            <span class="font-black text-slate-800 tracking-wide ml-auto bg-white px-2.5 py-1 rounded border border-slate-200 text-sm">${shownMin}:${shownSec}</span>
+                            <span class="font-black text-slate-800 tracking-wide ml-auto bg-white px-2 py-1 rounded border border-slate-200 text-sm">${shownMin}:${shownSec}</span>
                             <button onclick="toggleTimer(${act.id})" class="px-3 py-1 rounded font-black ${act.timerActive ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white'}">${act.timerActive ? '⏸ Pause' : '▶ Start'}</button>
                             <button onclick="resetTimer(${act.id})" class="bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold px-2 py-1 rounded">Reset</button>
                         </div>
@@ -583,7 +733,7 @@
                 const act = list.find(a => a.id === activeSwapCardId);
                 if (act) {
                     act.title = alternativeTitle;
-                    // Resetting rating upon action swap (Frustrated / Swapped Activity flow)
+                    // Resetting rating upon swap (frustration swap flows)
                     act.mood = null;
                     const el = document.getElementById(`card-act-${act.id}`);
                     if (el) {
@@ -663,7 +813,6 @@
             document.getElementById('tally-not').innerText = not;
         }
 
-        // MULTI-UNIT TIMERS CONTROL LOOPS
         function setTimerVal(id) {
             const act = schedules[currentTargetDay].find(a => a.id === id);
             const minInput = document.getElementById(`input-timer-min-${id}`);
@@ -732,7 +881,6 @@
             const targetIdx = list.findIndex(a => a.id === id);
             if (targetIdx !== -1) {
                 const act = list[targetIdx];
-                // Subtract coins from vault balance if deleting an already checked activity
                 if (act.completed === 'check') {
                     coinBank = Math.max(0, coinBank - act.tokens);
                     document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
@@ -862,12 +1010,71 @@
         function changeDate(daysOffset) {
             const currentDateObj = new Date(currentTargetDay);
             currentDateObj.setDate(currentDateObj.getDate() + daysOffset);
-            
+            setTargetDate(currentDateObj);
+        }
+
+        function setTargetDate(dateObj) {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            currentTargetDay = currentDateObj.toLocaleDateString('en-US', options);
+            currentTargetDay = dateObj.toLocaleDateString('en-US', options);
             
             document.getElementById('dateLabel').innerText = currentTargetDay;
             renderSchedule();
+            renderDateStrip();
+        }
+
+        // DYNAMIC CALENDAR NAVIGATION STRIP (QUICK SELECT FUTURE DAYS)
+        function renderDateStrip() {
+            const strip = document.getElementById('dateQuickStrip');
+            strip.innerHTML = "";
+
+            const referenceDate = new Date("Friday, July 3, 2026"); // Primary reference
+            const today = new Date(); // Compute relative offsets
+            
+            // Build a sequence of 7 days starting from selected target
+            for (let i = -1; i < 6; i++) {
+                const dateCursor = new Date(currentTargetDay);
+                dateCursor.setDate(dateCursor.getDate() + i);
+
+                const optString = { weekday: 'short', month: 'numeric', day: 'numeric' };
+                const label = dateCursor.toLocaleDateString('en-US', optString);
+                
+                const isSelected = dateCursor.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) === currentTargetDay;
+
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2.5 rounded-2xl text-xs font-extrabold flex-shrink-0 transition-all duration-200 active:scale-95 shadow-sm border ${
+                    isSelected ? 'bg-indigo-600 text-white border-indigo-700 ring-4 ring-indigo-100' : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                }`;
+                btn.innerText = label;
+                btn.onclick = () => {
+                    setTargetDate(dateCursor);
+                };
+                strip.appendChild(btn);
+            }
+        }
+
+        function renderTemplatesTab() {
+            const container = document.getElementById('templateListGrid');
+            container.innerHTML = "";
+
+            Object.keys(scheduleTemplates).forEach(templateName => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200 p-4 rounded-2xl shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-all";
+                
+                const tasksPreview = scheduleTemplates[templateName].map(t => t.title).join(", ");
+                const truncatedPreview = tasksPreview.length > 55 ? tasksPreview.substring(0, 52) + "..." : tasksPreview;
+
+                card.innerHTML = `
+                    <div>
+                        <span class="block text-sm font-extrabold text-slate-800">${templateName}</span>
+                        <span class="block text-[11px] text-slate-400 font-bold mt-1">Activities: ${truncatedPreview || 'None'}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="loadTemplate('${templateName}')" class="flex-grow bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black py-2 rounded-xl text-xs transition-all active:scale-95">Load Into Date</button>
+                        <button onclick="deleteTemplate('${templateName}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-black p-2 rounded-xl text-xs transition-all active:scale-95" title="Delete Template">🗑️</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function updateTheme(themeClass) {
@@ -883,10 +1090,12 @@
         function switchTab(targetTab) {
             document.getElementById('scheduleTab').classList.add('hidden');
             document.getElementById('alternativesTab').classList.add('hidden');
+            document.getElementById('templatesTab').classList.add('hidden');
             document.getElementById('musicTab').classList.add('hidden');
 
             document.getElementById('tab-schedule').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
             document.getElementById('tab-alternatives').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
+            document.getElementById('tab-templates').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
             document.getElementById('tab-music').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
 
             if (targetTab === 'schedule') {
@@ -895,6 +1104,10 @@
             } else if (targetTab === 'alternatives') {
                 document.getElementById('alternativesTab').classList.remove('hidden');
                 document.getElementById('tab-alternatives').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+            } else if (targetTab === 'templates') {
+                document.getElementById('templatesTab').classList.remove('hidden');
+                document.getElementById('tab-templates').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+                renderTemplatesTab();
             } else if (targetTab === 'music') {
                 document.getElementById('musicTab').classList.remove('hidden');
                 document.getElementById('tab-music').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
@@ -937,6 +1150,7 @@
         // APP INITIAL STARTUP INVOCATION
         document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
         renderSchedule();
+        renderDateStrip();
     </script>
 </body>
 </html>
