@@ -112,11 +112,12 @@
         </div>
 
         <!-- TABS & COINS OVERVIEW -->
+        <!-- STREAMING_CHUNK: Drawing tab row ordered as requested (Schedule -> Templates -> Alternatives -> Settings)... -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-100 p-3 rounded-3xl">
             <div class="flex flex-wrap gap-2">
                 <button onclick="switchTab('schedule')" id="tab-schedule" class="bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50">📅 Schedule</button>
-                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Alternatives & Decks</button>
                 <button onclick="switchTab('templates')" id="tab-templates" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">📋 Schedule Templates</button>
+                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Alternatives & Decks</button>
                 <button onclick="switchTab('settings')" id="tab-settings" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">⚙️ Settings</button>
             </div>
             
@@ -208,6 +209,52 @@
             </div>
         </div>
 
+        <!-- TAB CONTENT: SCHEDULE TEMPLATES MANAGER -->
+        <div id="templatesTab" class="hidden space-y-6">
+            <!-- BLUEPRINT DESIGNER WRAPPER -->
+            <div id="blueprintDesignerBlock" class="hidden bg-amber-50/70 p-5 rounded-3xl border-4 border-dashed border-amber-300 space-y-4">
+                <div class="flex items-center justify-between border-b-2 border-amber-200 pb-3">
+                    <div>
+                        <span class="text-[10px] font-black uppercase text-amber-600 tracking-widest block leading-none">Blueprint Designer Sandbox</span>
+                        <h3 class="text-lg font-black text-slate-900" id="blueprintDesignTitle">Editing: Classroom Deck</h3>
+                    </div>
+                    <button onclick="exitBlueprintDesigner()" class="bg-slate-900 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all">💾 Save & Exit Designer</button>
+                </div>
+                
+                <p class="text-xs text-amber-800 leading-normal">
+                    This is a blueprint designer sandbox. Modify, reorder, or add blueprint activities for this template below. Once saved, you can apply this exact sequence to any active calendar day.
+                </p>
+
+                <!-- Sandbox activity template design grid container -->
+                <div id="blueprintActivitiesGrid" class="space-y-4 my-2"></div>
+
+                <button onclick="addBlueprintActivity()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-2xl text-xs shadow-md transition-all">+ Add Blueprint Activity</button>
+            </div>
+
+            <!-- TEMPLATE MANAGER DASHBOARD -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-5">
+                <h2 class="text-xl font-extrabold text-slate-800">📋 Save, Customize & Load Schedule Blueprints</h2>
+                <p class="text-xs text-slate-500">
+                    Design a sequence blueprint (e.g., "School Routine" or "ABA Clinic Day") and apply it instantly onto any targeted calendar date.
+                </p>
+                
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wider">Save Current Day's Active Plan:</span>
+                    <div class="flex gap-2">
+                        <input type="text" id="templateNameInput" placeholder="e.g. In-Home ABA, Weekend, School Day" class="flex-grow bg-slate-100 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white">
+                        <button onclick="saveCurrentAsTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Preset Blueprint</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">Your Custom Blueprints:</span>
+                    <div class="grid gap-3" id="templatesListWrapper">
+                        <!-- Dynamically Rendered templates lists -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- TAB CONTENT: ALTERNATIVES CONFIG -->
         <div id="alternativesTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-4">
@@ -238,52 +285,6 @@
                     <span class="block text-xs font-black text-slate-500 uppercase tracking-wide">Your Saved Alternative Decks:</span>
                     <div class="grid gap-2" id="altPresetsListWrapper">
                         <!-- Dynamically Rendered Decks -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB CONTENT: SCHEDULE TEMPLATES MANAGER -->
-        <div id="templatesTab" class="hidden space-y-6">
-            <!-- BLUEPRINT DESIGNER WRAPPER -->
-            <div id="blueprintDesignerBlock" class="hidden bg-amber-50/70 p-5 rounded-3xl border-4 border-dashed border-amber-300 space-y-4">
-                <div class="flex items-center justify-between border-b-2 border-amber-200 pb-3">
-                    <div>
-                        <span class="text-[10px] font-black uppercase text-amber-600 tracking-widest block leading-none">Blueprint Designer Sandbox</span>
-                        <h3 class="text-lg font-black text-slate-900" id="blueprintDesignTitle">Editing: Classroom Deck</h3>
-                    </div>
-                    <button onclick="exitBlueprintDesigner()" class="bg-slate-900 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all">💾 Save & Exit Designer</button>
-                </div>
-                
-                <p class="text-xs text-amber-800 leading-normal">
-                    This is a blueprint designer sandbox. Modify, reorder, or add blueprint activities for this template below. Once saved, you can apply this exact sequence to any active calendar day.
-                </p>
-
-                <!-- Sandbox activity template design grid container -->
-                <div id="blueprintActivitiesGrid" class="space-y-4 my-2"></div>
-
-                <button onclick="addBlueprintActivity()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-2xl text-xs shadow-md transition-all">+ Add Blueprint Activity</button>
-            </div>
-
-            <!-- TEMPLATE MANAGER DASHBOARD -->
-            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-5">
-                <h2 class="text-xl font-extrabold text-slate-900">📋 Save, Customize & Load Schedule Blueprints</h2>
-                <p class="text-xs text-slate-500">
-                    Design a sequence blueprint (e.g., "School Routine" or "ABA Clinic Day") and apply it instantly onto any targeted calendar date.
-                </p>
-                
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
-                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wider">Save Current Day's Active Plan:</span>
-                    <div class="flex gap-2">
-                        <input type="text" id="templateNameInput" placeholder="e.g. In-Home ABA, Weekend, School Day" class="flex-grow bg-slate-100 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white">
-                        <button onclick="saveCurrentAsTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Preset Blueprint</button>
-                    </div>
-                </div>
-
-                <div class="space-y-3">
-                    <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">Your Custom Blueprints:</span>
-                    <div class="grid gap-3" id="templatesListWrapper">
-                        <!-- Dynamically Rendered templates lists -->
                     </div>
                 </div>
             </div>
@@ -347,13 +348,13 @@
 
                 <!-- COIN ADJUSTMENT MANAGER -->
                 <div class="p-5 bg-amber-50/50 rounded-2xl border-2 border-amber-200 space-y-3">
-                    <span class="block text-xs font-black text-amber-800 uppercase tracking-wider">🪙 Piggy Bank Coin adjustment Manager</span>
-                    <p class="text-xs text-amber-700 leading-normal">
-                        Manually override the coin vault balance. Type in any correct amount and click save to instant-patch coin desyncs.
+                    <span class="block text-xs font-black text-amber-900 uppercase tracking-wider">Piggy Bank Reconciliation</span>
+                    <p class="text-xs text-slate-600">
+                        Adjust coin value below to balance out of sync tallies.
                     </p>
-                    <div class="flex gap-2 max-w-sm">
-                        <input type="number" id="coinOverrideInput" placeholder="Type direct value (e.g. 10)" class="w-full bg-white border p-2 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
-                        <button onclick="overrideCoinBalance()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-4 py-2 rounded-xl text-xs shadow-sm transition-all shrink-0">Apply Coins</button>
+                    <div class="flex gap-2">
+                        <input type="number" id="bankBalanceAdjustment" class="bg-white border p-2 rounded-xl text-sm font-bold text-slate-800 focus:outline-none w-28">
+                        <button onclick="overrideCoinBalance()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-4 py-2 rounded-xl text-xs shadow-sm transition-all shrink-0">Apply Balance</button>
                     </div>
                 </div>
 
@@ -467,9 +468,8 @@
                     fanOsc.frequency.setValueAtTime(freq, now);
                     fanOsc.frequency.exponentialRampToValueAtTime(freq * 2, now + 0.4);
                     fanGain.gain.setValueAtTime(0.12, now);
-                    fanGain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-                    fanOsc.start(now);
-                    fanOsc.stop(now + 0.8);
+                    fanGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                    fanOsc.start(now); fanOsc.stop(now + 1.2);
                 });
             }
         }
@@ -1362,8 +1362,9 @@
         function saveAltPreset() {
             const input = document.getElementById('altPresetNameInput');
             const name = input.value.trim();
-            if (!name) return;
-
+            if (!name) {
+                return;
+            }
             alternativePresets[name] = [...alternativePool];
             input.value = "";
             localStorage.setItem('routine_alt_presets', JSON.stringify(alternativePresets));
@@ -1414,7 +1415,7 @@
 
         // COIN ADJUSTMENT OVERRIDE TOOL
         function overrideCoinBalance() {
-            const input = document.getElementById('coinOverrideInput');
+            const input = document.getElementById('bankBalanceAdjustment');
             const val = parseInt(input.value);
             if (isNaN(val) || val < 0) return;
             coinBank = val;
@@ -1426,10 +1427,8 @@
 
         // FACTORY WIPE SYSTEM
         function dangerWipeSystem() {
-            if (confirm("Are you sure you want to completely erase the entire board layout, templates, deck setups, and coin balances? This cannot be undone.")) {
-                localStorage.clear();
-                window.location.reload();
-            }
+            localStorage.clear();
+            window.location.reload();
         }
 
         function switchTab(targetTab) {
