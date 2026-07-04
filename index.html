@@ -6,10 +6,10 @@
     <title>Tactile Visual Routine Board</title>
     <!-- Tailwind CSS CDN for modern adaptive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Kid-Friendly, Highly Legible, and Dyslexia-Friendly Google Fonts -->
+    <!-- Expanded Kid-Friendly, Dyslexia-Friendly, and Elegant Adult Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&family=Comfortaa:wght@400;700&family=Quicksand:wght@500;700&family=Balsamiq+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&family=Comfortaa:wght@400;700&family=Quicksand:wght@500;700&family=Balsamiq+Sans:wght@400;700&family=Montserrat:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         /* Typography overrides */
         .font-rounded { font-family: 'Fredoka', 'Comic Neue', sans-serif; }
@@ -19,6 +19,9 @@
         .font-comfortaa { font-family: 'Comfortaa', sans-serif; }
         .font-quicksand { font-family: 'Quicksand', sans-serif; }
         .font-balsamiq { font-family: 'Balsamiq Sans', sans-serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-lora { font-family: 'Lora', 'Georgia', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
 
         /* Tactile Velcro Board Styling */
         .velcro-card {
@@ -54,7 +57,7 @@
             background-color: rgba(15, 23, 42, 0.6);
         }
 
-        /* High-Contrast Interactive Themes */
+        /* High-Contrast Interactive Themes (Kids & Adults) */
         .theme-pastel { background: linear-gradient(135deg, #fef08a 0%, #fae8ff 100%); }
         .theme-space { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f1f5f9; }
         .theme-jungle { background: linear-gradient(135deg, #dcfce7 0%, #fef08a 100%); }
@@ -65,6 +68,12 @@
         .theme-unicorn { background: linear-gradient(135deg, #fae8ff 0%, #e0f2fe 100%); }
         .theme-dino { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); }
         .theme-candy { background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%); }
+        
+        /* ADULT EXCLUSIVE THEMES */
+        .theme-minimalist-slate { background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); color: #1e293b; }
+        .theme-elegant-emerald { background: linear-gradient(135deg, #e2e8f0 0%, #2dd4bf 100%); color: #0f172a; }
+        .theme-midnight-executive { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); color: #f8fafc; }
+        .theme-terracotta-warmth { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); color: #431407; }
     </style>
 </head>
 <body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
@@ -91,7 +100,7 @@
         </div>
 
         <!-- FIRST / THEN TRANSITION BAR -->
-        <div class="grid grid-cols-2 gap-4 mb-6 bg-slate-100/80 p-4 rounded-3xl border-2 border-slate-200">
+        <div id="firstThenTransitionContainer" class="grid grid-cols-2 gap-4 mb-6 bg-slate-100/80 p-4 rounded-3xl border-2 border-slate-200">
             <div class="bg-amber-400 p-3 rounded-2xl text-center border-b-4 border-amber-600 shadow-sm">
                 <span class="block text-xs font-black uppercase tracking-wider text-amber-900 opacity-80">FIRST</span>
                 <span class="text-lg sm:text-xl font-extrabold text-slate-900" id="firstTaskText">Loading...</span>
@@ -106,9 +115,9 @@
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-100 p-3 rounded-3xl">
             <div class="flex flex-wrap gap-2">
                 <button onclick="switchTab('schedule')" id="tab-schedule" class="bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50">📅 Schedule</button>
-                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Edit Alternatives</button>
+                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Alternatives & Decks</button>
                 <button onclick="switchTab('templates')" id="tab-templates" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">📋 Schedule Templates</button>
-                <button onclick="switchTab('music')" id="tab-music" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">🎵 Music Connect</button>
+                <button onclick="switchTab('settings')" id="tab-settings" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">⚙️ Settings</button>
             </div>
             
             <!-- COIN BANK GAUGE -->
@@ -121,43 +130,16 @@
             </div>
         </div>
 
-        <!-- THEME & CONFIGURATION BAR -->
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
-            <div>
-                <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">Board Theme:</label>
-                <select onchange="updateTheme(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700">
-                    <option value="theme-pastel">🌈 Calming Pastel</option>
-                    <option value="theme-space">🚀 Galactic Space</option>
-                    <option value="theme-jungle">🌴 Playful Jungle</option>
-                    <option value="theme-ocean">🐠 Deep Ocean Reef</option>
-                    <option value="theme-arcade">👾 Retro Arcade Grid</option>
-                    <option value="theme-dark">🌌 Midnight Dark Mode</option>
-                    <option value="theme-desert">🌵 Sunset Desert</option>
-                    <option value="theme-unicorn">🦄 Unicorn Magic</option>
-                    <option value="theme-dino">🦕 Dinosaur Era</option>
-                    <option value="theme-candy">🍬 Sweet Candyland</option>
-                </select>
-            </div>
-            <div>
-                <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">Dyslexic & Fun Fonts:</label>
-                <select onchange="updateFont(this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl font-bold text-slate-700">
-                    <option value="font-rounded">Fredoka Bubble Rounded</option>
-                    <option value="font-comic">Comic Readable Neue</option>
-                    <option value="font-dyslexic">OpenDyslexic (Weighted)</option>
-                    <option value="font-pixel">Retro Pixel Mono</option>
-                    <option value="font-comfortaa">Comfortaa Cozy Sans</option>
-                    <option value="font-quicksand">Quicksand Neat</option>
-                    <option value="font-balsamiq">Balsamiq Handdrawn</option>
-                </select>
-            </div>
-            <div class="col-span-2 md:col-span-1 flex items-end">
-                <button onclick="createNewActivity()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/30 active:scale-95 transition-all">+ Add Activity</button>
-            </div>
+        <!-- TOP CONTEXT COMMAND SHELF (ADD ACTIVITY SHOWN SPECIFICALLY FOR ACTIVE SCHEDULE TAB) -->
+        <div class="mb-6 flex justify-between items-center" id="tabSpecificControlBlock">
+            <button id="mainTabAddBtn" onclick="createNewActivity()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-emerald-600/30 active:scale-95 transition-all flex items-center gap-2">
+                <span>➕</span> <span>Add Activity Card</span>
+            </button>
         </div>
 
         <!-- TAB CONTENT: SCHEDULE -->
         <div id="scheduleTab" class="space-y-6">
-            <!-- Dynamic activity container -->
+            <!-- Dynamic active schedule cards wrapper -->
             <div id="activityWrapper" class="space-y-5"></div>
 
             <!-- OPTIONS SHELF -->
@@ -199,47 +181,189 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PERSISTENT SPOTIFY / AUDIO FOCUS CONNECT SHELF (INTEGRATED ON HOME SHEET) -->
+            <div class="p-5 bg-slate-900 text-white rounded-3xl border-4 border-slate-950 space-y-4 shadow-xl">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                        <span>🎵 Focus & Ambient Sound Connection</span>
+                    </h3>
+                    <button onclick="clearMusicWidget()" id="musicClearBtn" class="hidden bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 font-bold px-3 py-1.5 rounded-xl text-xs transition-all flex items-center gap-1">
+                        ✕ Clear Music
+                    </button>
+                </div>
+                
+                <p class="text-xs text-slate-400">
+                    Connect white noise streams, calm focus tracks, or Spotify playlists to play in the background. Your choice will remain persistently loaded across all pages and calendar days.
+                </p>
+
+                <div class="flex gap-2 max-w-xl">
+                    <input type="text" id="musicUrl" placeholder="Paste playlist URL, track URL, or direct iframe embed code" class="flex-grow bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
+                    <button onclick="connectMusic()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black px-4 py-2 rounded-xl text-xs shadow-md transition-all active:scale-95 shrink-0">Link Player</button>
+                </div>
+
+                <div id="musicConsole" class="w-full h-44 rounded-xl bg-slate-950 flex items-center justify-center border border-slate-800 text-xs text-slate-500 select-none">
+                    (No linked audio widgets currently playing)
+                </div>
+            </div>
         </div>
 
         <!-- TAB CONTENT: ALTERNATIVES CONFIG -->
-        <div id="alternativesTab" class="hidden space-y-4 bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800">
-            <h2 class="text-xl font-extrabold text-slate-800">✏️ Edit Alternative Activities Pool</h2>
-            <p class="text-xs text-slate-500">Modify these names to customize what choices show up under "Other Options" on the cards and on the visual swap popup overlay.</p>
-            <div id="alternativesInputGroup" class="space-y-2.5"></div>
-            <button onclick="addCustomAlternative()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-4 rounded-xl">+ Add New Choice Card</button>
+        <div id="alternativesTab" class="hidden space-y-6">
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-4">
+                <h2 class="text-xl font-black text-slate-900">✏️ Edit Alternative Activities Pool</h2>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Edit alternative card names below to customize your default "Other Options" selection tray. These provide rapid, low-frustration replacement options on visual routine blocks.
+                </p>
+                <div id="alternativesInputGroup" class="space-y-2.5"></div>
+                <button onclick="addCustomAlternative()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs py-2.5 px-5 rounded-xl shadow-md transition-all">+ Add New Choice Card</button>
+            </div>
+
+            <!-- NEW ALTS PRESETS MANAGER -->
+            <div class="bg-indigo-50/50 p-6 rounded-3xl border-2 border-indigo-100 text-slate-800 space-y-4">
+                <h3 class="text-base font-black text-indigo-900 uppercase tracking-wider">💾 Save & Switch Alternative Decks</h3>
+                <p class="text-xs text-slate-500">
+                    Save current alternatives as presets (e.g., "Calm Decks," "Sensory Choices," or "Outdoor Games") and load them instantly.
+                </p>
+                
+                <div class="bg-white p-4 rounded-2xl border space-y-3">
+                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wide">Save Current Deck Preset:</span>
+                    <div class="flex gap-2">
+                        <input type="text" id="altPresetNameInput" placeholder="e.g. Calm Sensory Deck, School Choices" class="flex-grow bg-slate-50 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
+                        <button onclick="saveAltPreset()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Deck</button>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="block text-xs font-black text-slate-500 uppercase tracking-wide">Your Saved Alternative Decks:</span>
+                    <div class="grid gap-2" id="altPresetsListWrapper">
+                        <!-- Dynamically Rendered Decks -->
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- TAB CONTENT: SCHEDULE TEMPLATES MANAGER -->
-        <div id="templatesTab" class="hidden space-y-5 bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800">
-            <h2 class="text-xl font-extrabold text-slate-800">📋 Save, Rename & Load Schedule Presets</h2>
-            <p class="text-xs text-slate-500">Create a perfect blueprint once (like "ABA Therapy Day" or "School Day"), and apply it instantly onto any target date.</p>
-            
-            <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
-                <span class="block text-xs font-black text-indigo-600 uppercase tracking-wider">Save Current Day's Schedule:</span>
-                <div class="flex gap-2">
-                    <input type="text" id="templateNameInput" placeholder="e.g. In-Home ABA, Weekend, School Day" class="flex-grow bg-slate-100 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white">
-                    <button onclick="saveCurrentAsTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Preset</button>
+        <div id="templatesTab" class="hidden space-y-6">
+            <!-- BLUEPRINT DESIGNER WRAPPER -->
+            <div id="blueprintDesignerBlock" class="hidden bg-amber-50/70 p-5 rounded-3xl border-4 border-dashed border-amber-300 space-y-4">
+                <div class="flex items-center justify-between border-b-2 border-amber-200 pb-3">
+                    <div>
+                        <span class="text-[10px] font-black uppercase text-amber-600 tracking-widest block leading-none">Blueprint Designer Sandbox</span>
+                        <h3 class="text-lg font-black text-slate-900" id="blueprintDesignTitle">Editing: Classroom Deck</h3>
+                    </div>
+                    <button onclick="exitBlueprintDesigner()" class="bg-slate-900 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all">💾 Save & Exit Designer</button>
                 </div>
+                
+                <p class="text-xs text-amber-800 leading-normal">
+                    This is a blueprint designer sandbox. Modify, reorder, or add blueprint activities for this template below. Once saved, you can apply this exact sequence to any active calendar day.
+                </p>
+
+                <!-- Sandbox activity template design grid container -->
+                <div id="blueprintActivitiesGrid" class="space-y-4 my-2"></div>
+
+                <button onclick="addBlueprintActivity()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-2xl text-xs shadow-md transition-all">+ Add Blueprint Activity</button>
             </div>
 
-            <div class="space-y-3">
-                <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">Your Saved Presets:</span>
-                <div class="grid gap-3" id="templatesListWrapper">
-                    <!-- Dynamically Rendered -->
+            <!-- TEMPLATE MANAGER DASHBOARD -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-5">
+                <h2 class="text-xl font-extrabold text-slate-900">📋 Save, Customize & Load Schedule Blueprints</h2>
+                <p class="text-xs text-slate-500">
+                    Design a sequence blueprint (e.g., "School Routine" or "ABA Clinic Day") and apply it instantly onto any targeted calendar date.
+                </p>
+                
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wider">Save Current Day's Active Plan:</span>
+                    <div class="flex gap-2">
+                        <input type="text" id="templateNameInput" placeholder="e.g. In-Home ABA, Weekend, School Day" class="flex-grow bg-slate-100 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white">
+                        <button onclick="saveCurrentAsTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Preset Blueprint</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">Your Custom Blueprints:</span>
+                    <div class="grid gap-3" id="templatesListWrapper">
+                        <!-- Dynamically Rendered templates lists -->
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB CONTENT: MUSIC CONNECTOR -->
-        <div id="musicTab" class="hidden bg-slate-900 text-white p-6 rounded-3xl text-center space-y-4">
-            <h3 class="text-lg font-bold text-emerald-400">🎵 Spotify Music Connect Portal</h3>
-            <p class="text-sm text-slate-300 max-w-md mx-auto">Input your custom Spotify playlist, music tracks, or white noise stream to integrate your audio player directly inside the routine canvas.</p>
-            <div class="max-w-md mx-auto flex gap-2">
-                <input type="text" id="musicUrl" placeholder="Paste Spotify URL or track source code" class="flex-grow bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                <button onclick="connectMusic()" class="bg-emerald-500 text-slate-900 font-extrabold px-4 py-2 rounded-xl text-xs">Link Player</button>
-            </div>
-            <div id="musicConsole" class="w-full max-w-md mx-auto h-40 rounded-xl bg-slate-800 flex items-center justify-center border-2 border-dashed border-slate-700 text-xs text-slate-400">
-                (Simulation audio active - Connect playlist to display embed element)
+        <!-- TAB CONTENT: SETTINGS (MOVED FROM HOME DASHBOARD) -->
+        <div id="settingsTab" class="hidden space-y-6">
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-6">
+                <h2 class="text-xl font-black text-slate-900">⚙️ Routine Board Settings</h2>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Fine-tune themes, typography styles, and parent administrative tools here. These adjust the tactile environment instantly.
+                </p>
+
+                <!-- VISUAL SCHEMAS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-black text-slate-500 uppercase tracking-wider text-xs mb-1">Board Theme Scheme:</label>
+                        <select onchange="updateTheme(this.value)" id="boardThemeSelector" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl font-bold text-slate-700">
+                            <!-- KIDS OPTIONS -->
+                            <optgroup label="🌈 Playful Kid-Friendly Themes">
+                                <option value="theme-pastel">rainbow Calming Pastel</option>
+                                <option value="theme-space">galaxy Galactic Space</option>
+                                <option value="theme-jungle">jungle Playful Jungle</option>
+                                <option value="theme-ocean">ocean Deep Ocean Reef</option>
+                                <option value="theme-arcade">terminal Retro Arcade Grid</option>
+                                <option value="theme-dark">dark Midnight Dark Mode</option>
+                                <option value="theme-desert">desert Sunset Desert</option>
+                                <option value="theme-unicorn">unicorn Unicorn Magic</option>
+                                <option value="theme-dino">dinosaur Prehistoric Era</option>
+                                <option value="theme-candy">candyland Sweet Candyland</option>
+                            </optgroup>
+                            <!-- ADULT OPTIONS -->
+                            <optgroup label="💼 Clean & Sophisticated Adult Themes">
+                                <option value="theme-minimalist-slate">minimalist Minimalist Slate 🩶</option>
+                                <option value="theme-elegant-emerald">elegant Sophisticated Emerald 💚</option>
+                                <option value="theme-midnight-executive">luxury Midnight Executive 🖤</option>
+                                <option value="theme-terracotta-warmth">earthy Warm Terracotta 🧡</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-black text-slate-500 uppercase tracking-wider text-xs mb-1">Typography Font:</label>
+                        <select onchange="updateFont(this.value)" id="boardFontSelector" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl font-bold text-slate-700">
+                            <optgroup label="🎈 Playful Fonts">
+                                <option value="font-rounded">Fredoka Bubble Rounded</option>
+                                <option value="font-comic">Comic Readable Neue</option>
+                                <option value="font-dyslexic">OpenDyslexic (Weighted)</option>
+                                <option value="font-comfortaa">Comfortaa Cozy Sans</option>
+                                <option value="font-quicksand">Quicksand Neat</option>
+                                <option value="font-balsamiq">Balsamiq Handdrawn</option>
+                            </optgroup>
+                            <optgroup label="🎩 Adult Elegant Fonts">
+                                <option value="font-montserrat">Montserrat Elegant Sans</option>
+                                <option value="font-lora">Lora Sophisticated Serif</option>
+                                <option value="font-inter">Inter Modern Tech</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- COIN ADJUSTMENT MANAGER -->
+                <div class="p-5 bg-amber-50/50 rounded-2xl border-2 border-amber-200 space-y-3">
+                    <span class="block text-xs font-black text-amber-800 uppercase tracking-wider">🪙 Piggy Bank Coin adjustment Manager</span>
+                    <p class="text-xs text-amber-700 leading-normal">
+                        Manually override the coin vault balance. Type in any correct amount and click save to instant-patch coin desyncs.
+                    </p>
+                    <div class="flex gap-2 max-w-sm">
+                        <input type="number" id="coinOverrideInput" placeholder="Type direct value (e.g. 10)" class="w-full bg-white border p-2 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
+                        <button onclick="overrideCoinBalance()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-4 py-2 rounded-xl text-xs shadow-sm transition-all shrink-0">Apply Coins</button>
+                    </div>
+                </div>
+
+                <!-- DANGEROUS SYSTEM UTILITY RESET -->
+                <div class="pt-4 border-t border-slate-200 flex justify-between items-center">
+                    <span class="text-xs text-slate-400">Tactile Visual Routine Board System v2.6</span>
+                    <button onclick="dangerWipeSystem()" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm">
+                        ⚠️ Factory Reset System
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -267,35 +391,86 @@
             osc.connect(gain);
             gain.connect(audioCtx.destination);
 
+            const now = audioCtx.currentTime;
+
             if (profile === 'Classic Ding') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(880, now);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(); osc.stop(now + 0.3);
             } else if (profile === 'Arcade Blip') {
-                osc.type = 'square'; osc.frequency.setValueAtTime(392, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+                osc.type = 'square'; osc.frequency.setValueAtTime(392, now);
+                osc.frequency.setValueAtTime(587.33, now + 0.08);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(); osc.stop(now + 0.15);
             } else if (profile === 'Gentle Chime') {
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.12);
-                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.24);
-                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.12);
+                osc.frequency.setValueAtTime(783.99, now + 0.24);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                osc.start(); osc.stop(now + 0.6);
             } else if (profile === 'Game Buzzer') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.45);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.45);
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(140, now);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+                osc.start(); osc.stop(now + 0.45);
             } else if (profile === 'Pop') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.06);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.06);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+                osc.start(); osc.stop(now + 0.06);
+            } else if (profile === 'Ambient Bell') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+                osc.start(); osc.stop(now + 1.5);
+            } else if (profile === 'Digital Beep') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(2000, now);
+                osc.frequency.setValueAtTime(1500, now + 0.08);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+                osc.start(); osc.stop(now + 0.18);
+            } else if (profile === 'Zen Gong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(110, now);
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+                osc.start(); osc.stop(now + 2.0);
+            } else if (profile === 'Soft Harp') {
+                // Plays a sequential series of arpeggiated notes
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
+                    const pluck = audioCtx.createOscillator();
+                    const pluckGain = audioCtx.createGain();
+                    pluck.connect(pluckGain);
+                    pluck.connect(audioCtx.destination);
+                    pluck.type = 'triangle';
+                    pluck.frequency.setValueAtTime(freq, now + (index * 0.1));
+                    pluckGain.gain.setValueAtTime(0.15, now + (index * 0.1));
+                    pluckGain.gain.exponentialRampToValueAtTime(0.001, now + (index * 0.1) + 0.4);
+                    pluck.start(now + (index * 0.1));
+                    pluck.stop(now + (index * 0.1) + 0.4);
+                });
+            } else if (profile === 'Success Fanfare') {
+                const chord = [392.00, 523.25, 659.25, 783.99];
+                chord.forEach((freq) => {
+                    const fanOsc = audioCtx.createOscillator();
+                    const fanGain = audioCtx.createGain();
+                    fanOsc.connect(fanGain);
+                    fanOsc.connect(audioCtx.destination);
+                    fanOsc.type = 'sine';
+                    fanOsc.frequency.setValueAtTime(freq, now);
+                    fanOsc.frequency.exponentialRampToValueAtTime(freq * 2, now + 0.4);
+                    fanGain.gain.setValueAtTime(0.12, now);
+                    fanGain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                    fanOsc.start(now);
+                    fanOsc.stop(now + 0.8);
+                });
             }
         }
 
@@ -304,12 +479,21 @@
         let currentTargetDay = "Friday, July 3, 2026";
         let activeSwapCardId = null;
 
+        // Persisted alternatives & template state
         let alternativePool = JSON.parse(localStorage.getItem('routine_alternatives') || '["Sensory Break", "Legos", "Drawing", "Listening to Music"]');
-
+        let alternativePresets = JSON.parse(localStorage.getItem('routine_alt_presets') || '{}');
         let templates = JSON.parse(localStorage.getItem('routine_templates') || '{}');
+        let schedules = JSON.parse(localStorage.getItem('routine_schedules') || '{}');
 
-        let schedules = JSON.parse(localStorage.getItem('routine_schedules') || JSON.stringify({
-            "Friday, July 3, 2026": [
+        // New Music storage states
+        let savedMusicSrc = localStorage.getItem('routine_music_src') || '';
+
+        // Dynamic Sandbox Blueprint builder target name (If present, template builder panel is loaded)
+        let activeBlueprintDesignKey = null;
+
+        // Default schedules setup if entirely uninitialized
+        if (Object.keys(schedules).length === 0) {
+            schedules["Friday, July 3, 2026"] = [
                 { id: 1, title: "Tablet Time", start: "8:00 AM", end: "9:00 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Arcade Blip", subtasks: [] },
                 { id: 2, title: "Breakfast", start: "9:00 AM", end: "9:30 AM", tokens: 0, swappable: false, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
                 { id: 3, title: "In-Home ABA", start: "9:30 AM", end: "12:30 PM", tokens: 5, swappable: false, completed: null, mood: null, duration: 180, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [
@@ -324,8 +508,8 @@
                 { id: 5, title: "Walk Outside", start: "1:30 PM", end: "2:15 PM", tokens: 2, swappable: true, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [] },
                 { id: 6, title: "Shower", start: "2:15 PM", end: "2:45 PM", tokens: 1, swappable: false, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
                 { id: 7, title: "Dinner", start: "5:30 PM", end: "6:15 PM", tokens: 1, swappable: false, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] }
-            ],
-            "Saturday, July 4, 2026": [
+            ];
+            schedules["Saturday, July 4, 2026"] = [
                 { id: 8, title: "Breakfast Time", start: "9:00 AM", end: "9:45 AM", tokens: 0, swappable: false, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
                 { id: 9, title: "Swim in Pool", start: "11:00 AM", end: "1:00 PM", tokens: 3, swappable: true, completed: null, mood: null, duration: 120, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [
                     { id: 901, text: "Put shoes on", completed: false },
@@ -333,18 +517,11 @@
                     { id: 903, text: "Buckle up seat belt", completed: false }
                 ]},
                 { id: 10, title: "Pick Up Domino's Pizza", start: "5:00 PM", end: "5:30 PM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Arcade Blip", subtasks: [] }
-            ]
-        }));
+            ];
+        }
 
         let draggedIndex = null;
         let countdownIntervals = {};
-
-        function commitToDisk() {
-            localStorage.setItem('routine_coins', coinBank.toString());
-            localStorage.setItem('routine_alternatives', JSON.stringify(alternativePool));
-            localStorage.setItem('routine_schedules', JSON.stringify(schedules));
-            localStorage.setItem('routine_templates', JSON.stringify(templates));
-        }
 
         // AUTO-SCROLL LOOPS FOR SMOOTH DRAGS
         let autoScrollInterval = null;
@@ -548,6 +725,11 @@
                                 <option value="Arcade Blip" ${act.sound === 'Arcade Blip' ? 'selected' : ''}>Arcade Blip</option>
                                 <option value="Gentle Chime" ${act.sound === 'Gentle Chime' ? 'selected' : ''}>Gentle Chime</option>
                                 <option value="Game Buzzer" ${act.sound === 'Game Buzzer' ? 'selected' : ''}>Game Buzzer</option>
+                                <option value="Ambient Bell" ${act.sound === 'Ambient Bell' ? 'selected' : ''}>Ambient Bell</option>
+                                <option value="Digital Beep" ${act.sound === 'Digital Beep' ? 'selected' : ''}>Digital Beep</option>
+                                <option value="Zen Gong" ${act.sound === 'Zen Gong' ? 'selected' : ''}>Zen Gong</option>
+                                <option value="Soft Harp" ${act.sound === 'Soft Harp' ? 'selected' : ''}>Soft Harp</option>
+                                <option value="Success Fanfare" ${act.sound === 'Success Fanfare' ? 'selected' : ''}>Success Fanfare</option>
                             </select>
                             <button onclick="synthSound('${act.sound}')" class="bg-slate-200 hover:bg-slate-300 font-extrabold px-3 py-1.5 rounded-xl transition-all">🔊 Preview</button>
                         </div>
@@ -945,7 +1127,8 @@
                         <input type="text" value="${key}" onchange="renameTemplate('${key}', this.value)" class="font-extrabold text-sm text-slate-800 bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-slate-50 focus:outline-none p-1 rounded">
                         <span class="block text-[10px] text-slate-400 mt-0.5">${templates[key].length} Activities saved</span>
                     </div>
-                    <div class="flex gap-1.5">
+                    <div class="flex gap-1.5 font-rounded">
+                        <button onclick="enterBlueprintDesigner('${key}')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold text-xs px-3.5 py-2 rounded-xl transition-all shadow-sm">✏️ Edit Blueprint</button>
                         <button onclick="loadTemplate('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl shadow-sm transition-all active:scale-95">Load Into Current Day</button>
                         <button onclick="deleteTemplate('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
                     </div>
@@ -1014,6 +1197,197 @@
             synthSound('Game Buzzer');
         }
 
+        /* 📋 BLUEPRINT SANDBOX DESIGNER MODULES */
+        function enterBlueprintDesigner(key) {
+            activeBlueprintDesignKey = key;
+            document.getElementById('blueprintDesignTitle').innerText = `Editing Blueprint: ${key}`;
+            
+            // Show Blueprint Blocks & Hide Template Overview Lists
+            document.getElementById('blueprintDesignerBlock').classList.remove('hidden');
+            renderBlueprintActivities();
+        }
+
+        function exitBlueprintDesigner() {
+            activeBlueprintDesignKey = null;
+            document.getElementById('blueprintDesignerBlock').classList.add('hidden');
+            commitToDisk();
+            renderTemplateTab();
+            synthSound('Classic Ding');
+        }
+
+        function renderBlueprintActivities() {
+            const container = document.getElementById('blueprintActivitiesGrid');
+            container.innerHTML = "";
+            
+            if (!activeBlueprintDesignKey || !templates[activeBlueprintDesignKey]) return;
+            const list = templates[activeBlueprintDesignKey];
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-xs text-amber-800/60 p-4 text-center border border-dashed border-amber-300 rounded-xl">No activities inside this blueprint. Add one below!</div>`;
+                return;
+            }
+
+            list.forEach((item, idx) => {
+                const node = document.createElement('div');
+                node.className = "bg-white p-4 rounded-2xl border-2 border-amber-200 shadow-sm space-y-3";
+                node.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="text-xs font-black text-amber-600 bg-amber-100 w-6 h-6 rounded-full flex items-center justify-center">${idx + 1}</div>
+                        <input type="text" value="${item.title}" onchange="updateBlueprintField(${idx}, 'title', this.value)" placeholder="Activity Name" class="flex-grow bg-slate-50 border p-2 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:outline-none">
+                        
+                        <div class="bg-amber-50 border px-3 py-1 rounded-xl text-xs font-black text-amber-800 text-center flex flex-col shrink-0">
+                            <span class="text-[8px] uppercase tracking-wider">Tokens</span>
+                            <input type="number" min="0" value="${item.tokens}" onchange="updateBlueprintField(${idx}, 'tokens', parseInt(this.value))" class="w-8 bg-transparent text-center font-bold">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-400 text-[10px] uppercase mb-1">Time Block:</label>
+                            <div class="flex items-center gap-1.5">
+                                <input type="text" value="${item.start}" onchange="updateBlueprintField(${idx}, 'start', this.value)" class="bg-slate-100 border p-1.5 rounded w-16 text-center font-bold">
+                                <span>to</span>
+                                <input type="text" value="${item.end}" onchange="updateBlueprintField(${idx}, 'end', this.value)" class="bg-slate-100 border p-1.5 rounded w-16 text-center font-bold">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-400 text-[10px] uppercase mb-1">Sound Tone:</label>
+                            <select onchange="updateBlueprintField(${idx}, 'sound', this.value)" class="bg-slate-100 border p-1.5 rounded-xl w-full font-bold">
+                                <option value="Classic Ding" ${item.sound === 'Classic Ding' ? 'selected' : ''}>Classic Ding</option>
+                                <option value="Arcade Blip" ${item.sound === 'Arcade Blip' ? 'selected' : ''}>Arcade Blip</option>
+                                <option value="Gentle Chime" ${item.sound === 'Gentle Chime' ? 'selected' : ''}>Gentle Chime</option>
+                                <option value="Game Buzzer" ${item.sound === 'Game Buzzer' ? 'selected' : ''}>Game Buzzer</option>
+                                <option value="Ambient Bell" ${item.sound === 'Ambient Bell' ? 'selected' : ''}>Ambient Bell</option>
+                                <option value="Digital Beep" ${item.sound === 'Digital Beep' ? 'selected' : ''}>Digital Beep</option>
+                                <option value="Zen Gong" ${item.sound === 'Zen Gong' ? 'selected' : ''}>Zen Gong</option>
+                                <option value="Soft Harp" ${item.sound === 'Soft Harp' ? 'selected' : ''}>Soft Harp</option>
+                                <option value="Success Fanfare" ${item.sound === 'Success Fanfare' ? 'selected' : ''}>Success Fanfare</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                        <button onclick="shiftBlueprintPos(${idx}, -1)" class="text-slate-500 hover:text-slate-800">▲ Move Up</button>
+                        <button onclick="shiftBlueprintPos(${idx}, 1)" class="text-slate-500 hover:text-slate-800">▼ Move Down</button>
+                        <button onclick="deleteBlueprintActivity(${idx})" class="text-rose-600 hover:text-rose-800 font-extrabold flex items-center gap-1">🗑️ Delete</button>
+                    </div>
+                `;
+                container.appendChild(node);
+            });
+        }
+
+        function updateBlueprintField(idx, field, val) {
+            if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
+                templates[activeBlueprintDesignKey][idx][field] = val;
+                commitToDisk();
+            }
+        }
+
+        function addBlueprintActivity() {
+            if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
+                templates[activeBlueprintDesignKey].push({
+                    title: "Blueprint Activity",
+                    start: "12:00 PM",
+                    end: "12:30 PM",
+                    tokens: 1,
+                    swappable: true,
+                    completed: null,
+                    mood: null,
+                    duration: 30,
+                    timerActive: false,
+                    timeRemaining: null,
+                    sound: "Classic Ding",
+                    subtasks: []
+                });
+                commitToDisk();
+                renderBlueprintActivities();
+                synthSound('Pop');
+            }
+        }
+
+        function shiftBlueprintPos(idx, dir) {
+            if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
+                const list = templates[activeBlueprintDesignKey];
+                const target = idx + dir;
+                if (target >= 0 && target < list.length) {
+                    const temp = list[idx];
+                    list[idx] = list[target];
+                    list[target] = temp;
+                    commitToDisk();
+                    renderBlueprintActivities();
+                }
+            }
+        }
+
+        function deleteBlueprintActivity(idx) {
+            if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
+                templates[activeBlueprintDesignKey].splice(idx, 1);
+                commitToDisk();
+                renderBlueprintActivities();
+                synthSound('Game Buzzer');
+            }
+        }
+
+
+        /* 💾 SAVE & SWITCH ALTERNATIVE DECKS MANAGER */
+        function renderAltPresets() {
+            const container = document.getElementById('altPresetsListWrapper');
+            if (!container) return;
+            container.innerHTML = "";
+
+            const keys = Object.keys(alternativePresets);
+            if (keys.length === 0) {
+                container.innerHTML = `<div class="text-xs text-indigo-700/60 p-4 text-center border-2 border-dashed border-indigo-200 rounded-xl">No saved custom decks. Put together your list above and save it!</div>`;
+                return;
+            }
+
+            keys.forEach(key => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3 rounded-xl border flex justify-between items-center text-xs shadow-sm";
+                card.innerHTML = `
+                    <div>
+                        <span class="font-extrabold block text-slate-800">${key}</span>
+                        <span class="text-[10px] text-slate-400">${alternativePresets[key].length} options saved</span>
+                    </div>
+                    <div class="flex gap-1.5 font-rounded">
+                        <button onclick="loadAltPreset('${key}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-3 py-1.5 rounded-lg transition-all active:scale-95">Load Deck</button>
+                        <button onclick="deleteAltPreset('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-2 py-1.5 rounded-lg transition-all">🗑️</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function saveAltPreset() {
+            const input = document.getElementById('altPresetNameInput');
+            const name = input.value.trim();
+            if (!name) return;
+
+            alternativePresets[name] = [...alternativePool];
+            input.value = "";
+            localStorage.setItem('routine_alt_presets', JSON.stringify(alternativePresets));
+            renderAltPresets();
+            synthSound('Classic Ding');
+        }
+
+        function loadAltPreset(key) {
+            if (alternativePresets[key]) {
+                alternativePool = [...alternativePresets[key]];
+                commitToDisk();
+                renderSchedule();
+                synthSound('Gentle Chime');
+            }
+        }
+
+        function deleteAltPreset(key) {
+            delete alternativePresets[key];
+            localStorage.setItem('routine_alt_presets', JSON.stringify(alternativePresets));
+            renderAltPresets();
+            synthSound('Game Buzzer');
+        }
+
+
         // INFINITE DATES NAVIGATOR
         function changeDate(daysOffset) {
             const currentDateObj = new Date(currentTargetDay);
@@ -1029,37 +1403,67 @@
         function updateTheme(themeClass) {
             const body = document.getElementById('appBody');
             body.className = "font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 " + themeClass;
+            localStorage.setItem('routine_theme_class', themeClass);
         }
 
         function updateFont(fontClass) {
             const container = document.getElementById('boardContainer');
             container.className = `max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 ${fontClass}`;
+            localStorage.setItem('routine_font_class', fontClass);
+        }
+
+        // COIN ADJUSTMENT OVERRIDE TOOL
+        function overrideCoinBalance() {
+            const input = document.getElementById('coinOverrideInput');
+            const val = parseInt(input.value);
+            if (isNaN(val) || val < 0) return;
+            coinBank = val;
+            document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
+            commitToDisk();
+            input.value = "";
+            synthSound('Ambient Bell');
+        }
+
+        // FACTORY WIPE SYSTEM
+        function dangerWipeSystem() {
+            if (confirm("Are you sure you want to completely erase the entire board layout, templates, deck setups, and coin balances? This cannot be undone.")) {
+                localStorage.clear();
+                window.location.reload();
+            }
         }
 
         function switchTab(targetTab) {
             document.getElementById('scheduleTab').classList.add('hidden');
             document.getElementById('alternativesTab').classList.add('hidden');
             document.getElementById('templatesTab').classList.add('hidden');
-            document.getElementById('musicTab').classList.add('hidden');
+            document.getElementById('settingsTab').classList.add('hidden');
 
             document.getElementById('tab-schedule').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
             document.getElementById('tab-alternatives').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
             document.getElementById('tab-templates').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
-            document.getElementById('tab-music').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
+            document.getElementById('tab-settings').className = "bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all";
+
+            // Add Activity is strictly placed on active Schedule views
+            const addBtnBlock = document.getElementById('tabSpecificControlBlock');
 
             if (targetTab === 'schedule') {
                 document.getElementById('scheduleTab').classList.remove('hidden');
                 document.getElementById('tab-schedule').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+                addBtnBlock.classList.remove('hidden');
             } else if (targetTab === 'alternatives') {
                 document.getElementById('alternativesTab').classList.remove('hidden');
                 document.getElementById('tab-alternatives').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+                addBtnBlock.classList.add('hidden');
+                renderAltPresets();
             } else if (targetTab === 'templates') {
                 document.getElementById('templatesTab').classList.remove('hidden');
                 document.getElementById('tab-templates').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+                addBtnBlock.classList.add('hidden');
                 renderTemplateTab();
-            } else if (targetTab === 'music') {
-                document.getElementById('musicTab').classList.remove('hidden');
-                document.getElementById('tab-music').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+            } else if (targetTab === 'settings') {
+                document.getElementById('settingsTab').classList.remove('hidden');
+                document.getElementById('tab-settings').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
+                addBtnBlock.classList.add('hidden');
             }
         }
 
@@ -1081,23 +1485,72 @@
             renderSchedule();
         }
 
+        /* 🎵 MUSIC CONNECT HOOKS */
         function connectMusic() {
-            const input = document.getElementById('musicUrl').value;
+            const input = document.getElementById('musicUrl').value.trim();
             const container = document.getElementById('musicConsole');
-            if (input.includes('spotify') || input.includes('iframe')) {
+            const clearBtn = document.getElementById('musicClearBtn');
+            
+            if (!input) return;
+
+            if (input.includes('spotify') || input.includes('iframe') || input.includes('youtube') || input.includes('soundcloud')) {
                 if (input.startsWith('<iframe')) {
-                    container.innerHTML = input;
+                    savedMusicSrc = input;
                 } else {
-                    const trackId = input.split('/').pop().split('?')[0];
-                    container.innerHTML = `<iframe src="https://open.spotify.com/embed/playlist/${trackId}" width="100%" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`;
+                    // Try parsing typical share URLs
+                    if (input.includes('spotify.com')) {
+                        const parsedId = input.split('/').pop().split('?')[0];
+                        savedMusicSrc = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/${parsedId}?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+                    } else {
+                        savedMusicSrc = `<iframe src="${input}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+                    }
                 }
+                container.innerHTML = savedMusicSrc;
+                clearBtn.classList.remove('hidden');
+                localStorage.setItem('routine_music_src', savedMusicSrc);
             } else {
-                container.innerHTML = `<div class="text-xs p-4 bg-emerald-900/40 rounded-xl text-emerald-200 font-extrabold">🎵 Connection Established! Simulated offline audio streaming initialized...</div>`;
+                // Simulator Mode fallback
+                savedMusicSrc = `<div class="text-xs p-4 bg-emerald-900/40 rounded-xl text-emerald-200 font-extrabold">🎵 Simulated Focus Stream Running offline! Player connected successfully...</div>`;
+                container.innerHTML = savedMusicSrc;
+                clearBtn.classList.remove('hidden');
+                localStorage.setItem('routine_music_src', savedMusicSrc);
+            }
+            document.getElementById('musicUrl').value = "";
+            synthSound('Classic Ding');
+        }
+
+        function loadPersistentMusic() {
+            const container = document.getElementById('musicConsole');
+            const clearBtn = document.getElementById('musicClearBtn');
+            if (savedMusicSrc) {
+                container.innerHTML = savedMusicSrc;
+                clearBtn.classList.remove('hidden');
+            } else {
+                container.innerHTML = `(No linked audio widgets currently playing)`;
+                clearBtn.classList.add('hidden');
             }
         }
 
+        function clearMusicWidget() {
+            savedMusicSrc = '';
+            localStorage.removeItem('routine_music_src');
+            loadPersistentMusic();
+            synthSound('Game Buzzer');
+        }
+
+        // LOAD MOOD DESYNC RECOVERY SYSTEM
+        const lastTheme = localStorage.getItem('routine_theme_class') || 'theme-pastel';
+        const lastFont = localStorage.getItem('routine_font_class') || 'font-rounded';
+        updateTheme(lastTheme);
+        updateFont(lastFont);
+        
+        // Sync Dropdowns to exact Storage keys
+        document.getElementById('boardThemeSelector').value = lastTheme;
+        document.getElementById('boardFontSelector').value = lastFont;
+
         // APP INITIAL STARTUP INVOCATION
         document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
+        loadPersistentMusic();
         renderSchedule();
     </script>
 </body>
