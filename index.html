@@ -6,7 +6,7 @@
     <title>Tactile Visual Routine Board</title>
     <!-- Tailwind CSS CDN for modern adaptive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Expanded Kid-Friendly, Dyslexia-Friendly, and Elegant Adult Google Fonts -->
+    <!-- Expanded Google Fonts for Playful Kids and Sophisticated Adults -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&family=Comfortaa:wght@400;700&family=Quicksand:wght@500;700&family=Balsamiq+Sans:wght@400;700&family=Montserrat:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -116,8 +116,8 @@
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-100 p-3 rounded-3xl">
             <div class="flex flex-wrap gap-2">
                 <button onclick="switchTab('schedule')" id="tab-schedule" class="bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50">📅 Schedule</button>
-                <button onclick="switchTab('templates')" id="tab-templates" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">📋 Schedule Templates</button>
-                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Alternatives & Decks</button>
+                <button onclick="switchTab('templates')" id="tab-templates" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">📋 Templates</button>
+                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">✏️ Alternative Activities</button>
                 <button onclick="switchTab('settings')" id="tab-settings" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">⚙️ Settings</button>
             </div>
             
@@ -132,10 +132,19 @@
         </div>
 
         <!-- TOP CONTEXT COMMAND SHELF (ADD ACTIVITY SHOWN SPECIFICALLY FOR ACTIVE SCHEDULE TAB) -->
-        <div class="mb-6 flex justify-between items-center" id="tabSpecificControlBlock">
-            <button id="mainTabAddBtn" onclick="createNewActivity()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-emerald-600/30 active:scale-95 transition-all flex items-center gap-2">
-                <span>➕</span> <span>Add Activity Card</span>
-            </button>
+        <div class="mb-6 flex flex-wrap justify-between items-center gap-4 bg-slate-100/50 p-4 rounded-3xl border border-slate-200" id="tabSpecificControlBlock">
+            <div class="flex-grow min-w-[240px]">
+                <label class="block text-[10px] font-black uppercase text-indigo-500 tracking-wide mb-1">🏷️ Customize Daily Schedule Title:</label>
+                <input type="text" id="scheduleDayNameInput" oninput="saveDailyScheduleName(this.value)" placeholder="e.g. My School Schedule, Fun Weekend" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:border-indigo-500">
+            </div>
+            <div class="flex flex-wrap gap-2 pt-4 md:pt-0 shrink-0">
+                <button onclick="createNewActivity()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-emerald-600/30 active:scale-95 transition-all flex items-center gap-2">
+                    <span>➕</span> <span>Add Activity Card</span>
+                </button>
+                <button onclick="triggerQuickSaveTemplate()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-5 rounded-2xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
+                    <span>💾</span> <span>Save Day as Template</span>
+                </button>
+            </div>
         </div>
 
         <!-- TAB CONTENT: SCHEDULE -->
@@ -144,11 +153,18 @@
             <div id="activityWrapper" class="space-y-5"></div>
 
             <!-- OPTIONS SHELF -->
-            <div class="p-5 bg-indigo-50/80 rounded-3xl border-4 border-indigo-100 shadow-inner">
-                <h3 class="text-base font-black text-indigo-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <span>💡 Alternative Activity Shelf</span>
-                    <span class="text-xs font-bold text-indigo-500 normal-case">(Other Options)</span>
-                </h3>
+            <div class="p-5 bg-indigo-50/80 rounded-3xl border-4 border-indigo-100 shadow-inner space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-indigo-100 pb-3">
+                    <h3 class="text-base font-black text-indigo-900 uppercase tracking-wider flex items-center gap-2">
+                        <span>💡 Alternative Activity Shelf</span>
+                    </h3>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="font-extrabold text-indigo-700 shrink-0">Active Deck:</span>
+                        <select id="scheduleDeckSelector" onchange="switchAltDeckDirect(this.value)" class="bg-white border-2 border-indigo-200 rounded-xl px-2.5 py-1.5 font-bold text-indigo-900 text-xs focus:outline-none">
+                            <!-- Populated via Javascript -->
+                        </select>
+                    </div>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="mainAlternativeShelf">
                     <!-- Loaded dynamically -->
                 </div>
@@ -258,34 +274,35 @@
         <!-- TAB CONTENT: ALTERNATIVES CONFIG -->
         <div id="alternativesTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-4">
-                <h2 class="text-xl font-black text-slate-900">✏️ Edit Alternative Activities Pool</h2>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Edit alternative card names below to customize your default "Other Options" selection tray. These provide rapid, low-frustration replacement options on visual routine blocks.
-                </p>
-                <div id="alternativesInputGroup" class="space-y-2.5"></div>
-                <button onclick="addCustomAlternative()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs py-2.5 px-5 rounded-xl shadow-md transition-all">+ Add New Choice Card</button>
-            </div>
-
-            <!-- NEW ALTS PRESETS MANAGER -->
-            <div class="bg-indigo-50/50 p-6 rounded-3xl border-2 border-indigo-100 text-slate-800 space-y-4">
-                <h3 class="text-base font-black text-indigo-900 uppercase tracking-wider">💾 Save & Switch Alternative Decks</h3>
-                <p class="text-xs text-slate-500">
-                    Save current alternatives as presets (e.g., "Calm Decks," "Sensory Choices," or "Outdoor Games") and load them instantly.
-                </p>
-                
-                <div class="bg-white p-4 rounded-2xl border space-y-3">
-                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wide">Save Current Deck Preset:</span>
-                    <div class="flex gap-2">
-                        <input type="text" id="altPresetNameInput" placeholder="e.g. Calm Sensory Deck, School Choices" class="flex-grow bg-slate-50 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
-                        <button onclick="saveAltPreset()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Deck</button>
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-3">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900">✏️ Alternative Activities Pools & Decks</h2>
+                        <p class="text-xs text-slate-500">Edit, add, or create alternative choice decks that can be loaded manually or linked directly to schedule plans.</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-extrabold text-slate-500">Working Deck:</span>
+                        <select id="deckRegistrySelector" onchange="loadAltDeckIntoEditor(this.value)" class="bg-white border rounded-xl p-2 text-xs font-bold text-slate-800">
+                            <!-- Populated with list of all decks -->
+                        </select>
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <span class="block text-xs font-black text-slate-500 uppercase tracking-wide">Your Saved Alternative Decks:</span>
-                    <div class="grid gap-2" id="altPresetsListWrapper">
-                        <!-- Dynamically Rendered Decks -->
+                <div class="bg-white p-4 rounded-2xl border space-y-3">
+                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wide">Create a Brand New Choice Deck:</span>
+                    <div class="flex gap-2">
+                        <input type="text" id="newDeckNameInput" placeholder="e.g. Sensory Breathers, Rainy Day Games" class="flex-grow bg-slate-50 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
+                        <button onclick="createNewAltDeckRegistry()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Create Empty Deck</button>
                     </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-slate-500 uppercase tracking-wide" id="activeEditingDeckTitle">Editing: Default Choices</span>
+                        <button onclick="deleteActiveAltDeck()" id="deleteDeckBtn" class="text-rose-500 hover:text-rose-700 font-bold text-xs flex items-center gap-1">🗑️ Delete This Deck</button>
+                    </div>
+                    <div id="alternativesInputGroup" class="space-y-2.5"></div>
+                    <button onclick="addCustomAlternative()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs py-2.5 px-5 rounded-xl shadow-md transition-all">+ Add New Choice Card</button>
                 </div>
             </div>
         </div>
@@ -305,23 +322,23 @@
                         <select onchange="updateTheme(this.value)" id="boardThemeSelector" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl font-bold text-slate-700">
                             <!-- KIDS OPTIONS -->
                             <optgroup label="🌈 Playful Kid-Friendly Themes">
-                                <option value="theme-pastel">rainbow Calming Pastel</option>
-                                <option value="theme-space">galaxy Galactic Space</option>
-                                <option value="theme-jungle">jungle Playful Jungle</option>
-                                <option value="theme-ocean">ocean Deep Ocean Reef</option>
-                                <option value="theme-arcade">terminal Retro Arcade Grid</option>
-                                <option value="theme-dark">dark Midnight Dark Mode</option>
-                                <option value="theme-desert">desert Sunset Desert</option>
-                                <option value="theme-unicorn">unicorn Unicorn Magic</option>
-                                <option value="theme-dino">dinosaur Prehistoric Era</option>
-                                <option value="theme-candy">candyland Sweet Candyland</option>
+                                <option value="theme-pastel">Calming Pastel</option>
+                                <option value="theme-space">Galactic Space</option>
+                                <option value="theme-jungle">Playful Jungle</option>
+                                <option value="theme-ocean">Deep Ocean Reef</option>
+                                <option value="theme-arcade">Retro Arcade Grid</option>
+                                <option value="theme-dark">Midnight Dark Mode</option>
+                                <option value="theme-desert">Sunset Desert</option>
+                                <option value="theme-unicorn">Unicorn Magic</option>
+                                <option value="theme-dino">Prehistoric Era</option>
+                                <option value="theme-candy">Sweet Candyland</option>
                             </optgroup>
                             <!-- ADULT OPTIONS -->
                             <optgroup label="💼 Clean & Sophisticated Adult Themes">
-                                <option value="theme-minimalist-slate">minimalist Minimalist Slate 🩶</option>
-                                <option value="theme-elegant-emerald">elegant Sophisticated Emerald 💚</option>
-                                <option value="theme-midnight-executive">luxury Midnight Executive 🖤</option>
-                                <option value="theme-terracotta-warmth">earthy Warm Terracotta 🧡</option>
+                                <option value="theme-minimalist-slate">Minimalist Slate</option>
+                                <option value="theme-elegant-emerald">Sophisticated Emerald</option>
+                                <option value="theme-midnight-executive">Midnight Executive</option>
+                                <option value="theme-terracotta-warmth">Warm Terracotta</option>
                             </optgroup>
                         </select>
                     </div>
@@ -379,6 +396,22 @@
             <div class="grid grid-cols-2 gap-3" id="overlayAlternativesGrid">
                 <!-- Loaded dynamically -->
             </div>
+        </div>
+    </div>
+
+    <!-- DIALOG OVERLAY MODAL: BLUEPRINT CALENDAR TARGET DISPATCHER -->
+    <div id="blueprintDispatchOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 border-4 border-emerald-400 shadow-2xl relative space-y-4">
+            <button onclick="closeBlueprintDispatcher()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
+            <span class="block text-xs font-extrabold text-emerald-600 uppercase tracking-widest leading-none">Load Blueprint Preset</span>
+            <h3 class="text-lg font-black text-slate-900" id="dispatcherTemplateName">Loading...</h3>
+            
+            <div class="space-y-1">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Target Calendar Date:</label>
+                <input type="date" id="dispatcherTargetDate" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-emerald-500 transition-all">
+            </div>
+
+            <button onclick="dispatchBlueprintToTargetDay()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-2xl shadow-md transition-all active:scale-95 text-xs">🚀 Load Template to Date</button>
         </div>
     </div>
 
@@ -479,19 +512,35 @@
         let currentTargetDay = "Friday, July 3, 2026";
         let activeSwapCardId = null;
 
-        // Persisted alternatives & template state
-        let alternativePool = JSON.parse(localStorage.getItem('routine_alternatives') || '["Sensory Break", "Legos", "Drawing", "Listening to Music"]');
-        let alternativePresets = JSON.parse(localStorage.getItem('routine_alt_presets') || '{}');
+        // Custom day metadata naming matrix
+        let scheduleNames = JSON.parse(localStorage.getItem('routine_schedule_names') || '{}');
+        if (Object.keys(scheduleNames).length === 0) {
+            scheduleNames["Friday, July 3, 2026"] = "My Daily Plan";
+            scheduleNames["Saturday, July 4, 2026"] = "Weekend Adventure";
+        }
+
+        // Parent alternative decks registry setup
+        let alternativeDecks = JSON.parse(localStorage.getItem('routine_alt_decks') || JSON.stringify({
+            "Default Choices": ["Sensory Break", "Legos", "Drawing", "Listening to Music"],
+            "Calm Down Deck": ["Deep Breaths", "Warm Tea", "Soft Blanket", "Squeeze Ball"],
+            "Active Play Deck": ["Trampoline", "Catch", "Bicycle Ride", "Obstacle Course"]
+        }));
+        
+        let activeAlternativeDeckName = localStorage.getItem('routine_active_alt_deck') || "Default Choices";
+        // Synchronized active choice pool reference
+        let alternativePool = alternativeDecks[activeAlternativeDeckName] || ["Sensory Break", "Legos", "Drawing", "Listening to Music"];
+
+        // Dynamic schedule association mapping with alternative decks
+        let scheduleLinkedDecks = JSON.parse(localStorage.getItem('routine_schedule_linked_decks') || '{}');
+
+        // Persisted templates state
         let templates = JSON.parse(localStorage.getItem('routine_templates') || '{}');
+
+        // Active template dispatcher memory pointer
+        let activeDispatchTemplateName = null;
+
         let schedules = JSON.parse(localStorage.getItem('routine_schedules') || '{}');
-
-        // New Music storage states
-        let savedMusicSrc = localStorage.getItem('routine_music_src') || '';
-
-        // Dynamic Sandbox Blueprint builder target name (If present, template builder panel is loaded)
-        let activeBlueprintDesignKey = null;
-
-        // Default schedules setup if entirely uninitialized
+        // Ensure baseline days are always loaded
         if (Object.keys(schedules).length === 0) {
             schedules["Friday, July 3, 2026"] = [
                 { id: 1, title: "Tablet Time", start: "8:00 AM", end: "9:00 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Arcade Blip", subtasks: [] },
@@ -538,14 +587,29 @@
             }, 30);
         }
 
+        // Dynamic baseline day initialization safeguard
+        function ensureDayInitialized(day) {
+            if (!schedules[day]) {
+                schedules[day] = [];
+            }
+            if (!scheduleNames[day]) {
+                scheduleNames[day] = "My Daily Plan";
+            }
+        }
+
         // WORKSPACE RENDER ENGINE
         function renderSchedule() {
+            ensureDayInitialized(currentTargetDay);
+
             const container = document.getElementById('activityWrapper');
             container.innerHTML = "";
 
-            if (!schedules[currentTargetDay]) {
-                schedules[currentTargetDay] = [];
+            // Auto-load dynamically linked alternative decks if associated with active day
+            if (scheduleLinkedDecks[currentTargetDay] && alternativeDecks[scheduleLinkedDecks[currentTargetDay]]) {
+                activeAlternativeDeckName = scheduleLinkedDecks[currentTargetDay];
+                alternativePool = alternativeDecks[activeAlternativeDeckName];
             }
+
             let list = schedules[currentTargetDay];
 
             list.forEach((act, index) => {
@@ -1101,10 +1165,27 @@
                 btn.onclick = () => {
                     currentTargetDay = labelStr;
                     document.getElementById('dateLabel').innerText = currentTargetDay;
+                    // Sync daily configuration name input field
+                    document.getElementById('scheduleDayNameInput').value = scheduleNames[currentTargetDay] || "";
                     renderSchedule();
                 };
                 picker.appendChild(btn);
             }
+        }
+
+        // DAILY SCHEDULE METADATA NAMING CORES
+        function saveDailyScheduleName(val) {
+            scheduleNames[currentTargetDay] = val.trim();
+            commitToDisk();
+        }
+
+        // QUICK-SAVE ROUTINE AS TEMPLATE SHORTCUT
+        function triggerQuickSaveTemplate() {
+            const activeName = scheduleNames[currentTargetDay] || "My Blueprint Routine";
+            templates[activeName] = JSON.parse(JSON.stringify(schedules[currentTargetDay] || []));
+            commitToDisk();
+            synthSound('Success Fanfare');
+            switchTab('templates');
         }
 
         // TEMPLATE SAVER AND MANAGER LOOPS
@@ -1120,21 +1201,53 @@
             }
 
             keys.forEach(key => {
+                // Determine linked alternative deck name if configured
+                const linkedDeckName = scheduleLinkedDecks[key] || "None Linked";
+
                 const box = document.createElement('div');
-                box.className = "bg-white p-3.5 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 shadow-sm";
+                box.className = "bg-white p-4 rounded-2xl border border-slate-200 flex flex-col gap-3 shadow-sm";
+                
+                // Build a dynamic alternative deck linker selector dropdown
+                let deckOptions = `<option value="">-- No Linked Alternative Deck --</option>`;
+                Object.keys(alternativeDecks).forEach(dk => {
+                    deckOptions += `<option value="${dk}" ${scheduleLinkedDecks[key] === dk ? 'selected' : ''}>Link Deck: ${dk}</option>`;
+                });
+
                 box.innerHTML = `
-                    <div class="flex-grow">
-                        <input type="text" value="${key}" onchange="renameTemplate('${key}', this.value)" class="font-extrabold text-sm text-slate-800 bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-slate-50 focus:outline-none p-1 rounded">
-                        <span class="block text-[10px] text-slate-400 mt-0.5">${templates[key].length} Activities saved</span>
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-2">
+                        <div class="flex-grow">
+                            <input type="text" value="${key}" onchange="renameTemplate('${key}', this.value)" class="font-extrabold text-sm text-slate-800 bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-slate-50 focus:outline-none p-1 rounded">
+                            <span class="block text-[10px] text-slate-400 mt-0.5">${templates[key].length} Activities saved</span>
+                        </div>
+                        <div class="flex gap-1.5 font-rounded text-xs shrink-0">
+                            <button onclick="enterBlueprintDesigner('${key}')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold px-3 py-2 rounded-xl transition-all shadow-sm">✏️ Customize Blueprint</button>
+                            <button onclick="openBlueprintDispatcher('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-3 py-2 rounded-xl shadow-sm transition-all active:scale-95">Load Into Day...</button>
+                            <button onclick="deleteTemplate('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
+                        </div>
                     </div>
-                    <div class="flex gap-1.5 font-rounded">
-                        <button onclick="enterBlueprintDesigner('${key}')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold text-xs px-3.5 py-2 rounded-xl transition-all shadow-sm">✏️ Edit Blueprint</button>
-                        <button onclick="loadTemplate('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl shadow-sm transition-all active:scale-95">Load Into Current Day</button>
-                        <button onclick="deleteTemplate('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-black text-slate-400 text-[10px] uppercase">Link Alternative Deck:</span>
+                            <select onchange="linkDeckToSchedulePreset('${key}', this.value)" class="bg-slate-50 border p-1.5 rounded-lg font-bold text-slate-700">
+                                ${deckOptions}
+                            </select>
+                        </div>
                     </div>
                 `;
                 container.appendChild(box);
             });
+        }
+
+        function linkDeckToSchedulePreset(templateKey, deckName) {
+            if (deckName) {
+                scheduleLinkedDecks[templateKey] = deckName;
+            } else {
+                delete scheduleLinkedDecks[templateKey];
+            }
+            commitToDisk();
+            renderTemplateTab();
+            synthSound('Classic Ding');
         }
 
         function saveCurrentAsTemplate() {
@@ -1169,15 +1282,57 @@
             synthSound('Classic Ding');
         }
 
-        function loadTemplate(key) {
-            if (templates[key]) {
-                // Instantly load deep copy of template into current targeted calendar schedule
-                schedules[currentTargetDay] = JSON.parse(JSON.stringify(templates[key]));
-                commitToDisk();
-                renderSchedule();
-                synthSound('Gentle Chime');
-                switchTab('schedule');
+        function openBlueprintDispatcher(key) {
+            activeDispatchTemplateName = key;
+            document.getElementById('dispatcherTemplateName').innerText = key;
+            
+            // Set default datepicker value to today
+            const localDate = new Date();
+            const yearStr = localDate.getFullYear();
+            const monthStr = String(localDate.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(localDate.getDate()).padStart(2, '0');
+            document.getElementById('dispatcherTargetDate').value = `${yearStr}-${monthStr}-${dayStr}`;
+
+            document.getElementById('blueprintDispatchOverlay').classList.remove('hidden');
+        }
+
+        function closeBlueprintDispatcher() {
+            document.getElementById('blueprintDispatchOverlay').classList.add('hidden');
+            activeDispatchTemplateName = null;
+        }
+
+        function dispatchBlueprintToTargetDay() {
+            const rawDateVal = document.getElementById('dispatcherTargetDate').value;
+            if (!rawDateVal || !activeDispatchTemplateName) return;
+
+            // Re-format native date value into Routine local calendar label
+            const parsedParts = rawDateVal.split('-');
+            const targetDateObj = new Date(parsedParts[0], parsedParts[1] - 1, parsedParts[2]);
+            const labelOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const localFormattedDayLabel = targetDateObj.toLocaleDateString('en-US', labelOptions);
+
+            // Fetch template copies
+            if (templates[activeDispatchTemplateName]) {
+                schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(templates[activeDispatchTemplateName]));
+                scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
+                
+                // Copy linked deck reference to targeting calendar day
+                if (scheduleLinkedDecks[activeDispatchTemplateName]) {
+                    scheduleLinkedDecks[localFormattedDayLabel] = scheduleLinkedDecks[activeDispatchTemplateName];
+                }
             }
+
+            commitToDisk();
+            synthSound('Success Fanfare');
+            closeBlueprintDispatcher();
+
+            // Transition directly to the targeted plan day to review details
+            currentTargetDay = localFormattedDayLabel;
+            document.getElementById('dateLabel').innerText = currentTargetDay;
+            document.getElementById('scheduleDayNameInput').value = scheduleNames[currentTargetDay] || "";
+            
+            switchTab('schedule');
+            renderSchedule();
         }
 
         function renameTemplate(oldKey, newKey) {
@@ -1185,6 +1340,13 @@
             if (trimmedNew && trimmedNew !== oldKey) {
                 templates[trimmedNew] = templates[oldKey];
                 delete templates[oldKey];
+                
+                // Move linked deck associations
+                if (scheduleLinkedDecks[oldKey]) {
+                    scheduleLinkedDecks[trimmedNew] = scheduleLinkedDecks[oldKey];
+                    delete scheduleLinkedDecks[oldKey];
+                }
+
                 commitToDisk();
                 renderTemplateTab();
             }
@@ -1192,17 +1354,20 @@
 
         function deleteTemplate(key) {
             delete templates[key];
+            delete scheduleLinkedDecks[key];
             commitToDisk();
             renderTemplateTab();
             synthSound('Game Buzzer');
         }
 
         /* 📋 BLUEPRINT SANDBOX DESIGNER MODULES */
+        let activeBlueprintDesignKey = null;
+
         function enterBlueprintDesigner(key) {
             activeBlueprintDesignKey = key;
-            document.getElementById('blueprintDesignTitle').innerText = `Editing Blueprint: ${key}`;
+            document.getElementById('blueprintDesignTitle').innerText = `Editing: ${key}`;
             
-            // Show Blueprint Blocks & Hide Template Overview Lists
+            // Show Sandbox block
             document.getElementById('blueprintDesignerBlock').classList.remove('hidden');
             renderBlueprintActivities();
         }
@@ -1330,62 +1495,99 @@
         }
 
 
-        /* 💾 SAVE & SWITCH ALTERNATIVE DECKS MANAGER */
-        function renderAltPresets() {
-            const container = document.getElementById('altPresetsListWrapper');
-            if (!container) return;
-            container.innerHTML = "";
-
-            const keys = Object.keys(alternativePresets);
-            if (keys.length === 0) {
-                container.innerHTML = `<div class="text-xs text-indigo-700/60 p-4 text-center border-2 border-dashed border-indigo-200 rounded-xl">No saved custom decks. Put together your list above and save it!</div>`;
-                return;
+        /* ✏️ ALTERNATIVE ACTIVITY DECK REGISTRY CORES */
+        function loadAltDeckIntoEditor(deckName) {
+            if (!alternativeDecks[deckName]) return;
+            activeAlternativeDeckName = deckName;
+            alternativePool = alternativeDecks[activeAlternativeDeckName];
+            
+            localStorage.setItem('routine_active_alt_deck', activeAlternativeDeckName);
+            document.getElementById('activeEditingDeckTitle').innerText = `Editing Deck: ${deckName}`;
+            
+            // Toggle Delete button visibility based on protecting default deck
+            const delBtn = document.getElementById('deleteDeckBtn');
+            if (deckName === "Default Choices") {
+                delBtn.classList.add('hidden');
+            } else {
+                delBtn.classList.remove('hidden');
             }
 
-            keys.forEach(key => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-3 rounded-xl border flex justify-between items-center text-xs shadow-sm";
-                card.innerHTML = `
-                    <div>
-                        <span class="font-extrabold block text-slate-800">${key}</span>
-                        <span class="text-[10px] text-slate-400">${alternativePresets[key].length} options saved</span>
-                    </div>
-                    <div class="flex gap-1.5 font-rounded">
-                        <button onclick="loadAltPreset('${key}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-3 py-1.5 rounded-lg transition-all active:scale-95">Load Deck</button>
-                        <button onclick="deleteAltPreset('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-2 py-1.5 rounded-lg transition-all">🗑️</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+            renderAlternativeShelf();
         }
 
-        function saveAltPreset() {
-            const input = document.getElementById('altPresetNameInput');
+        function createNewAltDeckRegistry() {
+            const input = document.getElementById('newDeckNameInput');
             const name = input.value.trim();
-            if (!name) {
-                return;
+            if (!name) return;
+
+            if (!alternativeDecks[name]) {
+                alternativeDecks[name] = ["New Activity Card"];
             }
-            alternativePresets[name] = [...alternativePool];
+
             input.value = "";
-            localStorage.setItem('routine_alt_presets', JSON.stringify(alternativePresets));
-            renderAltPresets();
+            localStorage.setItem('routine_alt_decks', JSON.stringify(alternativeDecks));
+            
+            populateDeckDropdowns();
+            loadAltDeckIntoEditor(name);
             synthSound('Classic Ding');
         }
 
-        function loadAltPreset(key) {
-            if (alternativePresets[key]) {
-                alternativePool = [...alternativePresets[key]];
-                commitToDisk();
-                renderSchedule();
-                synthSound('Gentle Chime');
+        function deleteActiveAltDeck() {
+            if (activeAlternativeDeckName === "Default Choices") return;
+
+            delete alternativeDecks[activeAlternativeDeckName];
+            localStorage.setItem('routine_alt_decks', JSON.stringify(alternativeDecks));
+
+            // Fallback back to Default Choices deck registry
+            activeAlternativeDeckName = "Default Choices";
+            alternativePool = alternativeDecks["Default Choices"];
+            localStorage.setItem('routine_active_alt_deck', "Default Choices");
+
+            populateDeckDropdowns();
+            loadAltDeckIntoEditor("Default Choices");
+            synthSound('Game Buzzer');
+        }
+
+        function populateDeckDropdowns() {
+            // Selectors inside Alternative activities tab, and option shelf on home view
+            const editorSel = document.getElementById('deckRegistrySelector');
+            const scheduleSel = document.getElementById('scheduleDeckSelector');
+            
+            if (editorSel && scheduleSel) {
+                editorSel.innerHTML = "";
+                scheduleSel.innerHTML = "";
+
+                Object.keys(alternativeDecks).forEach(dk => {
+                    const opt1 = document.createElement('option');
+                    opt1.value = dk;
+                    opt1.innerText = dk;
+                    opt1.selected = dk === activeAlternativeDeckName;
+                    editorSel.appendChild(opt1);
+
+                    const opt2 = document.createElement('option');
+                    opt2.value = dk;
+                    opt2.innerText = dk;
+                    opt2.selected = dk === activeAlternativeDeckName;
+                    scheduleSel.appendChild(opt2);
+                });
             }
         }
 
-        function deleteAltPreset(key) {
-            delete alternativePresets[key];
-            localStorage.setItem('routine_alt_presets', JSON.stringify(alternativePresets));
-            renderAltPresets();
-            synthSound('Game Buzzer');
+        function switchAltDeckDirect(deckName) {
+            if (alternativeDecks[deckName]) {
+                activeAlternativeDeckName = deckName;
+                alternativePool = alternativeDecks[deckName];
+                
+                localStorage.setItem('routine_active_alt_deck', activeAlternativeDeckName);
+                
+                // Keep Linked schedules tracking in sync on change
+                scheduleLinkedDecks[currentTargetDay] = deckName;
+                
+                commitToDisk();
+                renderSchedule();
+                populateDeckDropdowns();
+                synthSound('Gentle Chime');
+            }
         }
 
 
@@ -1398,6 +1600,11 @@
             currentTargetDay = currentDateObj.toLocaleDateString('en-US', options);
             
             document.getElementById('dateLabel').innerText = currentTargetDay;
+            
+            // Sync Daily naming box on transition
+            ensureDayInitialized(currentTargetDay);
+            document.getElementById('scheduleDayNameInput').value = scheduleNames[currentTargetDay] || "";
+
             renderSchedule();
         }
 
@@ -1453,7 +1660,8 @@
                 document.getElementById('alternativesTab').classList.remove('hidden');
                 document.getElementById('tab-alternatives').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
                 addBtnBlock.classList.add('hidden');
-                renderAltPresets();
+                populateDeckDropdowns();
+                loadAltDeckIntoEditor(activeAlternativeDeckName);
             } else if (targetTab === 'templates') {
                 document.getElementById('templatesTab').classList.remove('hidden');
                 document.getElementById('tab-templates').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
@@ -1493,26 +1701,27 @@
             if (!input) return;
 
             if (input.includes('spotify') || input.includes('iframe') || input.includes('youtube') || input.includes('soundcloud')) {
+                let parsedWidgetCode = "";
                 if (input.startsWith('<iframe')) {
-                    savedMusicSrc = input;
+                    parsedWidgetCode = input;
                 } else {
                     // Try parsing typical share URLs
                     if (input.includes('spotify.com')) {
                         const parsedId = input.split('/').pop().split('?')[0];
-                        savedMusicSrc = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/${parsedId}?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+                        parsedWidgetCode = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/${parsedId}?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
                     } else {
-                        savedMusicSrc = `<iframe src="${input}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+                        parsedWidgetCode = `<iframe src="${input}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
                     }
                 }
-                container.innerHTML = savedMusicSrc;
+                container.innerHTML = parsedWidgetCode;
                 clearBtn.classList.remove('hidden');
-                localStorage.setItem('routine_music_src', savedMusicSrc);
+                localStorage.setItem('routine_music_src', parsedWidgetCode);
             } else {
                 // Simulator Mode fallback
-                savedMusicSrc = `<div class="text-xs p-4 bg-emerald-900/40 rounded-xl text-emerald-200 font-extrabold">🎵 Simulated Focus Stream Running offline! Player connected successfully...</div>`;
-                container.innerHTML = savedMusicSrc;
+                const simulatedEmbed = `<div class="text-xs p-4 bg-emerald-900/40 rounded-xl text-emerald-200 font-extrabold">🎵 Simulated Focus Stream Running offline! Player connected successfully...</div>`;
+                container.innerHTML = simulatedEmbed;
                 clearBtn.classList.remove('hidden');
-                localStorage.setItem('routine_music_src', savedMusicSrc);
+                localStorage.setItem('routine_music_src', simulatedEmbed);
             }
             document.getElementById('musicUrl').value = "";
             synthSound('Classic Ding');
@@ -1521,8 +1730,9 @@
         function loadPersistentMusic() {
             const container = document.getElementById('musicConsole');
             const clearBtn = document.getElementById('musicClearBtn');
-            if (savedMusicSrc) {
-                container.innerHTML = savedMusicSrc;
+            const savedMusic = localStorage.getItem('routine_music_src');
+            if (savedMusic) {
+                container.innerHTML = savedMusic;
                 clearBtn.classList.remove('hidden');
             } else {
                 container.innerHTML = `(No linked audio widgets currently playing)`;
@@ -1531,7 +1741,6 @@
         }
 
         function clearMusicWidget() {
-            savedMusicSrc = '';
             localStorage.removeItem('routine_music_src');
             loadPersistentMusic();
             synthSound('Game Buzzer');
@@ -1549,7 +1758,10 @@
 
         // APP INITIAL STARTUP INVOCATION
         document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
+        document.getElementById('scheduleDayNameInput').value = scheduleNames[currentTargetDay] || "My Daily Plan";
+        
         loadPersistentMusic();
+        populateDeckDropdowns();
         renderSchedule();
     </script>
 </body>
