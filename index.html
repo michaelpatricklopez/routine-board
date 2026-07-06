@@ -227,46 +227,53 @@
 
         <!-- TAB CONTENT: SCHEDULE TEMPLATES MANAGER -->
         <div id="templatesTab" class="hidden space-y-6">
-            <!-- BLUEPRINT DESIGNER WRAPPER -->
-            <div id="blueprintDesignerBlock" class="hidden bg-amber-50/70 p-5 rounded-3xl border-4 border-dashed border-amber-300 space-y-4">
-                <div class="flex items-center justify-between border-b-2 border-amber-200 pb-3">
-                    <div>
-                        <span class="text-[10px] font-black uppercase text-amber-600 tracking-widest block leading-none">Blueprint Designer Sandbox</span>
-                        <h3 class="text-lg font-black text-slate-900" id="blueprintDesignTitle">Editing: Classroom Deck</h3>
-                    </div>
-                    <button onclick="exitBlueprintDesigner()" class="bg-slate-900 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all">💾 Save & Exit Designer</button>
-                </div>
-                
-                <p class="text-xs text-amber-800 leading-normal">
-                    This is a blueprint designer sandbox. Modify, reorder, or add blueprint activities for this template below. Once saved, you can apply this exact sequence to any active calendar day.
-                </p>
-
-                <!-- Sandbox activity template design grid container -->
-                <div id="blueprintActivitiesGrid" class="space-y-4 my-2"></div>
-
-                <button onclick="addBlueprintActivity()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-2xl text-xs shadow-md transition-all">+ Add Blueprint Activity</button>
+            
+            <!-- TEMPLATE NAVIGATION BAR BUTTONS -->
+            <div class="flex gap-2 border-b-2 border-slate-200 pb-3">
+                <button onclick="switchTemplateSubTab('saved')" id="subtab-saved" class="bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm">📁 Saved Templates</button>
+                <button onclick="switchTemplateSubTab('create')" id="subtab-create" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-all">➕ Create Templates</button>
             </div>
 
-            <!-- TEMPLATE MANAGER DASHBOARD -->
-            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 text-slate-800 space-y-5">
-                <h2 class="text-xl font-extrabold text-slate-800">📋 Save, Customize & Load Schedule Blueprints</h2>
-                <p class="text-xs text-slate-500">
-                    Design a sequence blueprint (e.g., "School Routine" or "ABA Clinic Day") and apply it instantly onto any targeted calendar date.
-                </p>
+            <!-- SUB-TAB: SAVED TEMPLATES -->
+            <div id="savedTemplatesView" class="space-y-4">
+                <h2 class="text-lg font-black text-slate-900">📋 Load Routine Blueprint Onto Target Dates</h2>
+                <p class="text-xs text-slate-500">Pick any pre-designed schedule routine preset, select your target date, and dispatch it instantly onto that day's plan.</p>
                 
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
-                    <span class="block text-xs font-black text-indigo-600 uppercase tracking-wider">Save Current Day's Active Plan:</span>
-                    <div class="flex gap-2">
-                        <input type="text" id="templateNameInput" placeholder="e.g. In-Home ABA, Weekend, School Day" class="flex-grow bg-slate-100 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white">
-                        <button onclick="saveCurrentAsTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl text-sm transition-all shadow-sm">Save Preset Blueprint</button>
+                <div class="grid gap-3" id="templatesListWrapper">
+                    <!-- Dynamically Rendered templates list -->
+                </div>
+            </div>
+
+            <!-- SUB-TAB: CREATE TEMPLATES -->
+            <div id="createTemplatesView" class="hidden space-y-5">
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 space-y-4">
+                    <div>
+                        <span class="block text-xs font-black text-indigo-600 uppercase tracking-widest block mb-1">Template Preset Naming:</span>
+                        <div class="flex gap-2">
+                            <input type="text" id="newTemplateNameInput" placeholder="e.g. School Day Morning, Weekend Prep" class="flex-grow bg-slate-50 border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white transition-all">
+                            <button onclick="initNewBlueprintInSandbox()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-5 py-2.5 rounded-xl text-xs shadow-md transition-all active:scale-95">Set Blueprint Title</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="space-y-3">
-                    <span class="block text-xs font-black text-slate-500 uppercase tracking-wider">Your Custom Blueprints:</span>
-                    <div class="grid gap-3" id="templatesListWrapper">
-                        <!-- Dynamically Rendered templates lists -->
+                <!-- BLUEPRINT DESIGNER WRAPPER (SANDBOX APPEARS BENEATH THE TITLE workspace) -->
+                <div id="blueprintDesignerBlock" class="hidden bg-amber-50/70 p-5 rounded-3xl border-4 border-dashed border-amber-300 space-y-4">
+                    <div class="flex items-center justify-between border-b-2 border-amber-200 pb-3">
+                        <div>
+                            <span class="text-[10px] font-black uppercase text-amber-600 tracking-widest block leading-none">Blueprint Designer Sandbox</span>
+                            <h3 class="text-lg font-black text-slate-900" id="blueprintDesignTitle">Editing: New Preset Blueprint</h3>
+                        </div>
+                        <button onclick="exitBlueprintDesigner()" class="bg-slate-900 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all">💾 Save & Exit Designer</button>
                     </div>
+                    
+                    <p class="text-xs text-amber-800 leading-normal">
+                        Add template blueprints for this routine below. Once completed, you can load these onto any day on the calendar using the datepicker.
+                    </p>
+
+                    <!-- Activities render here, directly underneath the specific title workspace! -->
+                    <div id="blueprintActivitiesGrid" class="space-y-4 my-2"></div>
+
+                    <button onclick="addBlueprintActivity()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-2xl text-xs shadow-md transition-all">+ Add Activity to Blueprint</button>
                 </div>
             </div>
         </div>
@@ -1110,6 +1117,10 @@
         }
 
         function createNewActivity() {
+            // FIX: Guaranteed schedule target day baseline initialization
+            if (!schedules[currentTargetDay]) {
+                schedules[currentTargetDay] = [];
+            }
             const list = schedules[currentTargetDay];
             const newId = Date.now();
             list.push({
@@ -1204,6 +1215,7 @@
             commitToDisk();
             synthSound('Success Fanfare');
             switchTab('templates');
+            switchTemplateSubTab('saved');
         }
 
         // TEMPLATE SAVER AND MANAGER LOOPS
@@ -1219,53 +1231,21 @@
             }
 
             keys.forEach(key => {
-                // Determine linked alternative deck name if configured
-                const linkedDeckName = scheduleLinkedDecks[key] || "None Linked";
-
                 const box = document.createElement('div');
-                box.className = "bg-white p-4 rounded-2xl border border-slate-200 flex flex-col gap-3 shadow-sm";
-                
-                // Build a dynamic alternative deck linker selector dropdown
-                let deckOptions = `<option value="">-- No Linked Alternative Deck --</option>`;
-                Object.keys(alternativeDecks).forEach(dk => {
-                    deckOptions += `<option value="${dk}" ${scheduleLinkedDecks[key] === dk ? 'selected' : ''}>Link Deck: ${dk}</option>`;
-                });
-
+                box.className = "bg-white p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 shadow-sm";
                 box.innerHTML = `
-                    <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-2">
-                        <div class="flex-grow">
-                            <input type="text" value="${key}" onchange="renameTemplate('${key}', this.value)" class="font-extrabold text-sm text-slate-800 bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-slate-50 focus:outline-none p-1 rounded">
-                            <span class="block text-[10px] text-slate-400 mt-0.5">${templates[key].length} Activities saved</span>
-                        </div>
-                        <div class="flex gap-1.5 font-rounded text-xs shrink-0">
-                            <button onclick="enterBlueprintDesigner('${key}')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold px-3 py-2 rounded-xl transition-all shadow-sm">✏️ Customize Blueprint</button>
-                            <button onclick="openBlueprintDispatcher('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-3 py-2 rounded-xl shadow-sm transition-all active:scale-95">Load Into Day...</button>
-                            <button onclick="deleteTemplate('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
-                        </div>
+                    <div class="flex-grow">
+                        <input type="text" value="${key}" onchange="renameTemplate('${key}', this.value)" class="font-extrabold text-sm text-slate-800 bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-slate-50 focus:outline-none p-1 rounded">
+                        <span class="block text-[10px] text-slate-400 mt-0.5">${templates[key].length} Activities saved</span>
                     </div>
-
-                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-                        <div class="flex items-center gap-1.5">
-                            <span class="font-black text-slate-400 text-[10px] uppercase">Link Alternative Deck:</span>
-                            <select onchange="linkDeckToSchedulePreset('${key}', this.value)" class="bg-slate-50 border p-1.5 rounded-lg font-bold text-slate-700">
-                                ${deckOptions}
-                            </select>
-                        </div>
+                    <div class="flex gap-1.5 font-rounded text-xs shrink-0">
+                        <button onclick="enterBlueprintDesigner('${key}')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold px-3 py-2 rounded-xl transition-all shadow-sm">✏️ Customize Blueprint</button>
+                        <button onclick="openBlueprintDispatcher('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-3 py-2 rounded-xl shadow-sm transition-all active:scale-95">Load Into Day...</button>
+                        <button onclick="deleteTemplate('${key}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
                     </div>
                 `;
                 container.appendChild(box);
             });
-        }
-
-        function linkDeckToSchedulePreset(templateKey, deckName) {
-            if (deckName) {
-                scheduleLinkedDecks[templateKey] = deckName;
-            } else {
-                delete scheduleLinkedDecks[templateKey];
-            }
-            commitToDisk();
-            renderTemplateTab();
-            synthSound('Classic Ding');
         }
 
         function saveCurrentAsTemplate() {
@@ -1339,11 +1319,6 @@
             if (templates[activeDispatchTemplateName]) {
                 schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(templates[activeDispatchTemplateName]));
                 scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
-                
-                // Copy linked deck reference to targeting calendar day
-                if (scheduleLinkedDecks[activeDispatchTemplateName]) {
-                    scheduleLinkedDecks[localFormattedDayLabel] = scheduleLinkedDecks[activeDispatchTemplateName];
-                }
             }
 
             commitToDisk();
@@ -1368,13 +1343,6 @@
             if (trimmedNew && trimmedNew !== oldKey) {
                 templates[trimmedNew] = templates[oldKey];
                 delete templates[oldKey];
-                
-                // Move linked deck associations
-                if (scheduleLinkedDecks[oldKey]) {
-                    scheduleLinkedDecks[trimmedNew] = scheduleLinkedDecks[oldKey];
-                    delete scheduleLinkedDecks[oldKey];
-                }
-
                 commitToDisk();
                 renderTemplateTab();
             }
@@ -1382,7 +1350,6 @@
 
         function deleteTemplate(key) {
             delete templates[key];
-            delete scheduleLinkedDecks[key];
             commitToDisk();
             renderTemplateTab();
             synthSound('Game Buzzer');
@@ -1390,6 +1357,20 @@
 
         /* 📋 BLUEPRINT SANDBOX DESIGNER MODULES */
         let activeBlueprintDesignKey = null;
+
+        function initNewBlueprintInSandbox() {
+            const input = document.getElementById('newTemplateNameInput');
+            const name = input ? input.value.trim() : '';
+            if (!name) return;
+
+            // FIX: Guaranteed template collection fallback instantiation 
+            if (!templates[name]) {
+                templates[name] = [];
+            }
+            
+            enterBlueprintDesigner(name);
+            input.value = "";
+        }
 
         function enterBlueprintDesigner(key) {
             activeBlueprintDesignKey = key;
@@ -1482,25 +1463,29 @@
         }
 
         function addBlueprintActivity() {
-            if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
-                templates[activeBlueprintDesignKey].push({
-                    title: "Blueprint Activity",
-                    start: "12:00 PM",
-                    end: "12:30 PM",
-                    tokens: 1,
-                    swappable: true,
-                    completed: null,
-                    mood: null,
-                    duration: 30,
-                    timerActive: false,
-                    timeRemaining: null,
-                    sound: "Classic Ding",
-                    subtasks: []
-                });
-                commitToDisk();
-                renderBlueprintActivities();
-                synthSound('Pop');
+            // FIX: Prevent crashes by verifying baseline sandbox blueprint storage is instantiated 
+            if (!activeBlueprintDesignKey) return;
+            if (!templates[activeBlueprintDesignKey]) {
+                templates[activeBlueprintDesignKey] = [];
             }
+            
+            templates[activeBlueprintDesignKey].push({
+                title: "Blueprint Activity",
+                start: "12:00 PM",
+                end: "12:30 PM",
+                tokens: 1,
+                swappable: true,
+                completed: null,
+                mood: null,
+                duration: 30,
+                timerActive: false,
+                timeRemaining: null,
+                sound: "Classic Ding",
+                subtasks: []
+            });
+            commitToDisk();
+            renderBlueprintActivities();
+            synthSound('Pop');
         }
 
         function shiftBlueprintPos(idx, dir) {
@@ -1709,6 +1694,29 @@
                 document.getElementById('settingsTab').classList.remove('hidden');
                 document.getElementById('tab-settings').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
                 if (addBtnBlock) addBtnBlock.classList.add('hidden');
+            }
+        }
+
+        // TEMPLATE MANAGER NAVIGATION CONTROLS
+        function switchTemplateSubTab(viewName) {
+            const savedBtn = document.getElementById('subtab-saved');
+            const createBtn = document.getElementById('subtab-create');
+            const savedView = document.getElementById('savedTemplatesView');
+            const createView = document.getElementById('createTemplatesView');
+
+            if (viewName === 'saved') {
+                savedView.classList.remove('hidden');
+                createView.classList.add('hidden');
+                
+                savedBtn.className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm";
+                createBtn.className = "bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-all";
+                renderTemplateTab();
+            } else {
+                createView.classList.remove('hidden');
+                savedView.classList.add('hidden');
+
+                createBtn.className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm";
+                savedBtn.className = "bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-all";
             }
         }
 
