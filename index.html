@@ -382,6 +382,28 @@
 
     </div>
 
+    <!-- DIALOG OVERLAY MODAL: IN-APP DOCUMENT PORTAL FRAME -->
+    <div id="iframePortalModal" class="fixed inset-0 z-50 flex flex-col bg-slate-900/95 hidden">
+        <div class="bg-slate-950 p-4 flex items-center justify-between text-white border-b border-slate-800 select-none">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">🌐</span>
+                <h3 id="iframePortalTitle" class="font-bold text-sm tracking-tight">Loading Embedded Resource...</h3>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="iframeExternalLinkBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-3 py-2 rounded-xl transition-all flex items-center gap-1">
+                    <span>↗️</span> <span>Open in New Tab</span>
+                </button>
+                <button onclick="closeIframePortal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition-all">
+                    ✕ Close Portal
+                </button>
+            </div>
+        </div>
+        <!-- Embedded Preview viewport frame container -->
+        <div class="flex-grow w-full bg-white relative">
+            <iframe id="portalIframe" src="" class="w-full h-full border-none"></iframe>
+        </div>
+    </div>
+
     <!-- DIALOG OVERLAY MODAL: INLINE SWAP WORKSPACE -->
     <div id="swapOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-6 border-4 border-indigo-400 shadow-2xl relative">
@@ -570,10 +592,8 @@
         // Active template dispatcher memory pointer
         let activeDispatchTemplateName = null;
 
-        let schedules = JSON.parse(localStorage.getItem('routine_schedules') || '{}');
-        // Ensure baseline days are always loaded
-        if (Object.keys(schedules).length === 0) {
-            schedules["Friday, July 3, 2026"] = [
+        let schedules = JSON.parse(localStorage.getItem('routine_schedules') || JSON.stringify({
+            "Friday, July 3, 2026": [
                 { id: 1, title: "Tablet Time", start: "8:00 AM", end: "9:00 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Arcade Blip", subtasks: [] },
                 { id: 2, title: "Breakfast", start: "9:00 AM", end: "9:30 AM", tokens: 0, swappable: false, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
                 { id: 3, title: "In-Home ABA", start: "9:30 AM", end: "12:30 PM", tokens: 5, swappable: false, completed: null, mood: null, duration: 180, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [
@@ -588,8 +608,8 @@
                 { id: 5, title: "Walk Outside", start: "1:30 PM", end: "2:15 PM", tokens: 2, swappable: true, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [] },
                 { id: 6, title: "Shower", start: "2:15 PM", end: "2:45 PM", tokens: 1, swappable: false, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
                 { id: 7, title: "Dinner", start: "5:30 PM", end: "6:15 PM", tokens: 1, swappable: false, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] }
-            ];
-            schedules["Saturday, July 4, 2026"] = [
+            ],
+            "Saturday, July 4, 2026": [
                 { id: 8, title: "Breakfast Time", start: "9:00 AM", end: "9:45 AM", tokens: 0, swappable: false, completed: null, mood: null, duration: 45, timerActive: false, timeRemaining: null, sound: "Classic Ding", subtasks: [] },
                 { id: 9, title: "Swim in Pool", start: "11:00 AM", end: "1:00 PM", tokens: 3, swappable: true, completed: null, mood: null, duration: 120, timerActive: false, timeRemaining: null, sound: "Gentle Chime", subtasks: [
                     { id: 901, text: "Put shoes on", completed: false },
@@ -597,8 +617,8 @@
                     { id: 903, text: "Buckle up seat belt", completed: false }
                 ]},
                 { id: 10, title: "Pick Up Domino's Pizza", start: "5:00 PM", end: "5:30 PM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Arcade Blip", subtasks: [] }
-            ];
-        }
+            ]
+        }));
 
         let draggedIndex = null;
         let countdownIntervals = {};
@@ -618,16 +638,6 @@
             }, 30);
         }
 
-        // Dynamic baseline day initialization safeguard
-        function ensureDayInitialized(day) {
-            if (!schedules[day]) {
-                schedules[day] = [];
-            }
-            if (!scheduleNames[day]) {
-                scheduleNames[day] = "My Daily Plan";
-            }
-        }
-
         function commitToDisk() {
             // Guarantee current modified editor deck is synchronized back into alternativeDecks structure
             alternativeDecks[editorActiveDeckName] = alternativeDecks[editorActiveDeckName] || [];
@@ -644,10 +654,7 @@
 
         // WORKSPACE RENDER ENGINE
         function renderSchedule() {
-            ensureDayInitialized(currentTargetDay);
-
             const container = document.getElementById('activityWrapper');
-            if (!container) return; // Prevent crashes if switching pages
             container.innerHTML = "";
 
             // Auto-load dynamically linked alternative decks if associated with active day
@@ -655,6 +662,9 @@
                 scheduleActiveDeckName = scheduleLinkedDecks[currentTargetDay];
             }
 
+            if (!schedules[currentTargetDay]) {
+                schedules[currentTargetDay] = [];
+            }
             let list = schedules[currentTargetDay];
 
             list.forEach((act, index) => {
@@ -750,16 +760,13 @@
                     <button onclick="openSwapOverlay(${act.id})" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-bold px-3 py-1.5 rounded-xl transition-all">Swap with...</button>
                 ` : '';
 
+                // INLINE PORTAL IFRAME EMBED COMPLIANCY
                 let linkBadge = '';
                 if (act.link) {
-                    let targetUrl = act.link;
-                    if (!/^https?:\/\//i.test(targetUrl)) {
-                        targetUrl = 'https://' + targetUrl;
-                    }
                     linkBadge = `
-                        <a href="${targetUrl}" target="_blank" onclick="event.stopPropagation();" class="shrink-0 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-black px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-sm">
+                        <button onclick="openIframePortal('${act.link}', '${act.title}'); event.stopPropagation();" class="shrink-0 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-black px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-sm">
                             <span>🔗</span> <span>Open Link</span>
-                        </a>
+                        </button>
                     `;
                 }
 
@@ -890,12 +897,10 @@
 
                 // SECURE DYNAMIC DRAG HANDLE TOGGLERS (NATIVE EXCLUSIVE CORES)
                 const grip = card.querySelector('.drag-grip');
-                if (grip) {
-                    grip.addEventListener('mousedown', () => card.setAttribute('draggable', 'true'));
-                    grip.addEventListener('touchstart', () => card.setAttribute('draggable', 'true'), { passive: true });
-                    grip.addEventListener('mouseup', () => card.setAttribute('draggable', 'false'));
-                    grip.addEventListener('touchend', () => card.setAttribute('draggable', 'false'));
-                }
+                grip.addEventListener('mousedown', () => card.setAttribute('draggable', 'true'));
+                grip.addEventListener('touchstart', () => card.setAttribute('draggable', 'true'), { passive: true });
+                grip.addEventListener('mouseup', () => card.setAttribute('draggable', 'false'));
+                grip.addEventListener('touchend', () => card.setAttribute('draggable', 'false'));
                 card.addEventListener('dragend', () => card.setAttribute('draggable', 'false'));
 
                 container.appendChild(card);
@@ -910,7 +915,6 @@
         function openSwapOverlay(id) {
             activeSwapCardId = id;
             const grid = document.getElementById('overlayAlternativesGrid');
-            if (!grid) return;
             grid.innerHTML = "";
             
             const scheduleDeck = alternativeDecks[scheduleActiveDeckName] || [];
@@ -924,8 +928,7 @@
                 grid.appendChild(btn);
             });
 
-            const swapNode = document.getElementById('swapOverlay');
-            if (swapNode) swapNode.classList.remove('hidden');
+            document.getElementById('swapOverlay').classList.remove('hidden');
         }
         
         function executeSwap(alternativeTitle) {
@@ -947,8 +950,7 @@
         }
 
         function closeSwapOverlay() {
-            const swapNode = document.getElementById('swapOverlay');
-            if (swapNode) swapNode.classList.add('hidden');
+            document.getElementById('swapOverlay').classList.add('hidden');
             activeSwapCardId = null;
         }
 
@@ -995,17 +997,10 @@
                 else if (act.mood === 'not') not++;
             });
 
-            const tGreat = document.getElementById('tally-great');
-            const tGood = document.getElementById('tally-good');
-            const tOkay = document.getElementById('tally-okay');
-            const tNot = document.getElementById('tally-not');
-
-            if (tGreat && tGood && tOkay && tNot) {
-                tGreat.innerText = great;
-                tGood.innerText = good;
-                tOkay.innerText = okay;
-                tNot.innerText = not;
-            }
+            document.getElementById('tally-great').innerText = great;
+            document.getElementById('tally-good').innerText = good;
+            document.getElementById('tally-okay').innerText = okay;
+            document.getElementById('tally-not').innerText = not;
         }
 
         // TIMERS CONTROL
@@ -1079,8 +1074,7 @@
                 const act = list[targetIdx];
                 if (act.completed === 'check') {
                     coinBank = Math.max(0, coinBank - act.tokens);
-                    const bankDisplay = document.getElementById('bankDisplay');
-                    if (bankDisplay) bankDisplay.innerText = `${coinBank} Coins`;
+                    document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
                 }
                 clearInterval(countdownIntervals[id]);
                 list.splice(targetIdx, 1);
@@ -1146,8 +1140,7 @@
             const el = document.getElementById(`card-act-${act.id}`);
             if (el) el.classList.remove('glow-pulse');
 
-            const bankDisplay = document.getElementById('bankDisplay');
-            if (bankDisplay) bankDisplay.innerText = `${coinBank} Coins`;
+            document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
             commitToDisk();
             renderSchedule();
         }
@@ -1164,10 +1157,6 @@
         }
 
         function createNewActivity() {
-            // FIX: Guaranteed schedule target day baseline initialization
-            if (!schedules[currentTargetDay]) {
-                schedules[currentTargetDay] = [];
-            }
             const list = schedules[currentTargetDay];
             const newId = Date.now();
             list.push({
@@ -1195,6 +1184,7 @@
             if (act) {
                 act[field] = val;
                 commitToDisk();
+                renderSchedule(); // Force instant re-render! Fixes Card Color delays.
             }
         }
 
@@ -1207,7 +1197,7 @@
             }
         }
 
-        // QUICK-CLICK CALENDAR STRIP (INFINITE ROTATION ENGINE)
+        // QUICK-CLICK CALENDAR STRIP
         function renderQuickDatePicker() {
             const picker = document.getElementById('quickDatePicker');
             if (!picker) return;
@@ -1233,13 +1223,9 @@
                 }`;
                 btn.innerText = buttonLabel;
                 btn.onclick = () => {
-                    currentDate = currentButtonDate;
                     currentTargetDay = labelStr;
+                    document.getElementById('dateLabel').innerText = currentTargetDay;
                     
-                    const dateLabel = document.getElementById('dateLabel');
-                    if (dateLabel) dateLabel.innerText = currentTargetDay;
-                    
-                    // Sync daily configuration name input field safely
                     const dayInput = document.getElementById('scheduleDayNameInput');
                     if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
 
@@ -1297,7 +1283,6 @@
 
         function saveCurrentAsTemplate() {
             const input = document.getElementById('templateNameInput');
-            if (!input) return;
             const name = input.value.trim();
             if (!name) {
                 input.classList.add('border-rose-400');
@@ -1332,30 +1317,25 @@
 
         function openBlueprintDispatcher(key) {
             activeDispatchTemplateName = key;
-            const dispLabel = document.getElementById('dispatcherTemplateName');
-            if (dispLabel) dispLabel.innerText = key;
+            document.getElementById('dispatcherTemplateName').innerText = key;
             
             // Set default datepicker value to today safely
             const localDate = new Date();
             const yearStr = localDate.getFullYear();
             const monthStr = String(localDate.getMonth() + 1).padStart(2, '0');
             const dayStr = String(localDate.getDate()).padStart(2, '0');
-            const targetDateInput = document.getElementById('dispatcherTargetDate');
-            if (targetDateInput) targetDateInput.value = `${yearStr}-${monthStr}-${dayStr}`;
+            document.getElementById('dispatcherTargetDate').value = `${yearStr}-${monthStr}-${dayStr}`;
 
-            const overlay = document.getElementById('blueprintDispatchOverlay');
-            if (overlay) overlay.classList.remove('hidden');
+            document.getElementById('blueprintDispatchOverlay').classList.remove('hidden');
         }
 
         function closeBlueprintDispatcher() {
-            const overlay = document.getElementById('blueprintDispatchOverlay');
-            if (overlay) overlay.classList.add('hidden');
+            document.getElementById('blueprintDispatchOverlay').classList.add('hidden');
             activeDispatchTemplateName = null;
         }
 
         function dispatchBlueprintToTargetDay() {
-            const targetDateInput = document.getElementById('dispatcherTargetDate');
-            const rawDateVal = targetDateInput ? targetDateInput.value : '';
+            const rawDateVal = document.getElementById('dispatcherTargetDate').value;
             if (!rawDateVal || !activeDispatchTemplateName) return;
 
             // Re-format native date value into Routine local calendar label
@@ -1375,11 +1355,8 @@
             closeBlueprintDispatcher();
 
             // Transition directly to the targeted plan day to review details
-            currentDate = targetDateObj;
             currentTargetDay = localFormattedDayLabel;
-            
-            const dateLabel = document.getElementById('dateLabel');
-            if (dateLabel) dateLabel.innerText = currentTargetDay;
+            document.getElementById('dateLabel').innerText = currentTargetDay;
             
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
@@ -1410,36 +1387,29 @@
 
         function initNewBlueprintInSandbox() {
             const input = document.getElementById('newTemplateNameInput');
-            const name = input ? input.value.trim() : '';
+            const name = input.value.trim();
             if (!name) return;
 
-            // FIX: Guaranteed template collection fallback instantiation 
-            if (!templates[name]) {
-                templates[name] = [];
-            }
-            
+            templates[name] = [];
             enterBlueprintDesigner(name);
             input.value = "";
         }
 
         function enterBlueprintDesigner(key) {
             activeBlueprintDesignKey = key;
-            const designTitle = document.getElementById('blueprintDesignTitle');
-            if (designTitle) designTitle.innerText = `Editing: ${key}`;
+            document.getElementById('blueprintDesignTitle').innerText = `Editing: ${key}`;
             
             // AUTOMATICALLY SWITCH THE SUB-TAB OVER TO "CREATE TEMPLATES" VIEW
             switchTemplateSubTab('create');
             
             // Show Sandbox block
-            const designerBlock = document.getElementById('blueprintDesignerBlock');
-            if (designerBlock) designerBlock.classList.remove('hidden');
+            document.getElementById('blueprintDesignerBlock').classList.remove('hidden');
             renderBlueprintActivities();
         }
 
         function exitBlueprintDesigner() {
             activeBlueprintDesignKey = null;
-            const designerBlock = document.getElementById('blueprintDesignerBlock');
-            if (designerBlock) designerBlock.classList.add('hidden');
+            document.getElementById('blueprintDesignerBlock').classList.add('hidden');
             commitToDisk();
             renderTemplateTab();
             synthSound('Classic Ding');
@@ -1447,7 +1417,6 @@
 
         function renderBlueprintActivities() {
             const container = document.getElementById('blueprintActivitiesGrid');
-            if (!container) return;
             container.innerHTML = "";
             
             if (!activeBlueprintDesignKey || !templates[activeBlueprintDesignKey]) return;
@@ -1537,31 +1506,27 @@
         }
 
         function addBlueprintActivity() {
-            // FIX: Prevent crashes by verifying baseline sandbox blueprint storage is instantiated 
-            if (!activeBlueprintDesignKey) return;
-            if (!templates[activeBlueprintDesignKey]) {
-                templates[activeBlueprintDesignKey] = [];
+            if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
+                templates[activeBlueprintDesignKey].push({
+                    title: "Blueprint Activity",
+                    start: "12:00 PM",
+                    end: "12:30 PM",
+                    tokens: 1,
+                    swappable: true,
+                    completed: null,
+                    mood: null,
+                    duration: 30,
+                    timerActive: false,
+                    timeRemaining: null,
+                    sound: "Classic Ding",
+                    color: "slate",
+                    link: "",
+                    subtasks: []
+                });
+                commitToDisk();
+                renderBlueprintActivities();
+                synthSound('Pop');
             }
-            
-            templates[activeBlueprintDesignKey].push({
-                title: "Blueprint Activity",
-                start: "12:00 PM",
-                end: "12:30 PM",
-                tokens: 1,
-                swappable: true,
-                completed: null,
-                mood: null,
-                duration: 30,
-                timerActive: false,
-                timeRemaining: null,
-                sound: "Classic Ding",
-                color: "slate",
-                link: "",
-                subtasks: []
-            });
-            commitToDisk();
-            renderBlueprintActivities();
-            synthSound('Pop');
         }
 
         function shiftBlueprintPos(idx, dir) {
@@ -1593,17 +1558,14 @@
             editorActiveDeckName = deckName;
             localStorage.setItem('routine_editor_alt_deck', editorActiveDeckName);
             
-            const editTitle = document.getElementById('activeEditingDeckTitle');
-            if (editTitle) editTitle.innerText = `Editing Deck: ${deckName}`;
+            document.getElementById('activeEditingDeckTitle').innerText = `Editing Deck: ${deckName}`;
             
             // Toggle Delete button visibility based on protecting default deck
             const delBtn = document.getElementById('deleteDeckBtn');
-            if (delBtn) {
-                if (deckName === "Default Choices") {
-                    delBtn.classList.add('hidden');
-                } else {
-                    delBtn.classList.remove('hidden');
-                }
+            if (deckName === "Default Choices") {
+                delBtn.classList.add('hidden');
+            } else {
+                delBtn.classList.remove('hidden');
             }
 
             renderAlternativeShelf();
@@ -1611,7 +1573,6 @@
 
         function createNewAltDeckRegistry() {
             const input = document.getElementById('newDeckNameInput');
-            if (!input) return;
             const name = input.value.trim();
             if (!name) return;
 
@@ -1646,24 +1607,22 @@
             const editorSel = document.getElementById('deckRegistrySelector');
             const scheduleSel = document.getElementById('scheduleDeckSelector');
             
-            if (editorSel && scheduleSel) {
-                editorSel.innerHTML = "";
-                scheduleSel.innerHTML = "";
+            editorSel.innerHTML = "";
+            scheduleSel.innerHTML = "";
 
-                Object.keys(alternativeDecks).forEach(dk => {
-                    const opt1 = document.createElement('option');
-                    opt1.value = dk;
-                    opt1.innerText = dk;
-                    opt1.selected = dk === editorActiveDeckName;
-                    editorSel.appendChild(opt1);
+            Object.keys(alternativeDecks).forEach(dk => {
+                const opt1 = document.createElement('option');
+                opt1.value = dk;
+                opt1.innerText = dk;
+                opt1.selected = dk === editorActiveDeckName;
+                editorSel.appendChild(opt1);
 
-                    const opt2 = document.createElement('option');
-                    opt2.value = dk;
-                    opt2.innerText = dk;
-                    opt2.selected = dk === scheduleActiveDeckName;
-                    scheduleSel.appendChild(opt2);
-                });
-            }
+                const opt2 = document.createElement('option');
+                opt2.value = dk;
+                opt2.innerText = dk;
+                opt2.selected = dk === scheduleActiveDeckName;
+                scheduleSel.appendChild(opt2);
+            });
         }
 
         function switchAltDeckDirect(deckName) {
@@ -1677,25 +1636,23 @@
 
         function updateTheme(themeClass) {
             const body = document.getElementById('appBody');
-            if (body) body.className = "font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 " + themeClass;
+            body.className = "font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 " + themeClass;
             localStorage.setItem('routine_theme_class', themeClass);
         }
 
         function updateFont(fontClass) {
             const container = document.getElementById('boardContainer');
-            if (container) container.className = `max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 ${fontClass}`;
+            container.className = `max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 ${fontClass}`;
             localStorage.setItem('routine_font_class', fontClass);
         }
 
         // COIN ADJUSTMENT OVERRIDE TOOL
         function overrideCoinBalance() {
             const input = document.getElementById('bankBalanceAdjustment');
-            if (!input) return;
             const val = parseInt(input.value);
             if (isNaN(val) || val < 0) return;
             coinBank = val;
-            const bankDisplay = document.getElementById('bankDisplay');
-            if (bankDisplay) bankDisplay.innerText = `${coinBank} Coins`;
+            document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
             commitToDisk();
             input.value = "";
             synthSound('Ambient Bell');
@@ -1724,21 +1681,21 @@
             if (targetTab === 'schedule') {
                 document.getElementById('scheduleTab').classList.remove('hidden');
                 document.getElementById('tab-schedule').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
-                if (addBtnBlock) addBtnBlock.classList.remove('hidden');
+                addBtnBlock.classList.remove('hidden');
             } else if (targetTab === 'alternatives') {
                 document.getElementById('alternativesTab').classList.remove('hidden');
                 document.getElementById('tab-alternatives').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
-                if (addBtnBlock) addBtnBlock.classList.add('hidden');
+                addBtnBlock.classList.add('hidden');
                 loadAltDeckIntoEditor(editorActiveDeckName);
             } else if (targetTab === 'templates') {
                 document.getElementById('templatesTab').classList.remove('hidden');
                 document.getElementById('tab-templates').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
-                if (addBtnBlock) addBtnBlock.classList.add('hidden');
+                addBtnBlock.classList.add('hidden');
                 renderTemplateTab();
             } else if (targetTab === 'settings') {
                 document.getElementById('settingsTab').classList.remove('hidden');
                 document.getElementById('tab-settings').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
-                if (addBtnBlock) addBtnBlock.classList.add('hidden');
+                addBtnBlock.classList.add('hidden');
             }
         }
 
@@ -1765,14 +1722,40 @@
             }
         }
 
+        /* 🌐 IN-APP IFRAME PREVIEW WEB PORTAL CONTROLLERS */
+        function openIframePortal(url, title) {
+            let targetUrl = url.trim();
+            // Validate protocol schema compliance
+            if (!/^https?:\/\//i.test(targetUrl)) {
+                targetUrl = 'https://' + targetUrl;
+            }
+            
+            document.getElementById('iframePortalTitle').innerText = `Previewing Content Resource: ${title}`;
+            document.getElementById('portalIframe').src = targetUrl;
+            
+            // Wire backup option to launch direct on target if nested frames get sandboxed
+            document.getElementById('iframeExternalLinkBtn').onclick = () => {
+                window.open(targetUrl, '_blank');
+            };
+            
+            document.getElementById('iframePortalModal').classList.remove('hidden');
+            synthSound('Classic Ding');
+        }
+
+        function closeIframePortal() {
+            document.getElementById('iframePortalModal').classList.add('hidden');
+            // Unload source to terminate media streams / prevent residual leaks
+            document.getElementById('portalIframe').src = "";
+            synthSound('Pop');
+        }
+
         /* 🎵 MUSIC CONNECT HOOKS */
         function connectMusic() {
-            const inputField = document.getElementById('musicUrl');
-            const input = inputField ? inputField.value.trim() : '';
+            const input = document.getElementById('musicUrl').value.trim();
             const container = document.getElementById('musicConsole');
             const clearBtn = document.getElementById('musicClearBtn');
             
-            if (!input || !container) return;
+            if (!input) return;
 
             if (input.includes('spotify') || input.includes('iframe') || input.includes('youtube') || input.includes('soundcloud')) {
                 let parsedWidgetCode = "";
@@ -1788,16 +1771,16 @@
                     }
                 }
                 container.innerHTML = parsedWidgetCode;
-                if (clearBtn) clearBtn.classList.remove('hidden');
+                clearBtn.classList.remove('hidden');
                 localStorage.setItem('routine_music_src', parsedWidgetCode);
             } else {
                 // Simulator Mode fallback
                 const simulatedEmbed = `<div class="text-xs p-4 bg-emerald-900/40 rounded-xl text-emerald-200 font-extrabold">🎵 Simulated Focus Stream Running offline! Player connected successfully...</div>`;
                 container.innerHTML = simulatedEmbed;
-                if (clearBtn) clearBtn.classList.remove('hidden');
+                clearBtn.classList.remove('hidden');
                 localStorage.setItem('routine_music_src', simulatedEmbed);
             }
-            if (inputField) inputField.value = "";
+            document.getElementById('musicUrl').value = "";
             synthSound('Classic Ding');
         }
 
@@ -1805,14 +1788,12 @@
             const container = document.getElementById('musicConsole');
             const clearBtn = document.getElementById('musicClearBtn');
             const savedMusic = localStorage.getItem('routine_music_src');
-            if (container) {
-                if (savedMusic) {
-                    container.innerHTML = savedMusic;
-                    if (clearBtn) clearBtn.classList.remove('hidden');
-                } else {
-                    container.innerHTML = `(No linked audio widgets currently playing)`;
-                    if (clearBtn) clearBtn.classList.add('hidden');
-                }
+            if (savedMusic) {
+                container.innerHTML = savedMusic;
+                clearBtn.classList.remove('hidden');
+            } else {
+                container.innerHTML = `(No linked audio widgets currently playing)`;
+                clearBtn.classList.add('hidden');
             }
         }
 
@@ -1829,12 +1810,8 @@
         updateFont(lastFont);
 
         // APP INITIAL STARTUP INVOCATION
-        const bankDisplay = document.getElementById('bankDisplay');
-        if (bankDisplay) bankDisplay.innerText = `${coinBank} Coins`;
-        
-        const dayInput = document.getElementById('scheduleDayNameInput');
-        if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "My Daily Plan";
-        
+        document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
+        document.getElementById('scheduleDayNameInput').value = scheduleNames[currentTargetDay] || "My Daily Plan";
         loadPersistentMusic();
         populateDeckDropdowns();
         renderSchedule();
