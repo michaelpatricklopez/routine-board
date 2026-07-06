@@ -632,6 +632,41 @@
                 // CRUCIAL HANDLE-ONLY DRAGGING INVOCATION (SOLVES ALL INPUT LOCKS AND BUTTON UNRESPONSIVENESS)
                 card.setAttribute('draggable', 'false');
 
+                card.addEventListener('dragstart', (e) => {
+                    draggedIndex = index;
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', index);
+                });
+
+                card.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    const threshold = 100;
+                    if (e.clientY < threshold) {
+                        startDragScroll(-1);
+                    } else if (window.innerHeight - e.clientY < threshold) {
+                        startDragScroll(1);
+                    } else {
+                        stopDragScroll();
+                    }
+                });
+
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    stopDragScroll();
+                    if (draggedIndex !== null && draggedIndex !== index) {
+                        const items = schedules[currentTargetDay];
+                        const movedItem = items.splice(draggedIndex, 1)[0];
+                        items.splice(index, 0, movedItem);
+                        draggedIndex = null;
+                        commitToDisk();
+                        renderSchedule();
+                    }
+                });
+
+                card.addEventListener('dragend', () => {
+                    stopDragScroll();
+                });
+
                 // Generate sub-activity inline checklist markup
                 let subtasksMarkup = '';
                 if (act.subtasks && act.subtasks.length > 0) {
@@ -1665,8 +1700,6 @@
                 document.getElementById('alternativesTab').classList.remove('hidden');
                 document.getElementById('tab-alternatives').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
                 if (addBtnBlock) addBtnBlock.classList.add('hidden');
-                populateDeckDropdowns();
-                loadAltDeckIntoEditor(activeAlternativeDeckName);
             } else if (targetTab === 'templates') {
                 document.getElementById('templatesTab').classList.remove('hidden');
                 document.getElementById('tab-templates').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
