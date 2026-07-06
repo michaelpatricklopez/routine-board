@@ -57,23 +57,72 @@
             background-color: rgba(15, 23, 42, 0.6);
         }
 
-        /* High-Contrast Interactive Themes (Kids & Adults) */
-        .theme-pastel { background: linear-gradient(135deg, #fef08a 0%, #fae8ff 100%); }
-        .theme-space { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f1f5f9; }
-        .theme-jungle { background: linear-gradient(135deg, #dcfce7 0%, #fef08a 100%); }
-        .theme-ocean { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
-        .theme-arcade { background: linear-gradient(135deg, #111827 0%, #312e81 100%); color: #38bdf8; }
-        .theme-dark { background: linear-gradient(135deg, #030712 0%, #111827 100%); color: #f3f4f6; }
-        .theme-desert { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%); }
-        .theme-unicorn { background: linear-gradient(135deg, #fae8ff 0%, #e0f2fe 100%); }
-        .theme-dino { background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); }
-        .theme-candy { background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%); }
+        /* High-Contrast Interactive Themes (Kids & Adults) with Custom SVG Patterns representing the theme */
+        .theme-pastel { 
+            background-color: #fffbeb; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='30' cy='30' r='15' fill='%23fae8ff' opacity='0.45'/%3E%3Ccircle cx='70' cy='80' r='25' fill='%23e0f2fe' opacity='0.45'/%3E%3C/svg%3E"); 
+        }
+        .theme-space { 
+            background-color: #0b0f19; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='15' cy='15' r='1' fill='%23ffffff' opacity='0.3'/%3E%3Ccircle cx='55' cy='45' r='1.5' fill='%23ffffff' opacity='0.6'/%3E%3Ccircle cx='25' cy='65' r='0.8' fill='%23a5f3fc' opacity='0.4'/%32%3Cpath d='M40 10 L45 15 M45 15 L50 10' stroke='%2338bdf8' stroke-width='0.5' opacity='0.25'/%3E%3C/svg%3E"); 
+            color: #f1f5f9; 
+        }
+        .theme-jungle { 
+            background-color: #e8f5e9; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M10 20 Q30 5 50 20 T90 20' fill='none' stroke='%2381c784' stroke-width='1.5' opacity='0.25'/%3E%3Cpath d='M30 60 Q60 35 90 60 T120 60' fill='none' stroke='%234caf50' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E"); 
+        }
+        .theme-ocean { 
+            background-color: #e0f7fa; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='20' cy='20' r='4' fill='none' stroke='%2300bcd4' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='90' cy='70' r='8' fill='none' stroke='%230097a7' stroke-width='1.5' opacity='0.2'/%3E%3Cpath d='M0 60 Q30 45 60 60 T120 60' fill='none' stroke='%2300bcd4' stroke-width='0.75' opacity='0.2'/%3E%3C/svg%3E"); 
+        }
+        .theme-arcade { 
+            background-color: #0f1016; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='%233b82f6' stroke-width='0.5' opacity='0.18'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23ec4899' opacity='0.15'/%3E%3C/svg%3E"); 
+            color: #38bdf8; 
+        }
+        .theme-dark { 
+            background-color: #0c0d12; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 L80 20 L80 60 L40 80 L0 60 L0 20 Z' fill='none' stroke='%231e293b' stroke-width='1' opacity='0.4'/%3E%3C/svg%3E"); 
+            color: #f3f4f6; 
+        }
+        .theme-desert { 
+            background-color: #fdf3e7; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='35' fill='%23fdba74' opacity='0.25'/%3E%3Cpath d='M0 100 Q30 85 60 100 T120 100' fill='none' stroke='%23ea580c' stroke-width='1.2' opacity='0.15'/%3E%3C/svg%3E"); 
+        }
+        .theme-unicorn { 
+            background-color: #fdf4ff; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 L15 55 L10 60 L5 55 Z' fill='%23f472b6' opacity='0.25'/%3E%3Cpath d='M80 20 L85 25 L80 30 L75 25 Z' fill='%23c084fc' opacity='0.25'/%3E%3C/svg%3E"); 
+        }
+        .theme-dino { 
+            background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%); 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='120' viewBox='0 0 140 120'%3E%3Cpath d='M20 50 C40 30 70 30 90 50' fill='none' stroke='%2315803d' stroke-width='1.5' opacity='0.08'/%3E%3Cpath d='M10 80 Q40 60 70 80 T130 80' fill='none' stroke='%23854d0e' stroke-width='1' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        .theme-candy { 
+            background-color: #fff0f5; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='30' cy='30' r='10' fill='none' stroke='%23f472b6' stroke-width='2' stroke-dasharray='3 3' opacity='0.25'/%3E%3Ccircle cx='70' cy='70' r='8' fill='none' stroke='%23fb7185' stroke-width='1.5' opacity='0.2'/%3E%3C/svg%3E"); 
+        }
         
         /* ADULT EXCLUSIVE THEMES */
-        .theme-minimalist-slate { background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); color: #1e293b; }
-        .theme-elegant-emerald { background: linear-gradient(135deg, #e2e8f0 0%, #2dd4bf 100%); color: #0f172a; }
-        .theme-midnight-executive { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); color: #f1f5f9; }
-        .theme-warm-terracotta { background: linear-gradient(135deg, #fdf8f5 0%, #f4eae2 100%); color: #4a2711; }
+        .theme-minimalist-slate { 
+            background-color: #f8fafc; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='%23cbd5e1' stroke-width='0.5' opacity='0.4'/%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='%23cbd5e1' stroke-width='0.5' opacity='0.4'/%3E%3C/svg%3E"); 
+            color: #1e293b; 
+        }
+        .theme-elegant-emerald { 
+            background-color: #f4fbf7; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 A40 40 0 0 0 0 40 L40 40 Z' fill='%23a7f3d0' opacity='0.15'/%3E%3Cpath d='M40 80 A40 40 0 0 0 80 40 L40 40 Z' fill='%2334d399' opacity='0.12'/%3E%3C/svg%3E"); 
+            color: #0f172a; 
+        }
+        .theme-midnight-executive { 
+            background: linear-gradient(135deg, #090d1a 0%, #111827 100%); 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cline x1='0' y1='60' x2='120' y2='60' stroke='%23334155' stroke-width='0.5' opacity='0.3'/%3E%3Ccircle cx='60' cy='60' r='40' fill='none' stroke='%23fbbf24' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E"); 
+            color: #f1f5f9; 
+        }
+        .theme-warm-terracotta { 
+            background: linear-gradient(135deg, #fdfbf7 0%, #fdf8f5 100%); 
+            color: #4a2711; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M0 0c60 0 60 120 120 120' fill='none' stroke='%23f4eae2' stroke-width='3' opacity='0.5'/%3E%3C/svg%3E");
+        }
     </style>
 </head>
 <body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
@@ -447,95 +496,146 @@
             pink: 'border-pink-400 bg-pink-50/50'
         };
 
+        // RE-ENGINEERED ACOUSTIC HARMONICS FOR MODERN SYNTH SOUNDS
         function synthSound(profile) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
             const now = audioCtx.currentTime;
 
             if (profile === 'Classic Ding') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(880, now);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                osc.start(); osc.stop(now + 0.3);
+                // Harmonic bell model (detuned sines)
+                const freqs = [880, 1320, 1760];
+                freqs.forEach((f, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(f, now);
+                    gain.gain.setValueAtTime(0.15 / (i + 1), now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6 / (i + 1));
+                    osc.start(); osc.stop(now + 0.6);
+                });
             } else if (profile === 'Arcade Blip') {
-                osc.type = 'square'; osc.frequency.setValueAtTime(392, now);
-                osc.frequency.setValueAtTime(587.33, now + 0.08);
-                gain.gain.setValueAtTime(0.12, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-                osc.start(); osc.stop(now + 0.15);
+                // Polished retro rising blip
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.12);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.start(); osc.stop(now + 0.13);
             } else if (profile === 'Gentle Chime') {
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now);
-                osc.frequency.setValueAtTime(659.25, now + 0.12);
-                osc.frequency.setValueAtTime(783.99, now + 0.24);
-                gain.gain.setValueAtTime(0.25, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-                osc.start(); osc.stop(now + 0.6);
+                // Rising major chord (arpeggio)
+                const freqs = [523.25, 659.25, 783.99, 1046.50];
+                freqs.forEach((f, i) => {
+                    setTimeout(() => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.type = 'sine'; osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+                    }, i * 80);
+                });
             } else if (profile === 'Game Buzzer') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(140, now);
-                gain.gain.setValueAtTime(0.25, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+                // Modern low-passed synth buzz
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                const filter = audioCtx.createBiquadFilter();
+                osc.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(120, now);
+                filter.type = 'lowpass'; filter.frequency.setValueAtTime(500, now);
+                filter.frequency.exponentialRampToValueAtTime(100, now + 0.4);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.001, now + 0.4);
                 osc.start(); osc.stop(now + 0.45);
             } else if (profile === 'Pop') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(1200, now);
-                osc.frequency.exponentialRampToValueAtTime(300, now + 0.06);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+                // Organic mouth pop
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.05);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
                 osc.start(); osc.stop(now + 0.06);
             } else if (profile === 'Ambient Bell') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(440, now);
-                gain.gain.setValueAtTime(0.4, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-                osc.start(); osc.stop(now + 1.5);
+                // High-quality resonant bell with acoustic damping
+                const carrier = audioCtx.createOscillator();
+                const modulator = audioCtx.createOscillator();
+                const modGain = audioCtx.createGain();
+                const mainGain = audioCtx.createGain();
+                carrier.connect(mainGain); mainGain.connect(audioCtx.destination);
+                modulator.connect(modGain); modGain.connect(carrier.frequency);
+                
+                carrier.type = 'sine'; carrier.frequency.setValueAtTime(440, now);
+                modulator.type = 'sine'; modulator.frequency.setValueAtTime(220, now);
+                modGain.gain.setValueAtTime(300, now);
+                modGain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+                mainGain.gain.setValueAtTime(0.25, now);
+                mainGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+                
+                carrier.start(); carrier.stop(now + 2.0);
+                modulator.start(); modulator.stop(now + 2.0);
             } else if (profile === 'Digital Beep') {
-                osc.type = 'square'; osc.frequency.setValueAtTime(1200, now);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.setValueAtTime(0, now + 0.05);
-                osc.start(); osc.stop(now + 0.06);
-                setTimeout(() => {
-                    const osc2 = audioCtx.createOscillator();
-                    const gain2 = audioCtx.createGain();
-                    osc2.connect(gain2); gain2.connect(audioCtx.destination);
-                    osc2.type = 'square'; osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                    gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                    gain2.gain.setValueAtTime(0, audioCtx.currentTime + 0.05);
-                    osc2.start(); osc2.stop(audioCtx.currentTime + 0.06);
-                }, 100);
-            } else if (profile === 'Zen Gong') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(180, now);
-                const oscB = audioCtx.createOscillator();
-                const gainB = audioCtx.createGain();
-                oscB.connect(gainB); gainB.connect(audioCtx.destination);
-                oscB.type = 'triangle'; oscB.frequency.setValueAtTime(182, now);
-                gain.gain.setValueAtTime(0.4, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
-                gainB.gain.setValueAtTime(0.2, now);
-                gainB.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
-                osc.start(); osc.stop(now + 2.5);
-                oscB.start(); oscB.stop(now + 2.5);
-            } else if (profile === 'Soft Harp') {
-                [261.63, 329.63, 392.00, 523.25].forEach((freq, idx) => {
+                // Modern double notify pulse
+                [now, now + 0.12].forEach((time, index) => {
                     setTimeout(() => {
-                        const pluck = audioCtx.createOscillator();
-                        const pGain = audioCtx.createGain();
-                        pluck.connect(pGain); pGain.connect(audioCtx.destination);
-                        pluck.type = 'sine'; pluck.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                        pGain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                        pGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-                        pluck.start(); pluck.stop(audioCtx.currentTime + 0.8);
-                    }, idx * 100);
+                        const osc2 = audioCtx.createOscillator();
+                        const gain2 = audioCtx.createGain();
+                        osc2.connect(gain2); gain2.connect(audioCtx.destination);
+                        osc2.type = 'triangle'; osc2.frequency.setValueAtTime(1100, audioCtx.currentTime);
+                        gain2.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                        osc2.start(); osc2.stop(audioCtx.currentTime + 0.07);
+                    }, index * 120);
+                });
+            } else if (profile === 'Zen Gong') {
+                // Deep singing-bowl frequency wash
+                const oscA = audioCtx.createOscillator();
+                const oscB = audioCtx.createOscillator();
+                const gainA = audioCtx.createGain();
+                const gainB = audioCtx.createGain();
+                oscA.connect(gainA); gainA.connect(audioCtx.destination);
+                oscB.connect(gainB); gainB.connect(audioCtx.destination);
+                
+                oscA.type = 'sine'; oscA.frequency.setValueAtTime(140, now);
+                oscB.type = 'triangle'; oscB.frequency.setValueAtTime(142, now); // Detuned for chorus
+                
+                gainA.gain.setValueAtTime(0.18, now);
+                gainA.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
+                gainB.gain.setValueAtTime(0.08, now);
+                gainB.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
+                
+                oscA.start(); oscA.stop(now + 3.0);
+                oscB.start(); oscB.stop(now + 3.0);
+            } else if (profile === 'Soft Harp') {
+                // Cascading high harp string sweep
+                const chord = [523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50];
+                chord.forEach((freq, idx) => {
+                    setTimeout(() => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.type = 'sine'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.8);
+                    }, idx * 50);
                 });
             } else if (profile === 'Success Fanfare') {
-                [523.25, 659.25, 783.99].forEach(freq => {
-                    const brass = audioCtx.createOscillator();
-                    const bGain = audioCtx.createGain();
-                    brass.connect(bGain); brass.connect(audioCtx.destination);
-                    brass.type = 'triangle'; brass.frequency.setValueAtTime(freq, now);
-                    bGain.gain.setValueAtTime(0.15, now);
-                    bGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-                    brass.start(); brass.stop(now + 1.2);
+                // Rich polyphonic major triadic synth fanfare
+                const voices = [261.63, 329.63, 392.00, 523.25, 659.25];
+                voices.forEach((freq, index) => {
+                    setTimeout(() => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.type = 'sine'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+                        osc.start(); osc.stop(audioCtx.currentTime + 1.2);
+                    }, index * 40);
                 });
             }
         }
@@ -544,21 +644,14 @@
         let coinBank = parseInt(localStorage.getItem('routine_coins') || '0');
         
         // SELF-HEALING MIGRATION: Automatically reset old/legacy ghost coins to 0 on first boot of v2.8
-        if (!localStorage.getItem('routine_coins_init_v28')) {
+        if (!localStorage.getItem('routine_coins_reconciled')) {
             coinBank = 0;
+            localStorage.setItem('routine_coins_reconciled', 'true');
             localStorage.setItem('routine_coins', '0');
-            localStorage.setItem('routine_coins_init_v28', 'true');
         }
 
-        let currentDate = new Date(2026, 6, 3); // Anchored on Friday, July 3, 2026
+        let currentTargetDay = "Friday, July 3, 2026";
         
-        function getDayKey(dateObj) {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            return dateObj.toLocaleDateString('en-US', options);
-        }
-        
-        let currentTargetDay = getDayKey(currentDate);
-
         // Custom day metadata naming matrix
         let scheduleNames = JSON.parse(localStorage.getItem('routine_schedule_names') || '{}');
         if (Object.keys(scheduleNames).length === 0) {
@@ -734,7 +827,7 @@
                     `;
                 }
 
-                // SECONDS-ENABLED TIMER
+                // NEW COMPACT INLINE TIMER FIELD DIRECTLY NEXT TO TIME INPUT (DELETED SEPARATE TIMER SETUP DRAWER SECTION)
                 let timerDisplaySec = '';
                 if (act.duration !== undefined) {
                     const currentTotalSec = act.timeRemaining !== null ? act.timeRemaining : (act.duration * 60);
@@ -742,16 +835,15 @@
                     const shownSec = (currentTotalSec % 60).toString().padStart(2, '0');
                     
                     timerDisplaySec = `
-                        <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-2.5 rounded-xl text-xs">
-                            <span class="font-extrabold text-slate-500">Timer Setup:</span>
-                            <input type="number" id="input-timer-min-${act.id}" value="${Math.floor(act.duration || 0)}" min="0" class="w-10 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
-                            <span class="text-slate-400">min</span>
-                            <input type="number" id="input-timer-sec-${act.id}" value="0" min="0" max="59" class="w-10 bg-white text-center font-bold border rounded px-1" ${act.timerActive ? 'disabled' : ''}>
-                            <span class="text-slate-400">sec</span>
-                            <button onclick="setTimerVal(${act.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-2 py-1 rounded">Set</button>
-                            <span class="font-black text-slate-800 tracking-wide ml-auto bg-white px-2 py-1 rounded border border-slate-200 text-sm">${shownMin}:${shownSec}</span>
-                            <button onclick="toggleTimer(${act.id})" class="px-3 py-1 rounded font-black ${act.timerActive ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white'}">${act.timerActive ? '⏸ Pause' : '▶ Start'}</button>
-                            <button onclick="resetTimer(${act.id})" class="bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold px-2 py-1 rounded">Reset</button>
+                        <div class="flex items-center gap-1 bg-slate-100 p-1.5 rounded-xl border shadow-sm">
+                            <span class="text-[9px] font-black uppercase text-slate-400 leading-none">Timer:</span>
+                            <input type="text" value="${shownMin}:${shownSec}" onchange="parseAndSetTimer(${act.id}, this.value)" class="w-12 bg-white text-center font-mono font-bold text-slate-800 border rounded text-xs py-0.5 focus:outline-none" ${act.timerActive ? 'disabled' : ''} title="Type remaining time (e.g. 15:00)">
+                            <button onclick="toggleTimer(${act.id})" class="px-1.5 py-0.5 rounded font-black hover:bg-slate-200 text-xs ${act.timerActive ? 'text-amber-600' : 'text-emerald-600'}" title="Start / Pause">
+                                ${act.timerActive ? '⏸' : '▶'}
+                            </button>
+                            <button onclick="resetTimer(${act.id})" class="px-1.5 py-0.5 rounded font-black hover:bg-slate-200 text-xs text-rose-500" title="End / Reset">
+                                ⏹
+                            </button>
                         </div>
                     `;
                 }
@@ -810,7 +902,7 @@
                     <!-- TRIPLE LINKS SUB-ROW -->
                     ${linksBadgeRow}
 
-                    <!-- ROUTINE TIMES + 1:1 REWARD -->
+                    <!-- ROUTINE TIMES + TIMER WIDGET (MOVED DIRECTLY NEXT TO TIME BOX) -->
                     <div class="flex flex-wrap items-center justify-between gap-3 text-xs">
                         <div class="flex items-center gap-2 font-bold text-slate-500">
                             <span>⏱️ Time:</span>
@@ -818,6 +910,9 @@
                             <span>to</span>
                             <input type="text" value="${act.end}" onchange="updateCard(${act.id}, 'end', this.value)" class="w-20 bg-slate-100 rounded px-2 py-1 text-center font-extrabold focus:bg-white">
                         </div>
+
+                        <!-- INTEGRATED INLINE TIMER WIDGET -->
+                        ${timerDisplaySec}
 
                         <div class="flex items-center gap-2">
                             <button onclick="applyCompletion(${act.id}, 'check')" class="px-4 py-2 rounded-2xl font-black text-sm flex items-center gap-1 shadow-sm transition-all active:scale-95 ${isCheck ? 'bg-emerald-600 text-white' : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800'}">
@@ -835,7 +930,7 @@
                     <!-- EXPANDED CONTROL PANEL -->
                     <div class="${isExpanded ? 'block' : 'hidden'} border-t-2 border-dashed border-slate-100 pt-3 space-y-4">
                         
-                        <!-- NEW THREE LINKS CUSTOMIZER PANEL -->
+                        <!-- THREE LINKS CUSTOMIZER PANEL -->
                         <div class="bg-slate-50 p-3 rounded-2xl border space-y-3">
                             <span class="block text-xs font-black text-slate-500 uppercase tracking-wide">🔗 Resource Links (Up to 3):</span>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -909,9 +1004,6 @@
                                 </button>
                             </div>
                         </div>
-
-                        <!-- TIMER INTERACTION -->
-                        ${timerDisplaySec}
 
                         <!-- MANAGEMENT CONTROLS FOOTER -->
                         <div class="flex items-center justify-between border-t border-slate-100 pt-3">
@@ -1033,20 +1125,25 @@
             document.getElementById('tally-not').innerText = not;
         }
 
-        // TIMERS CONTROL
-        function setTimerVal(id) {
+        // PARSE TIMER VALUE DIRECT FROM TEXT FIELD INPUT
+        function parseAndSetTimer(id, value) {
             const act = schedules[currentTargetDay].find(a => a.id === id);
-            const minInput = document.getElementById(`input-timer-min-${id}`);
-            const secInput = document.getElementById(`input-timer-sec-${id}`);
-            
-            if (act && minInput && secInput) {
-                const totalMins = parseInt(minInput.value) || 0;
-                const totalSecs = parseInt(secInput.value) || 0;
-                act.duration = totalMins + (totalSecs / 60);
-                act.timeRemaining = (totalMins * 60) + totalSecs;
-                commitToDisk();
-                renderSchedule();
+            if (!act) return;
+
+            const parts = value.split(':');
+            let mins = 0;
+            let secs = 0;
+            if (parts.length === 2) {
+                mins = parseInt(parts[0]) || 0;
+                secs = parseInt(parts[1]) || 0;
+            } else {
+                mins = parseInt(parts[0]) || 0;
             }
+
+            act.duration = mins + (secs / 60);
+            act.timeRemaining = (mins * 60) + secs;
+            commitToDisk();
+            renderSchedule();
         }
 
         function toggleTimer(id) {
@@ -1386,7 +1483,7 @@
             const labelOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const localFormattedDayLabel = targetDateObj.toLocaleDateString('en-US', labelOptions);
 
-            // Fetch template copies
+            // Fetch template
             if (templates[activeDispatchTemplateName]) {
                 schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(templates[activeDispatchTemplateName]));
                 scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
@@ -1471,13 +1568,14 @@
 
             list.forEach((item, idx) => {
                 const node = document.createElement('div');
-                node.className = "bg-white p-4 rounded-2xl border-2 border-amber-200 shadow-sm space-y-3";
+                node.className = "bg-white p-3.5 rounded-2xl border border-slate-200 space-y-4 shadow-sm";
                 node.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="text-xs font-black text-amber-600 bg-amber-100 w-6 h-6 rounded-full flex items-center justify-center">${idx + 1}</div>
-                        <input type="text" value="${item.title}" onchange="updateBlueprintField(${idx}, 'title', this.value)" placeholder="Activity Name" class="flex-grow bg-slate-50 border p-2 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:outline-none">
-                        
-                        <div class="bg-amber-50 border px-3 py-1 rounded-xl text-xs font-black text-amber-800 text-center flex flex-col shrink-0">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <div class="flex items-center gap-1.5 flex-grow">
+                            <span class="text-xs font-black text-amber-600 bg-amber-100 w-5 h-5 rounded-full flex items-center justify-center">${idx + 1}</span>
+                            <input type="text" value="${item.title}" onchange="updateBlueprintField(${idx}, 'title', this.value)" placeholder="Activity Name" class="flex-grow bg-slate-50 border p-2 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:outline-none">
+                        </div>
+                        <div class="bg-amber-50 border px-3 py-1 rounded-xl text-xs font-black text-amber-800 text-center flex flex-col shrink-0 ml-2">
                             <span class="text-[8px] uppercase tracking-wider">Tokens</span>
                             <input type="number" min="0" value="${item.tokens}" onchange="updateBlueprintField(${idx}, 'tokens', parseInt(this.value))" class="w-8 bg-transparent text-center font-bold">
                         </div>
@@ -1729,8 +1827,9 @@
                 parsedDate = new Date(2026, 6, 3);
             }
             parsedDate.setDate(parsedDate.getDate() + daysOffset);
-            currentDate = parsedDate;
-            currentTargetDay = getDayKey(currentDate);
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            currentTargetDay = parsedDate.toLocaleDateString('en-US', options);
             
             document.getElementById('dateLabel').innerText = currentTargetDay;
             
