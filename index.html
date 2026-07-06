@@ -426,6 +426,17 @@
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
+        const cardColors = {
+            slate: 'border-slate-300 bg-white/95',
+            blue: 'border-sky-400 bg-sky-50/50',
+            green: 'border-emerald-400 bg-emerald-50/50',
+            red: 'border-rose-400 bg-rose-50/50',
+            orange: 'border-orange-400 bg-orange-50/50',
+            yellow: 'border-amber-400 bg-amber-50/50',
+            purple: 'border-purple-400 bg-purple-50/50',
+            pink: 'border-pink-400 bg-pink-50/50'
+        };
+
         function synthSound(profile) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -665,13 +676,13 @@
 
                 act.subtasks = act.subtasks || [];
 
+                const borderBgClass = cardColors[act.color || 'slate'] || cardColors.slate;
                 const card = document.createElement('div');
                 card.id = `card-act-${act.id}`;
-                card.className = `p-4 flex flex-col gap-3 relative border-4 border-slate-300 bg-white velcro-card text-slate-800 ${isCheck ? 'opacity-70 bg-emerald-50/50 border-emerald-400' : ''} ${isCross ? 'opacity-70 bg-rose-50/50 border-rose-400' : ''}`;
+                card.className = `p-4 flex flex-col gap-3 relative border-4 velcro-card text-slate-800 ${borderBgClass} ${isCheck ? 'opacity-70 bg-emerald-50/50 border-emerald-400' : ''} ${isCross ? 'opacity-70 bg-rose-50/50 border-rose-400' : ''}`;
                 
                 // CRUCIAL HANDLE-ONLY DRAGGING INVOCATION (SOLVES ALL INPUT LOCKS AND BUTTON UNRESPONSIVENESS)
                 card.setAttribute('draggable', 'false');
-
                 card.addEventListener('dragstart', (e) => {
                     draggedIndex = index;
                     e.dataTransfer.effectAllowed = 'move';
@@ -751,6 +762,19 @@
                     <button onclick="openSwapOverlay(${act.id})" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-bold px-3 py-1.5 rounded-xl transition-all">Swap with...</button>
                 ` : '';
 
+                let linkBadge = '';
+                if (act.link) {
+                    let targetUrl = act.link;
+                    if (!/^https?:\/\//i.test(targetUrl)) {
+                        targetUrl = 'https://' + targetUrl;
+                    }
+                    linkBadge = `
+                        <a href="${targetUrl}" target="_blank" onclick="event.stopPropagation();" class="shrink-0 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-black px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-sm">
+                            <span>🔗</span> <span>Open Link</span>
+                        </a>
+                    `;
+                }
+
                 card.innerHTML = `
                     <!-- HEADER CONTAINER -->
                     <div class="flex items-center justify-between gap-3 select-none">
@@ -760,6 +784,7 @@
                             
                             <!-- EDITABLE ACTIVITY LABEL -->
                             <input type="text" value="${act.title}" onchange="updateCard(${act.id}, 'title', this.value)" class="text-lg sm:text-xl font-extrabold bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-white focus:outline-none rounded w-full ${isCheck || isCross ? 'line-through text-slate-400' : 'text-slate-800'}">
+                            ${linkBadge}
                         </div>
 
                         <!-- POSITION ADJUSTERS -->
@@ -804,6 +829,27 @@
                     <!-- EXPANDED CONTROL PANEL -->
                     <div class="${isExpanded ? 'block' : 'hidden'} border-t-2 border-dashed border-slate-100 pt-3 space-y-4">
                         
+                        <!-- LINK & COLOR CONFIGURATION -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-2.5 rounded-2xl border">
+                            <div>
+                                <label class="block font-extrabold text-slate-500 uppercase tracking-wider mb-1">🔗 Activity Link / URL:</label>
+                                <input type="text" placeholder="e.g. drive.google.com, docs.google.com" value="${act.link || ''}" onchange="updateCard(${act.id}, 'link', this.value)" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl font-bold text-slate-700 focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block font-black text-slate-500 uppercase tracking-wider mb-1">🎨 Card Color Tag:</label>
+                                <select onchange="updateCard(${act.id}, 'color', this.value)" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl font-bold text-slate-700 focus:outline-none focus:border-indigo-500">
+                                    <option value="slate" ${act.color === 'slate' ? 'selected' : ''}>Default Grey</option>
+                                    <option value="blue" ${act.color === 'blue' ? 'selected' : ''}>Ocean Blue</option>
+                                    <option value="green" ${act.color === 'green' ? 'selected' : ''}>Jungle Green</option>
+                                    <option value="red" ${act.color === 'red' ? 'selected' : ''}>Apple Red</option>
+                                    <option value="orange" ${act.color === 'orange' ? 'selected' : ''}>Sunset Orange</option>
+                                    <option value="yellow" ${act.color === 'yellow' ? 'selected' : ''}>Sunny Yellow</option>
+                                    <option value="purple" ${act.color === 'purple' ? 'selected' : ''}>Grape Purple</option>
+                                    <option value="pink" ${act.color === 'pink' ? 'selected' : ''}>Unicorn Pink</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- AUDIO PREVIEW SYSTEM -->
                         <div class="flex flex-wrap items-center gap-3 text-xs bg-slate-50 p-2.5 rounded-2xl border">
                             <span class="font-extrabold text-slate-500">Completion Sound:</span>
@@ -1311,6 +1357,8 @@
                 timerActive: false,
                 timeRemaining: null,
                 sound: item.sound,
+                color: item.color || "slate",
+                link: item.link || "",
                 subtasks: (item.subtasks || []).map(sub => ({ id: sub.id, text: sub.text, completed: false }))
             }));
 
@@ -1459,6 +1507,27 @@
                         <div class="bg-amber-50 border px-3 py-1 rounded-xl text-xs font-black text-amber-800 text-center flex flex-col shrink-0">
                             <span class="text-[8px] uppercase tracking-wider">Tokens</span>
                             <input type="number" min="0" value="${item.tokens}" onchange="updateBlueprintField(${idx}, 'tokens', parseInt(this.value))" class="w-8 bg-transparent text-center font-bold">
+                        </div>
+                    </div>
+
+                    <!-- LINK & COLOR BLUEPRINT CONFIGURATION -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-400 text-[10px] uppercase mb-1">🔗 Preset Link:</label>
+                            <input type="text" value="${item.link || ''}" onchange="updateBlueprintField(${idx}, 'link', this.value)" placeholder="Worksheet link..." class="bg-slate-100 border p-1.5 rounded-xl w-full font-bold focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-400 text-[10px] uppercase mb-1">🎨 Preset Color:</label>
+                            <select onchange="updateBlueprintField(${idx}, 'color', this.value)" class="bg-slate-100 border p-1.5 rounded-xl w-full font-bold focus:outline-none">
+                                <option value="slate" ${item.color === 'slate' ? 'selected' : ''}>Default Grey</option>
+                                <option value="blue" ${item.color === 'blue' ? 'selected' : ''}>Ocean Blue</option>
+                                <option value="green" ${item.color === 'green' ? 'selected' : ''}>Jungle Green</option>
+                                <option value="red" ${item.color === 'red' ? 'selected' : ''}>Apple Red</option>
+                                <option value="orange" ${item.color === 'orange' ? 'selected' : ''}>Sunset Orange</option>
+                                <option value="yellow" ${item.color === 'yellow' ? 'selected' : ''}>Sunny Yellow</option>
+                                <option value="purple" ${item.color === 'purple' ? 'selected' : ''}>Grape Purple</option>
+                                <option value="pink" ${item.color === 'pink' ? 'selected' : ''}>Unicorn Pink</option>
+                            </select>
                         </div>
                     </div>
 
@@ -1636,32 +1705,32 @@
         function switchAltDeckDirect(deckName) {
             if (alternativeDecks[deckName]) {
                 scheduleActiveDeckName = deckName;
-                localStorage.setItem('routine_active_alt_deck', scheduleActiveDeckName);
-                
-                // Keep Linked schedules tracking in sync on change
-                scheduleLinkedDecks[currentTargetDay] = deckName;
-                
-                commitToDisk();
-                renderSchedule();
-                populateDeckDropdowns();
-                synthSound('Gentle Chime');
+        function createNewActivity() {
+            // FIX: Guaranteed schedule target day baseline initialization
+            if (!schedules[currentTargetDay]) {
+                schedules[currentTargetDay] = [];
             }
-        }
-
-
-        // INFINITE DATES NAVIGATOR (SAFE NATIVE DATE COMPUTATION)
-        function changeDate(daysOffset) {
-            currentDate.setDate(currentDate.getDate() + daysOffset);
-            currentTargetDay = getDayKey(currentDate);
-            
-            const dateLabel = document.getElementById('dateLabel');
-            if (dateLabel) dateLabel.innerText = currentTargetDay;
-            
-            // Sync Daily naming box on transition safely
-            ensureDayInitialized(currentTargetDay);
-            const dayInput = document.getElementById('scheduleDayNameInput');
-            if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
-
+            const list = schedules[currentTargetDay];
+            const newId = Date.now();
+            list.push({
+                id: newId,
+                title: "Custom Activity",
+                start: "12:00 PM",
+                end: "12:30 PM",
+                tokens: 1,
+                swappable: true,
+                completed: null,
+                mood: null,
+                duration: 30,
+                timerActive: false,
+                timeRemaining: null,
+                sound: "Classic Ding",
+                color: "slate",
+                link: "",
+                subtasks: [],
+                expanded: true
+            });
+            commitToDisk();
             renderSchedule();
         }
 
@@ -1753,31 +1822,31 @@
                 createBtn.className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm";
                 savedBtn.className = "bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-all";
             }
-        }
-
-        function editAlternativeLabel(idx, value) {
-            if (alternativeDecks[editorActiveDeckName]) {
-                alternativeDecks[editorActiveDeckName][idx] = value;
-                commitToDisk();
-                renderSchedule();
+        function addBlueprintActivity() {
+            // FIX: Prevent crashes by verifying baseline sandbox blueprint storage is instantiated 
+            if (!activeBlueprintDesignKey) return;
+            if (!templates[activeBlueprintDesignKey]) {
+                templates[activeBlueprintDesignKey] = [];
             }
-        }
-
-        function removeAlternative(idx) {
-            if (alternativeDecks[editorActiveDeckName]) {
-                alternativeDecks[editorActiveDeckName].splice(idx, 1);
-                commitToDisk();
-                renderSchedule();
-            }
-        }
-
-        function addCustomAlternative() {
-            if (!alternativeDecks[editorActiveDeckName]) {
-                alternativeDecks[editorActiveDeckName] = [];
-            }
-            alternativeDecks[editorActiveDeckName].push("New Alternative Choice");
+            
+            templates[activeBlueprintDesignKey].push({
+                title: "Blueprint Activity",
+                start: "12:00 PM",
+                end: "12:30 PM",
+                tokens: 1,
+                swappable: true,
+                completed: null,
+                mood: null,
+                duration: 30,
+                timerActive: false,
+                timeRemaining: null,
+                sound: "Classic Ding",
+                color: "slate",
+                link: "",
+                subtasks: []
+            });
             commitToDisk();
-            renderSchedule();
+            renderBlueprintActivities();
             synthSound('Pop');
         }
 
