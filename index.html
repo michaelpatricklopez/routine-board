@@ -72,8 +72,8 @@
         /* ADULT EXCLUSIVE THEMES */
         .theme-minimalist-slate { background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); color: #1e293b; }
         .theme-elegant-emerald { background: linear-gradient(135deg, #e2e8f0 0%, #2dd4bf 100%); color: #0f172a; }
-        .theme-midnight-executive { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); color: #f8fafc; }
-        .theme-terracotta-warmth { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); color: #431407; }
+        .theme-midnight-executive { background: linear-gradient(135deg, #020617 0%, #0f172a 100%); color: #f1f5f9; }
+        .theme-warm-terracotta { background: linear-gradient(135deg, #fdf8f5 0%, #f4eae2 100%); color: #4a2711; }
     </style>
 </head>
 <body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
@@ -345,7 +345,7 @@
                                 <option value="theme-minimalist-slate">Minimalist Slate</option>
                                 <option value="theme-elegant-emerald">Sophisticated Emerald</option>
                                 <option value="theme-midnight-executive">Midnight Executive</option>
-                                <option value="theme-terracotta-warmth">Warm Terracotta</option>
+                                <option value="theme-warm-terracotta">Warm Terracotta</option>
                             </optgroup>
                         </select>
                     </div>
@@ -521,8 +521,16 @@
 
         // DATABASE/STATE ARCHITECTURE
         let coinBank = parseInt(localStorage.getItem('routine_coins') || '0');
-        let currentTargetDay = "Friday, July 3, 2026";
-        let activeSwapCardId = null;
+        
+        // Setup standardized cross-browser Date object parsing anchors
+        let currentDate = new Date(2026, 6, 3); // Anchored on Friday, July 3, 2026
+        
+        function getDayKey(dateObj) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return dateObj.toLocaleDateString('en-US', options);
+        }
+        
+        let currentTargetDay = getDayKey(currentDate);
 
         // Custom day metadata naming matrix
         let scheduleNames = JSON.parse(localStorage.getItem('routine_schedule_names') || '{}');
@@ -531,16 +539,23 @@
             scheduleNames["Saturday, July 4, 2026"] = "Weekend Adventure";
         }
 
-        // Parent alternative decks registry setup
+        // Parent alternative decks registry setup (Decoupled deck mappings)
         let alternativeDecks = JSON.parse(localStorage.getItem('routine_alt_decks') || JSON.stringify({
             "Default Choices": ["Sensory Break", "Legos", "Drawing", "Listening to Music"],
             "Calm Down Deck": ["Deep Breaths", "Warm Tea", "Soft Blanket", "Squeeze Ball"],
             "Active Play Deck": ["Trampoline", "Catch", "Bicycle Ride", "Obstacle Course"]
         }));
         
-        let activeAlternativeDeckName = localStorage.getItem('routine_active_alt_deck') || "Default Choices";
-        // Synchronized active choice pool reference
-        let alternativePool = alternativeDecks[activeAlternativeDeckName] || ["Sensory Break", "Legos", "Drawing", "Listening to Music"];
+        // Decouple Active Schedule deck from Editor customization deck completely!
+        let scheduleActiveDeckName = localStorage.getItem('routine_active_alt_deck') || "Default Choices";
+        if (!alternativeDecks[scheduleActiveDeckName]) {
+            scheduleActiveDeckName = "Default Choices";
+        }
+
+        let editorActiveDeckName = localStorage.getItem('routine_editor_alt_deck') || "Default Choices";
+        if (!alternativeDecks[editorActiveDeckName]) {
+            editorActiveDeckName = "Default Choices";
+        }
 
         // Dynamic schedule association mapping with alternative decks
         let scheduleLinkedDecks = JSON.parse(localStorage.getItem('routine_schedule_linked_decks') || '{}');
@@ -609,6 +624,20 @@
             }
         }
 
+        function commitToDisk() {
+            // Guarantee current modified editor deck is synchronized back into alternativeDecks structure
+            alternativeDecks[editorActiveDeckName] = alternativeDecks[editorActiveDeckName] || [];
+            
+            localStorage.setItem('routine_coins', coinBank.toString());
+            localStorage.setItem('routine_alt_decks', JSON.stringify(alternativeDecks));
+            localStorage.setItem('routine_active_alt_deck', scheduleActiveDeckName);
+            localStorage.setItem('routine_editor_alt_deck', editorActiveDeckName);
+            localStorage.setItem('routine_schedules', JSON.stringify(schedules));
+            localStorage.setItem('routine_templates', JSON.stringify(templates));
+            localStorage.setItem('routine_schedule_linked_decks', JSON.stringify(scheduleLinkedDecks));
+            localStorage.setItem('routine_schedule_names', JSON.stringify(scheduleNames));
+        }
+
         // WORKSPACE RENDER ENGINE
         function renderSchedule() {
             ensureDayInitialized(currentTargetDay);
@@ -619,8 +648,7 @@
 
             // Auto-load dynamically linked alternative decks if associated with active day
             if (scheduleLinkedDecks[currentTargetDay] && alternativeDecks[scheduleLinkedDecks[currentTargetDay]]) {
-                activeAlternativeDeckName = scheduleLinkedDecks[currentTargetDay];
-                alternativePool = alternativeDecks[activeAlternativeDeckName];
+                scheduleActiveDeckName = scheduleLinkedDecks[currentTargetDay];
             }
 
             let list = schedules[currentTargetDay];
@@ -723,7 +751,7 @@
                     <div class="flex items-center justify-between gap-3 select-none">
                         <div class="flex items-center gap-2.5 flex-grow">
                             <!-- EXCLUSIVE DRAG HANDLE (SOLVES ALL INPUT LOCKS AND UNRESPONSIVE CLICKS) -->
-                            <div class="drag-grip cursor-grab text-slate-300 hover:text-slate-500 p-2 text-2xl select-none select-none">☰</div>
+                            <div class="drag-grip cursor-grab text-slate-300 hover:text-slate-500 p-2 text-2xl select-none">☰</div>
                             
                             <!-- EDITABLE ACTIVITY LABEL -->
                             <input type="text" value="${act.title}" onchange="updateCard(${act.id}, 'title', this.value)" class="text-lg sm:text-xl font-extrabold bg-transparent border-b border-transparent hover:border-slate-300 focus:bg-white focus:outline-none rounded w-full ${isCheck || isCross ? 'line-through text-slate-400' : 'text-slate-800'}">
@@ -847,7 +875,8 @@
             if (!grid) return;
             grid.innerHTML = "";
             
-            alternativePool.forEach(alt => {
+            const scheduleDeck = alternativeDecks[scheduleActiveDeckName] || [];
+            scheduleDeck.forEach(alt => {
                 const btn = document.createElement('button');
                 btn.className = "p-3 bg-indigo-50 border-2 border-indigo-200 hover:bg-indigo-100 rounded-2xl font-black text-xs text-indigo-900 transition-all active:scale-95";
                 btn.innerText = alt;
@@ -885,12 +914,14 @@
             activeSwapCardId = null;
         }
 
-        // STATIC OUT-CARDS CONTRAST ALTERNATIVE PANEL
+        // DECOUPLED ALTERNATIVES CUSTOMIZER AND SHELF RENDERING
         function renderAlternativeShelf() {
+            // 1. Render active shelf on active Schedule view
             const shelf = document.getElementById('mainAlternativeShelf');
             if (shelf) {
                 shelf.innerHTML = "";
-                alternativePool.forEach(opt => {
+                const scheduleDeck = alternativeDecks[scheduleActiveDeckName] || [];
+                scheduleDeck.forEach(opt => {
                     const node = document.createElement('div');
                     node.className = "bg-white border-2 border-dashed border-indigo-200 p-3 rounded-2xl text-center font-extrabold text-xs text-indigo-800 shadow-sm";
                     node.innerText = opt;
@@ -898,10 +929,12 @@
                 });
             }
 
+            // 2. Render input forms on Alternative Activities customizer tab
             const inputsGroup = document.getElementById('alternativesInputGroup');
             if (inputsGroup) {
                 inputsGroup.innerHTML = "";
-                alternativePool.forEach((opt, idx) => {
+                const editorDeck = alternativeDecks[editorActiveDeckName] || [];
+                editorDeck.forEach((opt, idx) => {
                     inputsGroup.innerHTML += `
                         <div class="flex gap-2">
                             <input type="text" value="${opt}" onchange="editAlternativeLabel(${idx}, this.value)" class="flex-grow bg-white border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
@@ -1161,7 +1194,7 @@
             }
         }
 
-        // QUICK-CLICK CALENDAR STRIP
+        // QUICK-CLICK CALENDAR STRIP (INFINITE ROTATION ENGINE)
         function renderQuickDatePicker() {
             const picker = document.getElementById('quickDatePicker');
             if (!picker) return;
@@ -1187,6 +1220,7 @@
                 }`;
                 btn.innerText = buttonLabel;
                 btn.onclick = () => {
+                    currentDate = currentButtonDate;
                     currentTargetDay = labelStr;
                     
                     const dateLabel = document.getElementById('dateLabel');
@@ -1326,6 +1360,7 @@
             closeBlueprintDispatcher();
 
             // Transition directly to the targeted plan day to review details
+            currentDate = targetDateObj;
             currentTargetDay = localFormattedDayLabel;
             
             const dateLabel = document.getElementById('dateLabel');
@@ -1511,13 +1546,11 @@
             }
         }
 
-        /* ✏️ ALTERNATIVE ACTIVITY DECK REGISTRY CORES */
+        /* ✏️ DECOUPLED ALTERNATIVE ACTIVITIES SYSTEM */
         function loadAltDeckIntoEditor(deckName) {
             if (!alternativeDecks[deckName]) return;
-            activeAlternativeDeckName = deckName;
-            alternativePool = alternativeDecks[activeAlternativeDeckName];
-            
-            localStorage.setItem('routine_active_alt_deck', activeAlternativeDeckName);
+            editorActiveDeckName = deckName;
+            localStorage.setItem('routine_editor_alt_deck', editorActiveDeckName);
             
             const editTitle = document.getElementById('activeEditingDeckTitle');
             if (editTitle) editTitle.innerText = `Editing Deck: ${deckName}`;
@@ -1546,24 +1579,22 @@
             }
 
             input.value = "";
-            localStorage.setItem('routine_alt_decks', JSON.stringify(alternativeDecks));
-            
+            commitToDisk();
             populateDeckDropdowns();
             loadAltDeckIntoEditor(name);
             synthSound('Classic Ding');
         }
 
         function deleteActiveAltDeck() {
-            if (activeAlternativeDeckName === "Default Choices") return;
+            if (editorActiveDeckName === "Default Choices") return;
 
-            delete alternativeDecks[activeAlternativeDeckName];
-            localStorage.setItem('routine_alt_decks', JSON.stringify(alternativeDecks));
-
+            delete alternativeDecks[editorActiveDeckName];
+            
             // Fallback back to Default Choices deck registry
-            activeAlternativeDeckName = "Default Choices";
-            alternativePool = alternativeDecks["Default Choices"];
-            localStorage.setItem('routine_active_alt_deck', "Default Choices");
+            editorActiveDeckName = "Default Choices";
+            localStorage.setItem('routine_editor_alt_deck', "Default Choices");
 
+            commitToDisk();
             populateDeckDropdowns();
             loadAltDeckIntoEditor("Default Choices");
             synthSound('Game Buzzer');
@@ -1582,13 +1613,13 @@
                     const opt1 = document.createElement('option');
                     opt1.value = dk;
                     opt1.innerText = dk;
-                    opt1.selected = dk === activeAlternativeDeckName;
+                    opt1.selected = dk === editorActiveDeckName;
                     editorSel.appendChild(opt1);
 
                     const opt2 = document.createElement('option');
                     opt2.value = dk;
                     opt2.innerText = dk;
-                    opt2.selected = dk === activeAlternativeDeckName;
+                    opt2.selected = dk === scheduleActiveDeckName;
                     scheduleSel.appendChild(opt2);
                 });
             }
@@ -1596,10 +1627,8 @@
 
         function switchAltDeckDirect(deckName) {
             if (alternativeDecks[deckName]) {
-                activeAlternativeDeckName = deckName;
-                alternativePool = alternativeDecks[deckName];
-                
-                localStorage.setItem('routine_active_alt_deck', activeAlternativeDeckName);
+                scheduleActiveDeckName = deckName;
+                localStorage.setItem('routine_active_alt_deck', scheduleActiveDeckName);
                 
                 // Keep Linked schedules tracking in sync on change
                 scheduleLinkedDecks[currentTargetDay] = deckName;
@@ -1612,13 +1641,10 @@
         }
 
 
-        // INFINITE DATES NAVIGATOR
+        // INFINITE DATES NAVIGATOR (SAFE NATIVE DATE COMPUTATION)
         function changeDate(daysOffset) {
-            const currentDateObj = new Date(currentTargetDay);
-            currentDateObj.setDate(currentDateObj.getDate() + daysOffset);
-            
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            currentTargetDay = currentDateObj.toLocaleDateString('en-US', options);
+            currentDate.setDate(currentDate.getDate() + daysOffset);
+            currentTargetDay = getDayKey(currentDate);
             
             const dateLabel = document.getElementById('dateLabel');
             if (dateLabel) dateLabel.innerText = currentTargetDay;
@@ -1685,6 +1711,7 @@
                 document.getElementById('alternativesTab').classList.remove('hidden');
                 document.getElementById('tab-alternatives').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
                 if (addBtnBlock) addBtnBlock.classList.add('hidden');
+                loadAltDeckIntoEditor(editorActiveDeckName);
             } else if (targetTab === 'templates') {
                 document.getElementById('templatesTab').classList.remove('hidden');
                 document.getElementById('tab-templates').className = "bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50";
@@ -1721,21 +1748,29 @@
         }
 
         function editAlternativeLabel(idx, value) {
-            alternativePool[idx] = value;
-            commitToDisk();
-            renderSchedule();
+            if (alternativeDecks[editorActiveDeckName]) {
+                alternativeDecks[editorActiveDeckName][idx] = value;
+                commitToDisk();
+                renderSchedule();
+            }
         }
 
         function removeAlternative(idx) {
-            alternativePool.splice(idx, 1);
-            commitToDisk();
-            renderSchedule();
+            if (alternativeDecks[editorActiveDeckName]) {
+                alternativeDecks[editorActiveDeckName].splice(idx, 1);
+                commitToDisk();
+                renderSchedule();
+            }
         }
 
         function addCustomAlternative() {
-            alternativePool.push("New Alternative Choice");
+            if (!alternativeDecks[editorActiveDeckName]) {
+                alternativeDecks[editorActiveDeckName] = [];
+            }
+            alternativeDecks[editorActiveDeckName].push("New Alternative Choice");
             commitToDisk();
             renderSchedule();
+            synthSound('Pop');
         }
 
         /* 🎵 MUSIC CONNECT HOOKS */
