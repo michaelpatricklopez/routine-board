@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&family=Comfortaa:wght@400;700&family=Quicksand:wght@500;700&family=Balsamiq+Sans:wght@400;700&family=Montserrat:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <style>
         /* Typography overrides */
         .font-rounded { font-family: 'Fredoka', 'Comic Neue', sans-serif; }
@@ -27,7 +28,7 @@
         .velcro-card {
             box-shadow: 0 8px 0px 0px rgba(0,0,0,0.12), 0 16px 20px 0px rgba(0,0,0,0.08);
             border-radius: 1.5rem;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, background-color 0.3s ease;
         }
         .velcro-card:active {
             transform: scale(0.98);
@@ -64,7 +65,7 @@
         }
         .theme-space { 
             background-color: #0b0f19; 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='15' cy='15' r='1' fill='%23ffffff' opacity='0.3'/%3E%3Ccircle cx='55' cy='45' r='1.5' fill='%23ffffff' opacity='0.6'/%3E%3Ccircle cx='25' cy='65' r='0.8' fill='%23a5f3fc' opacity='0.4'/%32%3Cpath d='M40 10 L45 15 M45 15 L50 10' stroke='%2338bdf8' stroke-width='0.5' opacity='0.25'/%3E%3C/svg%3E"); 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='15' cy='15' r='1' fill='%23ffffff' opacity='0.3'/%3E%3Ccircle cx='55' cy='45' r='1.5' fill='%23ffffff' opacity='0.6'/%3E%3Ccircle cx='25' cy='65' r='0.8' fill='%23a5f3fc' opacity='0.4'/%3E%3Cpath d='M40 10 L45 15 M45 15 L50 10' stroke='%2338bdf8' stroke-width='0.5' opacity='0.25'/%3E%3C/svg%3E"); 
             color: #f1f5f9; 
         }
         .theme-jungle { 
@@ -127,7 +128,6 @@
 </head>
 <body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
 
-    <!-- MAIN DASHBOARD -->
     <div class="max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 text-slate-800" id="boardContainer">
         
         <!-- CALENDAR DATE HEADER -->
@@ -485,6 +485,7 @@
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
+        // Dynamic map containing color classes for activities
         const cardColors = {
             slate: 'border-slate-300 bg-white/95',
             blue: 'border-sky-400 bg-sky-50/50',
@@ -496,35 +497,32 @@
             pink: 'border-pink-400 bg-pink-50/50'
         };
 
-        // RE-ENGINEERED ACOUSTIC HARMONICS FOR MODERN SYNTH SOUNDS
+        // RE-ENGINEERED ACOUSTIC HARMONICS FOR MODERN SYNTH SOUNDS (SIMPLE & BEAUTIFUL)
         function synthSound(profile) {
             const now = audioCtx.currentTime;
 
             if (profile === 'Classic Ding') {
-                // Harmonic bell model (detuned sines)
-                const freqs = [880, 1320, 1760];
-                freqs.forEach((f, i) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.type = 'sine'; osc.frequency.setValueAtTime(f, now);
-                    gain.gain.setValueAtTime(0.15 / (i + 1), now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6 / (i + 1));
-                    osc.start(); osc.stop(now + 0.6);
-                });
+                // Crystal-clear physical tuning fork ring
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(987.77, now);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                osc.start(); osc.stop(now + 0.55);
             } else if (profile === 'Arcade Blip') {
-                // Polished retro rising blip
+                // Polished classic retro blip
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.12);
-                gain.gain.setValueAtTime(0.1, now);
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12);
+                gain.gain.setValueAtTime(0.12, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
                 osc.start(); osc.stop(now + 0.13);
             } else if (profile === 'Gentle Chime') {
-                // Rising major chord (arpeggio)
+                // Rising major chord (arpeggio cascade)
                 const freqs = [523.25, 659.25, 783.99, 1046.50];
                 freqs.forEach((f, i) => {
                     setTimeout(() => {
@@ -538,29 +536,29 @@
                     }, i * 80);
                 });
             } else if (profile === 'Game Buzzer') {
-                // Modern low-passed synth buzz
+                // Safe, low-passed clean warm buzzer
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 const filter = audioCtx.createBiquadFilter();
                 osc.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(120, now);
-                filter.type = 'lowpass'; filter.frequency.setValueAtTime(500, now);
-                filter.frequency.exponentialRampToValueAtTime(100, now + 0.4);
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now);
+                filter.type = 'lowpass'; filter.frequency.setValueAtTime(450, now);
+                filter.frequency.exponentialRampToValueAtTime(120, now + 0.35);
                 gain.gain.setValueAtTime(0.15, now);
-                gain.gain.linearRampToValueAtTime(0.001, now + 0.4);
-                osc.start(); osc.stop(now + 0.45);
+                gain.gain.linearRampToValueAtTime(0.001, now + 0.35);
+                osc.start(); osc.stop(now + 0.4);
             } else if (profile === 'Pop') {
-                // Organic mouth pop
+                // Organic wooden pop
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(150, now + 0.05);
-                gain.gain.setValueAtTime(0.2, now);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(750, now);
+                osc.frequency.exponentialRampToValueAtTime(120, now + 0.05);
+                gain.gain.setValueAtTime(0.25, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
                 osc.start(); osc.stop(now + 0.06);
             } else if (profile === 'Ambient Bell') {
-                // High-quality resonant bell with acoustic damping
+                // Complex singing-bowl metal resonator (FM synthesis)
                 const carrier = audioCtx.createOscillator();
                 const modulator = audioCtx.createOscillator();
                 const modGain = audioCtx.createGain();
@@ -572,26 +570,26 @@
                 modulator.type = 'sine'; modulator.frequency.setValueAtTime(220, now);
                 modGain.gain.setValueAtTime(300, now);
                 modGain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-                mainGain.gain.setValueAtTime(0.25, now);
+                mainGain.gain.setValueAtTime(0.18, now);
                 mainGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
                 
                 carrier.start(); carrier.stop(now + 2.0);
                 modulator.start(); modulator.stop(now + 2.0);
             } else if (profile === 'Digital Beep') {
-                // Modern double notify pulse
+                // Quick double high-tech notify sweep
                 [now, now + 0.12].forEach((time, index) => {
                     setTimeout(() => {
                         const osc2 = audioCtx.createOscillator();
                         const gain2 = audioCtx.createGain();
                         osc2.connect(gain2); gain2.connect(audioCtx.destination);
-                        osc2.type = 'triangle'; osc2.frequency.setValueAtTime(1100, audioCtx.currentTime);
+                        osc2.type = 'triangle'; osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
                         gain2.gain.setValueAtTime(0.12, audioCtx.currentTime);
                         gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
                         osc2.start(); osc2.stop(audioCtx.currentTime + 0.07);
                     }, index * 120);
                 });
             } else if (profile === 'Zen Gong') {
-                // Deep singing-bowl frequency wash
+                // Warm, rich meditative resonance
                 const oscA = audioCtx.createOscillator();
                 const oscB = audioCtx.createOscillator();
                 const gainA = audioCtx.createGain();
@@ -599,8 +597,8 @@
                 oscA.connect(gainA); gainA.connect(audioCtx.destination);
                 oscB.connect(gainB); gainB.connect(audioCtx.destination);
                 
-                oscA.type = 'sine'; oscA.frequency.setValueAtTime(140, now);
-                oscB.type = 'triangle'; oscB.frequency.setValueAtTime(142, now); // Detuned for chorus
+                oscA.type = 'sine'; oscA.frequency.setValueAtTime(150, now);
+                oscB.type = 'triangle'; oscB.frequency.setValueAtTime(152, now);
                 
                 gainA.gain.setValueAtTime(0.18, now);
                 gainA.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
@@ -610,7 +608,7 @@
                 oscA.start(); oscA.stop(now + 3.0);
                 oscB.start(); oscB.stop(now + 3.0);
             } else if (profile === 'Soft Harp') {
-                // Cascading high harp string sweep
+                // Cascade harp string sweep
                 const chord = [523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50];
                 chord.forEach((freq, idx) => {
                     setTimeout(() => {
@@ -643,7 +641,7 @@
         // DATABASE/STATE ARCHITECTURE
         let coinBank = parseInt(localStorage.getItem('routine_coins') || '0');
         
-        // SELF-HEALING MIGRATION: Automatically reset old/legacy ghost coins to 0 on first boot of v2.8
+        // SELF-HEALING MIGRATION: Automatically reset old/legacy ghost coins to 0 on first boot
         if (!localStorage.getItem('routine_coins_reconciled')) {
             coinBank = 0;
             localStorage.setItem('routine_coins_reconciled', 'true');
@@ -770,7 +768,18 @@
                 const borderBgClass = cardColors[act.color || 'slate'] || cardColors.slate;
                 const card = document.createElement('div');
                 card.id = `card-act-${act.id}`;
-                card.className = `p-4 flex flex-col gap-3 relative border-4 velcro-card text-slate-800 ${borderBgClass} ${isCheck ? 'opacity-70 bg-emerald-50/50 border-emerald-400' : ''} ${isCross ? 'opacity-70 bg-rose-50/50 border-rose-400' : ''}`;
+                
+                // UNIFIED Done (lighter tint overlay) and Skip (darker tint overlay) backgrounds
+                let checkCrossTintStyles = "";
+                if (isCheck) {
+                    checkCrossTintStyles = "backdrop-brightness-125 bg-emerald-50/90 border-emerald-500 scale-[0.99] shadow-inner";
+                } else if (isCross) {
+                    checkCrossTintStyles = "backdrop-brightness-75 bg-slate-900/10 border-rose-500 opacity-75 shadow-inner";
+                } else {
+                    checkCrossTintStyles = borderBgClass;
+                }
+
+                card.className = `p-4 flex flex-col gap-3 relative border-4 velcro-card text-slate-800 ${checkCrossTintStyles}`;
                 
                 // CRUCIAL HANDLE-ONLY DRAGGING INVOCATION (SOLVES ALL INPUT LOCKS AND BUTTON UNRESPONSIVENESS)
                 card.setAttribute('draggable', 'false');
@@ -1075,36 +1084,32 @@
             activeSwapCardId = null;
         }
 
-        // DECOUPLED ALTERNATIVES CUSTOMIZER AND SHELF RENDERING
+        // STATIC OUT-CARDS CONTRAST ALTERNATIVE PANEL
         function renderAlternativeShelf() {
-            // 1. Render active shelf on active Schedule view
             const shelf = document.getElementById('mainAlternativeShelf');
-            if (shelf) {
-                shelf.innerHTML = "";
-                const scheduleDeck = alternativeDecks[scheduleActiveDeckName] || [];
-                scheduleDeck.forEach(opt => {
-                    const node = document.createElement('div');
-                    node.className = "bg-white border-2 border-dashed border-indigo-200 p-3 rounded-2xl text-center font-extrabold text-xs text-indigo-800 shadow-sm";
-                    node.innerText = opt;
-                    shelf.appendChild(node);
-                });
-            }
+            if (!shelf) return;
+            shelf.innerHTML = "";
+            const activePool = alternativeDecks[scheduleActiveDeckName] || [];
+            activePool.forEach(opt => {
+                const node = document.createElement('div');
+                node.className = "bg-white border-2 border-dashed border-indigo-200 p-3 rounded-2xl text-center font-extrabold text-xs text-indigo-800 shadow-sm";
+                node.innerText = opt;
+                shelf.appendChild(node);
+            });
 
-            // 2. Render input forms on Alternative Activities customizer tab
             const inputsGroup = document.getElementById('alternativesInputGroup');
-            if (inputsGroup) {
-                inputsGroup.innerHTML = "";
-                const editorDeck = alternativeDecks[editorActiveDeckName] || [];
-                editorDeck.forEach((opt, idx) => {
-                    const itemWrapper = document.createElement('div');
-                    itemWrapper.className = "flex gap-2";
-                    itemWrapper.innerHTML = `
-                        <input type="text" value="${opt}" onchange="editAlternativeLabel(${idx}, this.value)" class="flex-grow bg-white border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
-                        <button onclick="removeAlternative(${idx})" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
-                    `;
-                    inputsGroup.appendChild(itemWrapper);
-                });
-            }
+            if (!inputsGroup) return;
+            inputsGroup.innerHTML = "";
+            const editorDeck = alternativeDecks[editorActiveDeckName] || [];
+            editorDeck.forEach((opt, idx) => {
+                const itemWrapper = document.createElement('div');
+                itemWrapper.className = "flex gap-2";
+                itemWrapper.innerHTML = `
+                    <input type="text" value="${opt}" onchange="editAlternativeLabel(${idx}, this.value)" class="flex-grow bg-white border p-2.5 rounded-xl text-sm font-bold text-slate-800 focus:outline-none">
+                    <button onclick="removeAlternative(${idx})" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold px-3 py-2 rounded-xl transition-all">🗑️</button>
+                `;
+                inputsGroup.appendChild(itemWrapper);
+            });
         }
 
         // MOOD STATISTICS CALCULATOR
@@ -1134,10 +1139,10 @@
             let mins = 0;
             let secs = 0;
             if (parts.length === 2) {
-                mins = parseInt(parts[0]) || 0;
-                secs = parseInt(parts[1]) || 0;
+                mins = parseInt(parts[0], 10) || 0;
+                secs = parseInt(parts[1], 10) || 0;
             } else {
-                mins = parseInt(parts[0]) || 0;
+                mins = parseInt(parts[0], 10) || 0;
             }
 
             act.duration = mins + (secs / 60);
