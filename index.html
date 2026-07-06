@@ -99,18 +99,6 @@
             </div>
         </div>
 
-        <!-- FIRST / THEN TRANSITION BAR -->
-        <div id="firstThenBar" class="grid grid-cols-2 gap-4 mb-6 bg-slate-100/80 p-4 rounded-3xl border-2 border-slate-200">
-            <div class="bg-amber-400 p-3 rounded-2xl text-center border-b-4 border-amber-600 shadow-sm">
-                <span class="block text-xs font-black uppercase tracking-wider text-amber-900 opacity-80">FIRST</span>
-                <span class="text-lg sm:text-xl font-extrabold text-slate-900" id="firstTaskText">Loading...</span>
-            </div>
-            <div class="bg-sky-400 p-3 rounded-2xl text-center border-b-4 border-sky-600 shadow-sm">
-                <span class="block text-xs font-black uppercase tracking-wider text-sky-900 opacity-80">THEN</span>
-                <span class="text-lg sm:text-xl font-extrabold text-slate-900" id="thenTaskText">Loading...</span>
-            </div>
-        </div>
-
         <!-- TABS & COINS OVERVIEW -->
         <!-- STREAMING_CHUNK: Drawing tab row ordered as requested (Schedule -> Templates -> Alternatives -> Settings)... -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-100 p-3 rounded-3xl">
@@ -913,7 +901,6 @@
                 container.appendChild(card);
             });
 
-            calculateTimelineDynamics();
             renderAlternativeShelf();
             calculateEmojiTally();
             renderQuickDatePicker();
@@ -993,30 +980,6 @@
                         </div>
                     `;
                 });
-            }
-        }
-
-        // TRANSITION DYNAMICS RIBBON CALCULATOR
-        function calculateTimelineDynamics() {
-            const list = schedules[currentTargetDay] || [];
-            const activeQueue = list.filter(t => t.completed === null);
-
-            const firstText = document.getElementById('firstTaskText');
-            const thenText = document.getElementById('thenTaskText');
-
-            if (firstText && thenText) {
-                if (activeQueue.length >= 1) {
-                    firstText.innerText = activeQueue[0].title;
-                    const nextIdx = list.indexOf(activeQueue[0]) + 1;
-                    if (nextIdx < list.length) {
-                        thenText.innerText = list[nextIdx].title;
-                    } else {
-                        thenText.innerText = "All Finished!";
-                    }
-                } else {
-                    firstText.innerText = "Day Complete!";
-                    thenText.innerText = "Free Playtime!";
-                }
             }
         }
 
@@ -1232,7 +1195,6 @@
             if (act) {
                 act[field] = val;
                 commitToDisk();
-                if (field === 'title') calculateTimelineDynamics();
             }
         }
 
@@ -1593,6 +1555,8 @@
                 timerActive: false,
                 timeRemaining: null,
                 sound: "Classic Ding",
+                color: "slate",
+                link: "",
                 subtasks: []
             });
             commitToDisk();
@@ -1705,33 +1669,10 @@
         function switchAltDeckDirect(deckName) {
             if (alternativeDecks[deckName]) {
                 scheduleActiveDeckName = deckName;
-        function createNewActivity() {
-            // FIX: Guaranteed schedule target day baseline initialization
-            if (!schedules[currentTargetDay]) {
-                schedules[currentTargetDay] = [];
+                localStorage.setItem('routine_active_alt_deck', scheduleActiveDeckName);
+                commitToDisk();
+                renderSchedule();
             }
-            const list = schedules[currentTargetDay];
-            const newId = Date.now();
-            list.push({
-                id: newId,
-                title: "Custom Activity",
-                start: "12:00 PM",
-                end: "12:30 PM",
-                tokens: 1,
-                swappable: true,
-                completed: null,
-                mood: null,
-                duration: 30,
-                timerActive: false,
-                timeRemaining: null,
-                sound: "Classic Ding",
-                color: "slate",
-                link: "",
-                subtasks: [],
-                expanded: true
-            });
-            commitToDisk();
-            renderSchedule();
         }
 
         function updateTheme(themeClass) {
@@ -1822,32 +1763,6 @@
                 createBtn.className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm";
                 savedBtn.className = "bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-all";
             }
-        function addBlueprintActivity() {
-            // FIX: Prevent crashes by verifying baseline sandbox blueprint storage is instantiated 
-            if (!activeBlueprintDesignKey) return;
-            if (!templates[activeBlueprintDesignKey]) {
-                templates[activeBlueprintDesignKey] = [];
-            }
-            
-            templates[activeBlueprintDesignKey].push({
-                title: "Blueprint Activity",
-                start: "12:00 PM",
-                end: "12:30 PM",
-                tokens: 1,
-                swappable: true,
-                completed: null,
-                mood: null,
-                duration: 30,
-                timerActive: false,
-                timeRemaining: null,
-                sound: "Classic Ding",
-                color: "slate",
-                link: "",
-                subtasks: []
-            });
-            commitToDisk();
-            renderBlueprintActivities();
-            synthSound('Pop');
         }
 
         /* 🎵 MUSIC CONNECT HOOKS */
