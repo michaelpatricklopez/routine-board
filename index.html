@@ -77,9 +77,14 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='20' cy='20' r='4' fill='none' stroke='%2300bcd4' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='90' cy='70' r='8' fill='none' stroke='%230097a7' stroke-width='1.5' opacity='0.2'/%3E%3Cpath d='M0 60 Q30 45 60 60 T120 60' fill='none' stroke='%2300bcd4' stroke-width='0.75' opacity='0.2'/%3E%3C/svg%3E"); 
         }
         .theme-arcade { 
-            background-color: #0f1016; 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='%233b82f6' stroke-width='0.5' opacity='0.18'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23ec4899' opacity='0.15'/%3E%3C/svg%3E"); 
+            background-color: #080811; 
+            background-image: 
+                linear-gradient(180deg, rgba(236, 72, 153, 0.15) 0%, rgba(0, 0, 0, 0) 60%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M 80 0 L 0 0 0 80' fill='none' stroke='%23ec4899' stroke-width='1.5' stroke-opacity='0.25'/%3E%3Cpath d='M 40 0 L 40 80 M 0 40 L 80 40' fill='none' stroke='%2306b6d4' stroke-width='0.5' stroke-opacity='0.15'/%3E%3Ccircle cx='40' cy='40' r='1.5' fill='%23f59e0b' opacity='0.4'/%3E%3C/svg%3E"); 
+            background-size: 100% 200px, 100% 4px, 80px 80px;
             color: #38bdf8; 
+            text-shadow: 0 0 2px rgba(56, 189, 248, 0.5);
         }
         .theme-dark { 
             background-color: #0c0d12; 
@@ -122,12 +127,13 @@
         .theme-warm-terracotta { 
             background: linear-gradient(135deg, #fdfbf7 0%, #fdf8f5 100%); 
             color: #4a2711; 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M0 0c60 0 60 120 120 120' fill='none' stroke='%23f4eae2' stroke-width='3' opacity='0.5'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M0 0c60 0c60 120 120 120' fill='none' stroke='%23f4eae2' stroke-width='3' opacity='0.5'/%3E%3C/svg%3E");
         }
     </style>
 </head>
 <body class="font-rounded min-h-screen p-4 sm:p-6 transition-all duration-300 theme-pastel text-slate-800" id="appBody">
 
+    <!-- MAIN DASHBOARD -->
     <div class="max-w-4xl mx-auto bg-white/95 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border-4 border-white/50 text-slate-800" id="boardContainer">
         
         <!-- CALENDAR DATE HEADER -->
@@ -149,7 +155,6 @@
         </div>
 
         <!-- TABS & COINS OVERVIEW -->
-        <!-- STREAMING_CHUNK: Drawing tab row ordered as requested (Schedule -> Templates -> Alternatives -> Settings)... -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-slate-100 p-3 rounded-3xl">
             <div class="flex flex-wrap gap-2">
                 <button onclick="switchTab('schedule')" id="tab-schedule" class="bg-white px-5 py-2.5 rounded-2xl font-extrabold text-sm text-slate-800 shadow-sm border border-slate-200/50">📅 Schedule</button>
@@ -158,12 +163,23 @@
                 <button onclick="switchTab('settings')" id="tab-settings" class="bg-slate-200/50 hover:bg-white/50 px-5 py-2.5 rounded-2xl font-bold text-sm text-slate-600 transition-all">⚙️ Settings</button>
             </div>
             
-            <!-- COIN BANK GAUGE -->
-            <div class="flex items-center gap-3 bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-3 rounded-2xl border-b-4 border-amber-600 shadow-md">
-                <span class="text-2xl animate-bounce">🪙</span>
-                <div>
-                    <span class="block text-[10px] font-black uppercase text-amber-900 tracking-wider">Piggy Bank</span>
-                    <span class="text-lg font-black text-amber-900 leading-none" id="bankDisplay">0 Coins</span>
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- ACCESSIBLE VOLUME CONTROLLER -->
+                <div class="flex items-center gap-2 bg-slate-200/80 px-4 py-2.5 rounded-2xl border-b-4 border-slate-400 shadow-md select-none shrink-0">
+                    <span class="text-xl">🔊</span>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] font-black uppercase text-slate-500 tracking-wider">Volume Slider</span>
+                        <input type="range" id="globalVolumeSlider" min="0" max="1" step="0.05" value="0.8" oninput="adjustGlobalVolume(this.value)" class="w-20 h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                    </div>
+                </div>
+
+                <!-- COIN BANK GAUGE -->
+                <div class="flex items-center gap-3 bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-3 rounded-2xl border-b-4 border-amber-600 shadow-md">
+                    <span class="text-2xl animate-bounce">🪙</span>
+                    <div>
+                        <span class="block text-[10px] font-black uppercase text-amber-900 tracking-wider">Piggy Bank</span>
+                        <span class="text-lg font-black text-amber-900 leading-none" id="bankDisplay">0 Coins</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -483,7 +499,23 @@
 
     <!-- CLIENT AUDIO/STATE CONTROLLERS -->
     <script>
+        // MASTER WEB AUDIO NODE CONNECTORS FOR ROBUST VOLUME ROUTING
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(parseFloat(localStorage.getItem('routine_global_volume') || '0.8'), audioCtx.currentTime);
+        masterGain.connect(audioCtx.destination);
+
+        // Resume audio context securely on initial user interaction to bypass modern browser security policies
+        document.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }, { once: true });
+        document.addEventListener('touchstart', () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }, { once: true });
         
         // Dynamic map containing color classes for activities
         const cardColors = {
@@ -497,7 +529,28 @@
             pink: 'border-pink-400 bg-pink-50/50'
         };
 
-        // RE-ENGINEERED ACOUSTIC HARMONICS FOR MODERN SYNTH SOUNDS (SIMPLE & BEAUTIFUL)
+        // TIME PARSER TO CALCULATE DURATION IN MINUTES FROM USER INPUT
+        function parseTimeToMinutes(timeStr) {
+            if (!timeStr) return null;
+            const clean = timeStr.trim().toLowerCase();
+            
+            // Standard parse of formats like "12:00 PM", "12:22 PM", "12pm", "12:00", etc.
+            const match = clean.match(/^(\d+)(?::(\d+))?\s*(am|pm|a\.m\.|p\.m\.)?$/);
+            if (!match) return null;
+            
+            let hrs = parseInt(match[1], 10);
+            let mins = match[2] ? parseInt(match[2], 10) : 0;
+            let meridiem = match[3] ? match[3].replace(/\./g, '') : null;
+            
+            if (meridiem) {
+                if (meridiem === 'pm' && hrs < 12) hrs += 12;
+                if (meridiem === 'am' && hrs === 12) hrs = 0;
+            }
+            
+            return hrs * 60 + mins;
+        }
+
+        // HIGH-FIDELITY SYNTHESIZER SOUND PROFILES (CONNECTED TO PERSISTENT VOLUME MASTERGAIN)
         function synthSound(profile) {
             const now = audioCtx.currentTime;
 
@@ -505,7 +558,7 @@
                 // Crystal-clear physical tuning fork ring
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.connect(gain); gain.connect(masterGain);
                 osc.type = 'sine'; osc.frequency.setValueAtTime(987.77, now);
                 gain.gain.setValueAtTime(0.2, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
@@ -514,7 +567,7 @@
                 // Polished classic retro blip
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.connect(gain); gain.connect(masterGain);
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(523.25, now);
                 osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12);
@@ -528,7 +581,7 @@
                     setTimeout(() => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.connect(gain); gain.connect(masterGain);
                         osc.type = 'sine'; osc.frequency.setValueAtTime(f, audioCtx.currentTime);
                         gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
@@ -540,7 +593,7 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 const filter = audioCtx.createBiquadFilter();
-                osc.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
+                osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
                 osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now);
                 filter.type = 'lowpass'; filter.frequency.setValueAtTime(450, now);
                 filter.frequency.exponentialRampToValueAtTime(120, now + 0.35);
@@ -551,7 +604,7 @@
                 // Organic wooden pop
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.connect(gain); gain.connect(masterGain);
                 osc.type = 'sine'; osc.frequency.setValueAtTime(750, now);
                 osc.frequency.exponentialRampToValueAtTime(120, now + 0.05);
                 gain.gain.setValueAtTime(0.25, now);
@@ -563,7 +616,7 @@
                 const modulator = audioCtx.createOscillator();
                 const modGain = audioCtx.createGain();
                 const mainGain = audioCtx.createGain();
-                carrier.connect(mainGain); mainGain.connect(audioCtx.destination);
+                carrier.connect(mainGain); mainGain.connect(masterGain);
                 modulator.connect(modGain); modGain.connect(carrier.frequency);
                 
                 carrier.type = 'sine'; carrier.frequency.setValueAtTime(440, now);
@@ -581,7 +634,7 @@
                     setTimeout(() => {
                         const osc2 = audioCtx.createOscillator();
                         const gain2 = audioCtx.createGain();
-                        osc2.connect(gain2); gain2.connect(audioCtx.destination);
+                        osc2.connect(gain2); gain2.connect(masterGain);
                         osc2.type = 'triangle'; osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
                         gain2.gain.setValueAtTime(0.12, audioCtx.currentTime);
                         gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
@@ -594,8 +647,8 @@
                 const oscB = audioCtx.createOscillator();
                 const gainA = audioCtx.createGain();
                 const gainB = audioCtx.createGain();
-                oscA.connect(gainA); gainA.connect(audioCtx.destination);
-                oscB.connect(gainB); gainB.connect(audioCtx.destination);
+                oscA.connect(gainA); gainA.connect(masterGain);
+                oscB.connect(gainB); gainB.connect(masterGain);
                 
                 oscA.type = 'sine'; oscA.frequency.setValueAtTime(150, now);
                 oscB.type = 'triangle'; oscB.frequency.setValueAtTime(152, now);
@@ -614,7 +667,7 @@
                     setTimeout(() => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.connect(gain); gain.connect(masterGain);
                         osc.type = 'sine'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                         gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
@@ -628,7 +681,7 @@
                     setTimeout(() => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.connect(gain); gain.connect(masterGain);
                         osc.type = 'sine'; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                         gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
@@ -1322,6 +1375,23 @@
             const act = schedules[currentTargetDay].find(a => a.id === id);
             if (act) {
                 act[field] = val;
+                
+                // AUTOMATIC RANGE-BASED DURATION CALCULATOR FOR DIGITAL TIMERS
+                if (field === 'start' || field === 'end') {
+                    const startMins = parseTimeToMinutes(act.start);
+                    const endMins = parseTimeToMinutes(act.end);
+                    if (startMins !== null && endMins !== null) {
+                        let diff = endMins - startMins;
+                        if (diff < 0) {
+                            diff += 1440; // spans midnight
+                        }
+                        act.duration = diff;
+                        if (!act.timerActive) {
+                            act.timeRemaining = diff * 60;
+                        }
+                    }
+                }
+                
                 commitToDisk();
                 renderSchedule(); // Force instant re-render! Fixes Card Color delays.
             }
@@ -1651,7 +1721,7 @@
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
                         <button onclick="shiftBlueprintPos(${idx}, -1)" class="text-slate-500 hover:text-slate-800">▲ Move Up</button>
                         <button onclick="shiftBlueprintPos(${idx}, 1)" class="text-slate-500 hover:text-slate-800">▼ Move Down</button>
-                        <button onclick="deleteBlueprintActivity(${idx})" class="text-rose-600 hover:text-rose-800 font-extrabold flex items-center gap-1">🗑️ Delete</button>
+                        <button onclick="deleteBlueprintActivity(${idx})" class="text-rose-600 hover:text-rose-800 font-extrabold flex items-center gap-1">🗑| Delete</button>
                     </div>
                 `;
                 container.appendChild(node);
@@ -1660,7 +1730,25 @@
 
         function updateBlueprintField(idx, field, val) {
             if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
-                templates[activeBlueprintDesignKey][idx][field] = val;
+                const act = templates[activeBlueprintDesignKey][idx];
+                act[field] = val;
+                
+                // AUTOMATIC RANGE-BASED DURATION CALCULATOR FOR BLUEPRINT TIMERS
+                if (field === 'start' || field === 'end') {
+                    const startMins = parseTimeToMinutes(act.start);
+                    const endMins = parseTimeToMinutes(act.end);
+                    if (startMins !== null && endMins !== null) {
+                        let diff = endMins - startMins;
+                        if (diff < 0) {
+                            diff += 1440; // spans midnight
+                        }
+                        act.duration = diff;
+                        if (!act.timerActive) {
+                            act.timeRemaining = diff * 60;
+                        }
+                    }
+                }
+                
                 commitToDisk();
             }
         }
@@ -2013,11 +2101,21 @@
             synthSound('Game Buzzer');
         }
 
+        function adjustGlobalVolume(val) {
+            const vol = parseFloat(val);
+            localStorage.setItem('routine_global_volume', vol.toString());
+            masterGain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        }
+
         // LOAD MOOD DESYNC RECOVERY SYSTEM
         const lastTheme = localStorage.getItem('routine_theme_class') || 'theme-pastel';
         const lastFont = localStorage.getItem('routine_font_class') || 'font-rounded';
         updateTheme(lastTheme);
         updateFont(lastFont);
+
+        // SYNC MASTER VOLUME SLIDER AT BOOT
+        const savedVol = parseFloat(localStorage.getItem('routine_global_volume') || '0.8');
+        document.getElementById('globalVolumeSlider').value = savedVol;
 
         // APP INITIAL STARTUP INVOCATION
         document.getElementById('bankDisplay').innerText = `${coinBank} Coins`;
