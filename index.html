@@ -100,50 +100,20 @@
     <!-- MAIN INTERACTIVE BOARD CONTAINER -->
     <div id="boardCanvasWrapper" class="max-w-5xl mx-auto bg-white rounded-[3rem] p-6 text-slate-800 shadow-2xl border-4 border-slate-100 transition-all">
         
-        <!-- CHILDREN MULTI-PROFILE SELECTION RUNTIME STRIP WITH SKIN/HAIR CUSTOMIZATION -->
-        <div class="flex flex-col bg-indigo-50/70 border border-indigo-100 p-4 rounded-[2.5rem] mb-5 gap-3">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <div id="activeAvatarBadge" class="w-12 h-12 rounded-full border-2 border-indigo-300 shadow-sm flex items-center justify-center text-xl overflow-hidden font-black select-none transition-all">🧑</div>
-                    <div class="flex-grow sm:flex-grow-0">
-                        <label class="block text-[9px] font-black text-indigo-500 uppercase tracking-wider leading-none mb-1">Active Child Profile</label>
-                        <select id="profileSelector" onchange="switchProfile(this.value);" class="bg-white border-2 border-indigo-200 p-2 rounded-xl text-xs font-black text-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer min-w-[160px] shadow-sm">
-                            <!-- Loaded dynamically via scripts -->
-                        </select>
-                    </div>
-                </div>
-                <div class="flex flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto justify-end items-center">
-                    <input type="text" id="newProfileNameInput" placeholder="New Child Name" class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-400 w-full sm:w-[160px] shadow-inner">
-                    <button onclick="createNewProfile();" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-sm shrink-0">+ Add Profile</button>
-                </div>
-            </div>
-
-            <!-- CHARACTER AVATAR CUSTOMIZER SUB-DOCK -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white p-3 rounded-2xl border border-indigo-100/60 text-xs mt-1">
-                <div class="space-y-1">
-                    <label class="block text-[9px] font-black text-slate-400 uppercase tracking-wide">🎨 Skin Tone color:</label>
-                    <div class="flex gap-1.5 items-center">
-                        <input type="color" id="profileSkinColor" value="#fadcbc" class="w-8 h-8 rounded border cursor-pointer bg-transparent">
-                        <span class="text-[10px] text-slate-500 font-bold">Tap square palette</span>
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <label class="block text-[9px] font-black text-slate-400 uppercase tracking-wide">💈 Hair Color:</label>
-                    <div class="flex gap-1.5 items-center">
-                        <input type="color" id="profileHairColor" value="#604434" class="w-8 h-8 rounded border cursor-pointer bg-transparent">
-                        <span class="text-[10px] text-slate-500 font-bold">Tap square palette</span>
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <label class="block text-[9px] font-black text-slate-400 uppercase tracking-wide">💇 Hair Style representation:</label>
-                    <select id="profileHairStyle" class="w-full bg-slate-50 border border-slate-200 p-2 rounded-xl text-xs font-bold text-slate-700 focus:outline-none">
-                        <option value="👦 Short Pixie Cut">👦 Short Spiky Cut</option>
-                        <option value="👱 Long Wave Flow">👱 Long Flowing Waves</option>
-                        <option value="👨‍🦱 Curly Ringlets">👨‍🦱 Curly Coils</option>
-                        <option value="🧑‍🎤 Edge Mohawk">🧑‍🎤 Edge Punk Mohawk</option>
-                        <option value="👩‍🦰 Classic Bob Line">👩‍🦰 Classic Symmetric Bob</option>
+        <!-- CHILDREN MULTI-PROFILE SELECTION RUNTIME STRIP -->
+        <div class="flex flex-col sm:flex-row items-center justify-between bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-[2rem] mb-5 gap-3">
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                <span class="text-2xl animate-pulse">👤</span>
+                <div>
+                    <label class="block text-[9px] font-black text-indigo-500 uppercase tracking-wider leading-none mb-1">Active Child Profile</label>
+                    <select id="profileSelector" onchange="switchProfile(this.value);" class="bg-white border-2 border-indigo-200 p-2 rounded-xl text-xs font-black text-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer min-w-[160px] shadow-sm">
+                        <!-- Options generated dynamically -->
                     </select>
                 </div>
+            </div>
+            <div class="flex gap-2 w-full sm:w-auto justify-end">
+                <input type="text" id="newProfileNameInput" placeholder="New Child Name" class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-400 w-full max-w-[160px] shadow-inner">
+                <button onclick="createNewProfile();" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-sm shrink-0">+ Add Profile</button>
             </div>
         </div>
 
@@ -213,7 +183,7 @@
 
             <!-- CORE ACTIVE WORKSPACE CONTAINER -->
             <div class="space-y-4" id="activityWrapper">
-                <!-- Javascript velcro card renderer -->
+                <!-- Velcro cards rendered dynamically via JS -->
             </div>
 
             <!-- ALTERNATIVE QUICK CHOICE SWITCH BOARD -->
@@ -231,14 +201,14 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5" id="scheduleAlternativeShelf">
-                    <!-- Choice nodes loaded -->
+                    <!-- Choice nodes loaded here -->
                 </div>
             </div>
 
             <!-- STATIC TODAY MOOD REFLECTION BOARD -->
             <div class="bg-slate-50 border-4 border-dashed border-slate-200 rounded-[2.5rem] p-6">
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-2">📊 Emotional Reflection Tracker</h3>
-                <p class="text-xs text-slate-400 mb-4 max-w-xl leading-normal">Our system tally counts the overall emotional mood across check-ins for the active schedules to review behaviors across therapeutic intervals.</p>
+                <p class="text-xs text-slate-400 mb-4 max-w-xl leading-normal">Our system counts the overall emotional mood across check-ins for the active schedules to review behaviors across therapeutic intervals.</p>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div class="bg-white p-3 rounded-2xl border flex flex-col items-center justify-center text-center shadow-sm">
                         <span class="text-3xl mb-1.5">🤩</span>
@@ -296,13 +266,17 @@
                 <button onclick="switchTemplateSubTab('saved')" id="subtab-saved" class="bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm">Saved Templates</button>
                 <button onclick="switchTemplateSubTab('create')" id="subtab-create" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-all">Create Templates</button>
             </div>
+
             <div id="savedTemplatesView" class="space-y-4">
                 <div class="bg-slate-50 p-4 rounded-2xl border border-dashed select-none">
                     <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-1">Reusable Schedule Library</h3>
                     <p class="text-xs text-slate-400">Blueprints can be deployed seamlessly onto target dates on your calendar.</p>
                 </div>
-                <div id="savedTemplatesListGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                <div id="savedTemplatesListGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Loaded dynamically -->
+                </div>
             </div>
+
             <div id="createTemplatesView" class="hidden space-y-4">
                 <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-dashed border-slate-200 space-y-4">
                     <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Template Blueprint Creator</span>
@@ -315,6 +289,7 @@
                         <button onclick="initNewBlueprintInSandbox();" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-6 py-3.5 rounded-2xl text-xs shadow-md transition-all shrink-0">✨ Start Sandbox</button>
                     </div>
                 </div>
+
                 <div id="blueprintDesignerBlock" class="hidden bg-amber-50/40 p-5 rounded-[2rem] border-4 border-amber-300/60 space-y-4">
                     <div class="flex items-center justify-between border-b pb-2">
                         <div class="flex items-center gap-2">
@@ -386,7 +361,7 @@
                     <div class="space-y-2.5" id="rewardSlotsInputsContainer"></div>
                     <div class="flex items-center justify-between pt-3 border-t">
                         <button onclick="addCustomRewardSlot();" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-extrabold text-xs px-4 py-2.5 rounded-xl border border-indigo-200">+ Add Item Slot</button>
-                        <button onclick="deleteCurrentRewardPage();" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-extrabold text-xs px-4 py-2.5 rounded-xl">🗑| Delete List Category</button>
+                        <button onclick="deleteCurrentRewardPage();" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-extrabold text-xs px-4 py-2.5 rounded-xl">🗑️ Delete Reward List</button>
                     </div>
                 </div>
             </div>
@@ -411,12 +386,12 @@
             <!-- STORE COIN SELECTION CARDS GRID -->
             <div id="marketplaceRewardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
 
-            <!-- STATIC INLINE TRANSACTION LOG LOG TRACKER WITH UNDO ACTION BUTTONS -->
+            <!-- STATIC INLINE TRANSACTION LOG REGISTER TRACKER WITH UNDO ACTION BUTTONS -->
             <div class="bg-slate-50 border-4 border-dashed border-slate-200 rounded-[2.5rem] p-6 mt-8">
                 <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-1">📋 Claim History & Transaction Register</h3>
                 <p class="text-xs text-slate-400 mb-4 max-w-xl">Review claims tracked over the current profile intervals. If a child changes their mind, hit the Undo action toggle to credit coins straight back to their balance.</p>
                 <div id="transactionHistoryList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
-                    <!-- Loaded dynamically via scripts -->
+                    <!-- Injected dynamically -->
                 </div>
             </div>
         </div>
@@ -501,17 +476,17 @@
             <div class="space-y-1">
                 <input type="date" id="dispatcherTargetDate" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-emerald-500 transition-all">
             </div>
-            <button onclick="dispatchBlueprintToTargetDay()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-2xl shadow-md transition-all text-xs">🚀 Load Template</button>
+            <button onclick="dispatchBlueprintToTargetDay()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-2xl shadow-md text-xs">🚀 Load Template</button>
         </div>
     </div>
 
-    <!-- DIALOG OVERLAY MODAL: TIMER HIGH INTENSITY FINISH POPUP -->
+    <!-- DIALOG OVERLAY MODAL: NOTIFICATION ALERTS -->
     <div id="celebrationTimerOverlay" class="fixed inset-0 z-[100] flex items-center justify-center modal-blur p-4 hidden text-slate-800">
         <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-8 border-8 border-amber-400 text-center space-y-5 shadow-2xl relative">
             <div class="text-5xl animate-bounce">⏰🎉</div>
             <h2 class="text-2xl font-black text-slate-900">Notification!</h2>
             <p class="text-sm font-extrabold text-slate-700 leading-normal" id="celebrationTimerText">Claim Completed Successfully</p>
-            <button onclick="dismissTimerCelebration();" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3 rounded-2xl shadow-md transition-all text-xs">Awesome! Done ✔️</button>
+            <button onclick="dismissTimerCelebration();" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3 rounded-2xl shadow-md text-xs">Awesome! Done ✔️</button>
         </div>
     </div>
 
@@ -531,7 +506,7 @@
         </div>
     </div>
 
-    <!-- CLIENT AUDIO/STATE CONTROLLERS -->
+    <!-- CLIENT STATE CONTROLLER SCRIPTS (FULLY REALIZED WORKFLOWS) -->
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let masterGainNode = audioCtx.createGain();
@@ -543,11 +518,10 @@
             const now = audioCtx.currentTime;
 
             if (profile === 'Classic Ding') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(masterGainNode);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(987.77, now);
-                gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(masterGainNode); osc.type = 'sine';
+                osc.frequency.setValueAtTime(987.77, now); gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
                 osc.start(now); osc.stop(now + 0.65);
             } 
             else if (profile === 'Arcade Blip') {
@@ -607,6 +581,10 @@
             }
         }
 
+        window.addEventListener('touchstart', () => { if (audioCtx.state === 'suspended') audioCtx.resume(); }, { once: true });
+        window.addEventListener('mousedown', () => { if (audioCtx.state === 'suspended') audioCtx.resume(); }, { once: true });
+
+        // APPLICATION STATE CONFIGURATION Ledgers
         let profiles = {};
         let activeProfileId = "default";
 
@@ -615,7 +593,7 @@
         let activeBoardTheme = 'theme-pastel';
         let activeBoardFont = 'font-rounded';
 
-        // AUTOMATIC DATE INITIALIZATION LAUNCHER
+        // AUTOMATIC DATE INITIALIZATION ENGINE - Lands dynamically on the current day profile
         let activeSystemDateObj = new Date(); 
         let currentTargetDay = activeSystemDateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -629,21 +607,19 @@
         let scheduleNames = {};
 
         const loadProfilesFromStorage = () => {
-            const savedProfiles = localStorage.getItem('routine_profiles_v5_skincores');
+            const savedProfiles = localStorage.getItem('routine_profiles_v6_clean_nonavatar');
             if (savedProfiles) {
                 profiles = JSON.parse(savedProfiles);
                 activeProfileId = localStorage.getItem('routine_active_profile_id') || Object.keys(profiles)[0] || "default";
             } else {
                 profiles = {
                     "default": {
-                        name: "Default Profile",
-                        skinColor: "#fadcbc",
-                        hairColor: "#604434",
-                        hairStyle: "👦 Short Pixie Cut",
-                        coinBank: parseInt(localStorage.getItem('routine_coins')) || 0,
-                        alternativeDecks: JSON.parse(localStorage.getItem('routine_alt_decks')) || {
+                        name: "First Child Profile",
+                        coinBank: 0,
+                        alternativeDecks: {
                             "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
-                            "Outdoor Play": ["Swing Set", "Digger Toy Sandbox", "Blowing Bubbles"]
+                            "Outdoor Play": ["Swing Set", "Digger Toy Sandbox", "Blowing Bubbles"],
+                            "Indoor Tabletop": ["Building Legos Block", "Mario Monopoly Match", "Dinosaur Play-Doh"]
                         },
                         scheduleActiveDeckName: "Sensory Choices",
                         editorActiveDeckName: "Sensory Choices",
@@ -658,20 +634,19 @@
                             ]
                         },
                         activeRewardPageName: "Homework Wins",
-                        history: [] // Holds standard structured claimed history list arrays
+                        history: []
                     }
                 };
-                if (Object.keys(profiles["default"].schedules).length === 0) {
-                    profiles["default"].schedules[currentTargetDay] = [
-                        { id: 1, title: "Tablet Play Hour", start: "8:00 AM", end: "9:00 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "blue", link1: "", link1Label: "", link2: "", link2Label: "", link3: "", link3Label: "", subtasks: [] }
-                    ];
-                }
+                profiles["default"].schedules[currentTargetDay] = [
+                    { id: 1, title: "Tablet Play Hour", start: "8:00 AM", end: "9:00 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 60, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "blue", subtasks: [] },
+                    { id: 2, title: "Hot Breakfast Corner", start: "9:00 AM", end: "9:30 AM", tokens: 1, swappable: false, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Arcade Blip", color: "orange", subtasks: [] }
+                ];
                 saveProfilesToStorage();
             }
         };
 
         const saveProfilesToStorage = () => {
-            localStorage.setItem('routine_profiles_v5_skincores', JSON.stringify(profiles));
+            localStorage.setItem('routine_profiles_v6_clean_nonavatar', JSON.stringify(profiles));
             localStorage.setItem('routine_active_profile_id', activeProfileId);
         };
 
@@ -689,15 +664,6 @@
 
             document.getElementById('piggyBankCoinCount').innerText = `${coinBank} Coins`;
             document.getElementById('manualCoinAdjusterField').value = coinBank;
-
-            // Render custom profile skins
-            const avatarNode = document.getElementById('activeAvatarBadge');
-            if (avatarNode && p.skinColor) {
-                avatarNode.style.backgroundColor = p.skinColor;
-                avatarNode.style.color = p.hairColor || "#000";
-                const hairIcon = (p.hairStyle || "").split(' ')[0] || "🧑";
-                avatarNode.innerText = hairIcon;
-            }
         };
 
         const commitToDisk = () => {
@@ -713,36 +679,6 @@
             p.scheduleNames = scheduleNames;
             saveProfilesToStorage();
         };
-
-        function initAppStates() {
-            loadProfilesFromStorage();
-            syncGlobalPointersFromProfile();
-            renderProfileSelector();
-
-            activeBoardTheme = localStorage.getItem('routine_theme') || 'theme-pastel';
-            activeBoardFont = localStorage.getItem('routine_font') || 'font-rounded';
-            document.getElementById('boardThemeSelector').value = activeBoardTheme;
-            document.getElementById('boardFontSelector').value = activeBoardFont;
-            updateTheme(activeBoardTheme); updateFont(activeBoardFont);
-
-            const savedVolume = localStorage.getItem('routine_volume');
-            if (savedVolume !== null) {
-                document.getElementById('masterVolumeControl').value = savedVolume;
-                adjustMasterGain(savedVolume);
-            }
-
-            const savedIframeEmbedCode = localStorage.getItem('routine_music_embed');
-            if (savedIframeEmbedCode) {
-                document.getElementById('musicWidgetEmbedInput').value = savedIframeEmbedCode;
-                deployMusicWidgetHTML(savedIframeEmbedCode);
-            }
-
-            document.getElementById('dateLabel').innerText = currentTargetDay;
-            const dayInput = document.getElementById('scheduleDayNameInput');
-            if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
-
-            renderSchedule();
-        }
 
         function renderProfileSelector() {
             const select = document.getElementById('profileSelector');
@@ -761,7 +697,6 @@
             renderProfileSelector();
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
-
             renderSchedule();
             if (activeViewTab === 'rewards-list') renderRewardsTabEditor();
             if (activeViewTab === 'rewards-store') renderRewardsMarketplace();
@@ -775,22 +710,14 @@
             const name = input.value.trim();
             if (!name) return;
 
-            // STRATEGIC CAPABILITY: Once a valid custom profile is generated, strip away placeholder Default profile setup completely
+            // FREE TIER POLICY: Replacing 'default' placeholder when primary custom item triggers allocation
             if (profiles["default"]) {
                 delete profiles["default"];
             }
 
-            // Extract customization parameters from DOM targets
-            const skinVal = document.getElementById('profileSkinColor').value;
-            const hairVal = document.getElementById('profileHairColor').value;
-            const styleVal = document.getElementById('profileHairStyle').value;
-
             const id = "profile_" + Date.now();
             profiles[id] = {
                 name: name,
-                skinColor: skinVal,
-                hairColor: hairVal,
-                hairStyle: styleVal,
                 coinBank: 0,
                 alternativeDecks: {
                     "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights"],
@@ -813,7 +740,7 @@
             };
 
             profiles[id].schedules[currentTargetDay] = [
-                { id: generateUniqueId(), title: "Visual Board Routine Task", start: "8:00 AM", end: "8:30 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "blue", link1: "", link1Label: "", link2: "", link2Label: "", link3: "", link3Label: "", subtasks: [] }
+                { id: generateUniqueId(), title: "Visual Board Routine Task", start: "8:00 AM", end: "8:30 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "blue", subtasks: [] }
             ];
 
             input.value = "";
@@ -822,6 +749,76 @@
             switchProfile(id);
             synthSound('Success Fanfare');
         }
+
+        let draggedIndex = null;
+        let touchStartOffsetY = 0;
+        let touchActiveCard = null;
+
+        function initTouchDrag(cardElement, handleElement, index) {
+            handleElement.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                touchStartOffsetY = touch.clientY;
+                touchActiveCard = cardElement;
+                cardElement.style.transition = 'none';
+                cardElement.style.zIndex = '50';
+            }, { passive: true });
+
+            handleElement.addEventListener('touchmove', (e) => {
+                if (!touchActiveCard) return;
+                const touch = e.touches[0];
+                const currentY = touch.clientY;
+                const deltaY = currentY - touchStartOffsetY;
+                touchActiveCard.style.transform = `translateY(${deltaY}px)`;
+
+                const list = schedules[currentTargetDay];
+                const cards = document.querySelectorAll('.velcro-card');
+                cards.forEach((otherCard, otherIdx) => {
+                    if (otherCard === touchActiveCard) return;
+                    const rect = otherCard.getBoundingClientRect();
+                    if (currentY > rect.top && currentY < rect.bottom) {
+                        if (index !== otherIdx) {
+                            const temp = list[index];
+                            list[index] = list[otherIdx];
+                            list[otherIdx] = temp;
+                            commitToDisk();
+                            touchStartOffsetY = currentY;
+                            index = otherIdx;
+                            renderSchedule();
+                        }
+                    }
+                });
+            }, { passive: true });
+
+            handleElement.addEventListener('touchend', () => {
+                if (touchActiveCard) {
+                    touchActiveCard.style.transform = '';
+                    touchActiveCard.style.transition = '';
+                    touchActiveCard.style.zIndex = '';
+                    touchActiveCard = null;
+                    renderSchedule();
+                }
+            }, { passive: true });
+        }
+
+        let autoScrollInterval = null;
+        function startDragScroll(direction) {
+            if (autoScrollInterval) return;
+            autoScrollInterval = setInterval(() => { window.scrollBy(0, direction * 15); }, 16);
+        }
+        function stopDragScroll() {
+            if (autoScrollInterval) { clearInterval(autoScrollInterval); autoScrollInterval = null; }
+        }
+
+        const cardColors = {
+            slate: "bg-white/80 border-slate-200/60 shadow-sm",
+            blue: "bg-sky-50/80 border-sky-300 shadow-sky-100",
+            green: "bg-emerald-50/80 border-emerald-300 shadow-emerald-100",
+            red: "bg-rose-50/80 border-rose-300 shadow-rose-100",
+            orange: "bg-orange-50/80 border-orange-300 shadow-orange-100",
+            yellow: "bg-amber-50/80 border-amber-300 shadow-amber-100",
+            purple: "bg-purple-50/80 border-purple-300 shadow-purple-100",
+            pink: "bg-pink-50/80 border-pink-300 shadow-pink-100"
+        };
 
         function renderSchedule() {
             const container = document.getElementById('activityWrapper');
@@ -877,7 +874,6 @@
                         </div>
                         <button onclick="toggleExpand(event, ${act.id})" class="text-indigo-500 hover:text-indigo-700 font-extrabold text-xs ml-1">${isExpanded ? '▲ Hide' : '▼ More'}</button>
                     </div>
-                    ${linksBadgeRow}
                     <div class="flex flex-wrap items-center justify-between gap-3 text-xs">
                         <div class="flex items-center gap-2 font-bold text-slate-500">
                             <input type="text" value="${act.start}" onchange="updateCard(${act.id}, 'start', this.value)" class="w-20 bg-slate-100 rounded px-2 py-1 text-center font-extrabold">
@@ -893,7 +889,7 @@
                     ${subtasksMarkup}
                     <div class="${isExpanded ? 'block' : 'hidden'} border-t-2 border-dashed border-slate-100 pt-3 space-y-4">
                         <div class="flex flex-wrap items-center gap-3 text-xs bg-slate-50 p-2.5 rounded-2xl border">
-                            <button onclick="synthSound('${act.sound}')" class="bg-slate-200 hover:bg-slate-300 font-extrabold px-3 py-1.5 rounded-xl">🔊 Preview Chime</button>
+                            <button onclick="synthSound('${act.sound}')" class="bg-slate-200 hover:bg-slate-300 font-extrabold px-3 py-1.5 rounded-xl">🔊 Preview Tone</button>
                         </div>
                         <div class="space-y-1.5">
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -919,7 +915,7 @@
         }
 
         // =========================================================================
-        // UPDATED CORE EXECUTOR: REWARDS STORE MARKETPLACE WITH CLAIM HISTORY LOG
+        // COMPREHENSIVE SUB-ROUTINES FOR REWARDS STORE DECK ARCHITECTURE
         // =========================================================================
         function renderRewardsMarketplace() {
             const p = profiles[activeProfileId];
@@ -942,7 +938,7 @@
 
             const rewardsArray = p.rewardPages[p.activeRewardPageName] || [];
             if (rewardsArray.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-xs text-slate-400 p-8 text-center border-2 border-dashed rounded-[2rem] bg-slate-50">Empty directory tier. Populate slots inside "Rewards List" tab!</div>`;
+                grid.innerHTML = `<div class="col-span-full text-xs text-slate-400 p-8 text-center border-2 border-dashed rounded-[2rem] bg-slate-50">Empty tier. Configure items in "Rewards List"!</div>`;
             } else {
                 rewardsArray.forEach((prize) => {
                     const cardNode = document.createElement('div');
@@ -952,25 +948,25 @@
                     cardNode.className = "bg-white p-5 rounded-[2.2rem] border-4 border-slate-100 shadow-md flex flex-col justify-between gap-4 velcro-card transition-all relative overflow-hidden";
                     cardNode.innerHTML = `
                         <div class="space-y-1.5">
-                            <span class="block text-[8px] font-black text-indigo-400 uppercase tracking-widest leading-none">Arcade Prize Item</span>
-                            <h4 class="text-base font-black text-slate-800 leading-snug">${prize.text || 'Unnamed Privilege Asset'}</h4>
+                            <span class="block text-[8px] font-black text-indigo-400 uppercase tracking-widest leading-none">Arcade Prize</span>
+                            <h4 class="text-base font-black text-slate-800 leading-snug">${prize.text || 'Privilege Asset'}</h4>
                         </div>
                         <div class="flex items-center justify-between border-t pt-3 mt-1">
                             <div class="flex items-center gap-1.5 bg-amber-50 px-3 py-1 rounded-xl border border-amber-100">
                                 <span class="text-base">🪙</span>
                                 <span class="text-xs font-black text-amber-800">${lockCost} Coins</span>
                             </div>
-                            <button onclick="purchasePrizeAsset(${lockCost}, '${prize.text.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl text-xs font-black shadow-sm transition-all active:scale-95 ${canAfford ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}">Exchange</button>
+                            <button onclick="purchasePrizeAsset(${lockCost}, '${prize.text.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95 ${canAfford ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}">Exchange</button>
                         </div>`;
                     grid.appendChild(cardNode);
                 });
             }
 
-            // DYNAMICALLY RENDER HISTORICAL TRANSACTION LOG REGISTER
+            // CLAIM TRANSACTION HISTORICAL REGISTER LIST RENDERER
             const logContainer = document.getElementById('transactionHistoryList');
             logContainer.innerHTML = "";
             if (p.history.length === 0) {
-                logContainer.innerHTML = `<div class="text-slate-400 font-bold text-center text-xs p-4 bg-white border rounded-2xl shadow-inner">No claim transactions recorded yet. Balance sheets empty.</div>`;
+                logContainer.innerHTML = `<div class="text-slate-400 font-bold text-center text-xs p-4 bg-white border rounded-2xl shadow-inner">No claim transactions tracked over this profile interval.</div>`;
             } else {
                 p.history.forEach((tx) => {
                     const row = document.createElement('div');
@@ -981,8 +977,7 @@
                             <span class="text-slate-900 font-extrabold">Claimed: "${tx.title}"</span>
                             <span class="text-[10px] text-slate-400 font-normal">at ${tx.time}</span>
                         </div>
-                        <button onclick="undoPurchaseAsset('${tx.id}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-xl text-[11px] font-black transition-all active:scale-95 shadow-sm">↩ Undo Claim</button>
-                    `;
+                        <button onclick="undoPurchaseAsset('${tx.id}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-xl text-[11px] font-black transition-all active:scale-95 shadow-sm">↩ Undo Claim</button>`;
                     logContainer.appendChild(row);
                 });
             }
@@ -1009,12 +1004,12 @@
                 synthSound('Success Fanfare');
                 renderRewardsMarketplace();
 
-                // UPDATED CLAIM NOTIFICATION SCREEN VIEW
+                // DYNAMIC SPECIFIED NOTIFICATION POPUP INJECTION
                 document.getElementById('celebrationTimerText').innerText = `You've used ${cost} coins to claim a Reward!`;
                 document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
             } else {
                 synthSound('Game Buzzer');
-                alert(`Insufficient Coins! You need ${cost - coinBank} more coins.`);
+                alert(`Insufficient Coins! You lack ${cost - coinBank} coins.`);
             }
         }
 
@@ -1036,7 +1031,7 @@
             }
         }
 
-        // REWARDS LIST PROFILE EDITOR CONTROLLERS
+        // REWARDS TEMPLATE COMPONENT LAYOUT EDITORS
         function renderRewardsTabEditor() {
             const p = profiles[activeProfileId];
             if (!p) return;
@@ -1059,31 +1054,27 @@
                 listGrid.appendChild(block);
             });
 
-            document.getElementById('rewardPageEditorTitle').innerText = `List Profile: ${p.activeRewardPageName}`;
+            document.getElementById('rewardPageEditorTitle').innerText = `List Category Name: ${p.activeRewardPageName}`;
             const container = document.getElementById('rewardSlotsInputsContainer');
             container.innerHTML = "";
 
             const items = p.rewardPages[p.activeRewardPageName] || [];
-            if (items.length === 0) {
-                container.innerHTML = `<div class="text-xs text-slate-400 p-4 text-center border rounded-2xl bg-white">Custom Reward template array empty.</div>`;
-            } else {
-                items.forEach((item, idx) => {
-                    const row = document.createElement('div');
-                    row.className = "flex flex-col sm:flex-row gap-3 items-center bg-white p-3 rounded-2xl border shadow-sm w-full";
-                    row.innerHTML = `
-                        <div class="flex-grow w-full">
-                            <input type="text" value="${item.text || ''}" onchange="updateRewardSlotValue(${idx}, 'text', this.value);" class="w-full bg-slate-50 border p-2 rounded-xl text-xs font-bold text-slate-700 focus:bg-white">
+            items.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = "flex flex-col sm:flex-row gap-3 items-center bg-white p-3 rounded-2xl border shadow-sm w-full";
+                row.innerHTML = `
+                    <div class="flex-grow w-full">
+                        <input type="text" value="${item.text || ''}" onchange="updateRewardSlotValue(${idx}, 'text', this.value);" class="w-full bg-slate-50 border p-2 rounded-xl text-xs font-bold text-slate-700 focus:bg-white focus:outline-none">
+                    </div>
+                    <div class="w-full sm:w-28 shrink-0">
+                        <div class="flex items-center gap-1 bg-amber-50/50 border border-amber-200 px-2 py-1 rounded-xl">
+                            <span class="text-xs">🪙</span>
+                            <input type="number" min="0" value="${item.cost || 0}" onchange="updateRewardSlotValue(${idx}, 'cost', parseInt(this.value));" class="w-full bg-transparent text-xs font-black text-slate-800 text-center focus:outline-none">
                         </div>
-                        <div class="w-full sm:w-28 shrink-0">
-                            <div class="flex items-center gap-1 bg-amber-50/50 border border-amber-200 px-2 py-1 rounded-xl">
-                                <span class="text-xs">🪙</span>
-                                <input type="number" min="0" value="${item.cost || 0}" onchange="updateRewardSlotValue(${idx}, 'cost', parseInt(this.value));" class="w-full bg-transparent text-xs font-black text-slate-800 text-center focus:outline-none">
-                            </div>
-                        </div>
-                        <button onclick="deleteRewardSlotCard(${idx});" class="text-slate-300 hover:text-rose-500 text-sm font-extrabold p-1 shrink-0">✕</button>`;
-                    container.appendChild(row);
-                });
-            }
+                    </div>
+                    <button onclick="deleteRewardSlotCard(${idx});" class="text-slate-300 hover:text-rose-500 text-sm font-extrabold p-1 shrink-0">✕</button>`;
+                container.appendChild(row);
+            });
         }
 
         function updateRewardSlotValue(idx, field, val) {
@@ -1112,13 +1103,12 @@
         }
         function deleteCurrentRewardPage() {
             const p = profiles[activeProfileId]; if (!p) return;
-            delete p.rewardPages[p.activeRewardPageName];
-            p.activeRewardPageName = Object.keys(p.rewardPages)[0] || "Homework Wins";
+            delete p.rewardPages[p.activeRewardPageName]; p.activeRewardPageName = Object.keys(p.rewardPages)[0] || "Homework Wins";
             if (!p.rewardPages[p.activeRewardPageName]) p.rewardPages[p.activeRewardPageName] = [{ text: "Prize Slot Option 1", cost: 5 }];
             saveProfilesToStorage(); renderRewardsTabEditor(); synthSound('Game Buzzer');
         }
 
-        // ALTERNATIVES DICTIONARY METHODS
+        // ALTERNATIVES DECKS SHELF SYSTEM FUNCTIONS
         function renderAlternativesTabEditor() {
             const listGrid = document.getElementById('alternativeDecksSelectionList'); listGrid.innerHTML = "";
             Object.keys(alternativeDecks).forEach(deckName => {
@@ -1146,7 +1136,7 @@
         function deleteCurrentAlternativeDeckProfile() { delete alternativeDecks[editorActiveDeckName]; const keys = Object.keys(alternativeDecks); editorActiveDeckName = keys[0] || "Sensory Choices"; commitToDisk(); renderAlternativesTabEditor(); renderSchedule(); synthSound('Game Buzzer'); }
         function linkActiveDeckToDayToggle(checked) { if (checked) { scheduleLinkedDecks[currentTargetDay] = editorActiveDeckName; scheduleActiveDeckName = editorActiveDeckName; } else { delete scheduleLinkedDecks[currentTargetDay]; } commitToDisk(); renderSchedule(); synthSound('Classic Ding'); }
 
-        // NAVIGATION SWITCHER TABS MANAGER
+        // NAVIGATION ROUTER SWITCH VIEWS
         function switchTab(tabKey) {
             activeViewTab = tabKey;
             document.getElementById('scheduleTab').classList.add('hidden');
@@ -1190,7 +1180,7 @@
             synthSound('Classic Ding');
         }
 
-        // BLUEPRINT DRAFTS SANDBOX
+        // REUSABLE SCHEDULER PRESETS bluePRINT MODULES
         let activeBlueprintDesignKey = null;
         function initNewBlueprintInSandbox() { const input = document.getElementById('newTemplateNameInput'); const name = input.value.trim(); if (!name) return; templates[name] = []; enterBlueprintDesigner(name); input.value = ""; }
         function enterBlueprintDesigner(key) { activeBlueprintDesignKey = key; document.getElementById('blueprintDesignTitle').innerText = `Editing: ${key}`; switchTab('templates'); switchTemplateSubTab('create'); document.getElementById('blueprintDesignerBlock').classList.remove('hidden'); renderBlueprintActivities(); }
@@ -1254,6 +1244,35 @@
         function closeSwapOverlay() { document.getElementById('choiceSwapOverlay').classList.add('hidden'); }
         function closeIframePortal() { document.getElementById('iframePortalModal').classList.add('hidden'); }
 
+        function parseAndSetTimer(id, val) {
+            const parts = val.split(':').map(Number); let totalSeconds = 0;
+            if (parts.length === 3) { const [h, m, s] = parts; totalSeconds = (h * 3600) + (m * 60) + s; }
+            else if (parts.length === 2) { const [m, s] = parts; totalSeconds = (m * 60) + s; }
+            const item = schedules[currentTargetDay].find(a => a.id === id);
+            if (item) { item.timeRemaining = totalSeconds; item.duration = Math.ceil(totalSeconds / 60); commitToDisk(); renderSchedule(); }
+        }
+        function toggleTimer(id) { const item = schedules[currentTargetDay].find(a => a.id === id); if (item) { item.timerActive = !item.timerActive; commitToDisk(); renderSchedule(); synthSound('Pop'); } }
+        function resetTimer(id) { const item = schedules[currentTargetDay].find(a => a.id === id); if (item) { item.timerActive = false; item.timeRemaining = item.duration * 60; commitToDisk(); renderSchedule(); synthSound('Game Buzzer'); } }
+
+        function manuallyLoadAlternativeDeck(deckName) { scheduleActiveDeckName = deckName; commitToDisk(); renderSchedule(); }
+        function renderAlternativeShelf() {
+            const selectEl = document.getElementById('scheduleAlternativeDeckLoader'); selectEl.innerHTML = "";
+            Object.keys(alternativeDecks).forEach(dk => { const opt = document.createElement('option'); opt.value = dk; opt.text = dk; opt.selected = (dk === scheduleActiveDeckName); selectEl.appendChild(opt); });
+            const shelf = document.getElementById('scheduleAlternativeShelf'); shelf.innerHTML = "";
+            (alternativeDecks[scheduleActiveDeckName] || []).forEach(choice => {
+                const node = document.createElement('div'); node.className = "bg-white p-4 text-center rounded-[2rem] border-4 border-slate-200/60 font-black text-slate-800 text-xs shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col justify-center items-center min-h-[5.5rem] velcro-card";
+                node.innerHTML = `<span>${choice}</span>`;
+                node.onclick = () => { schedules[currentTargetDay].push({ id: generateUniqueId(), title: choice, start: "12:00 PM", end: "12:30 PM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "purple", subtasks: [] }); commitToDisk(); renderSchedule(); synthSound('Pop'); };
+                shelf.appendChild(node);
+            });
+        }
+
+        function reconcileMysteryCoins() {
+            const fieldVal = parseInt(document.getElementById('manualCoinAdjusterField').value);
+            if (!isNaN(fieldVal) && fieldVal >= 0) { coinBank = fieldVal; document.getElementById('piggyBankCoinCount').innerText = `${coinBank} Coins`; commitToDisk(); synthSound('Classic Ding'); }
+        }
+        function resetRoutineDatabaseToDefaults() { if (confirm("Clear profile schemas cache entirely?")) { localStorage.clear(); window.location.reload(); } }
+
         function renderQuickDatePicker() {
             const strip = document.getElementById('quickDateStrip'); strip.innerHTML = ""; const referenceDay = new Date(currentTargetDay); if (isNaN(referenceDay.getTime())) return;
             for (let i = -3; i <= 3; i++) {
@@ -1262,8 +1281,8 @@
                 const fullLabelStr = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 const dot = document.createElement('button');
                 dot.className = `w-11 h-14 rounded-2xl flex flex-col justify-center items-center border transition-all active:scale-95 ${active ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-800'}`;
-                dot.innerHTML = `<span class="text-[9px] font-black opacity-60">${dayLabelStr}</span><span class="text-sm font-black mt-0.5">${dayNum}</span>`;
-                dot.onclick = () => { currentTargetDay = fullLabelStr; document.getElementById('dateLabel').innerText = currentTargetDay; renderSchedule(); synthSound('Classic Ding'); };
+                dot.innerHTML = `<span class="text-[9px] font-black uppercase opacity-60">${dayLabelStr}</span><span class="text-sm font-black mt-0.5">${dayNum}</span>`;
+                dot.onclick = () => { currentTargetDay = fullLabelStr; document.getElementById('dateLabel').innerText = currentTargetDay; const dayInput = document.getElementById('scheduleDayNameInput'); if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || ""; renderSchedule(); synthSound('Classic Ding'); };
                 strip.appendChild(dot);
             }
         }
