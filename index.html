@@ -355,7 +355,7 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT: CUSTOM TOKEN LIST CREATOR MANAGMENT VIEW -->
+        <!-- TAB CONTENT: CUSTOM REWARDS LIST MANAGMENT VIEW -->
         <div id="tokenListCreatorTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 space-y-2">
                 <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Token Economy Master Structure</span>
@@ -432,23 +432,17 @@
                 <h2 class="text-lg font-black text-slate-900">Board Controls & Configurations</h2>
             </div>
 
-            <!-- PREMIUM ACCOUNT PLANNER CUSTOM AVATAR SYSTEM -->
+            <!-- ACCOUNT PLANNER CUSTOM AVATAR SYSTEM -->
             <div class="bg-gradient-to-tr from-indigo-900 to-slate-900 text-white p-6 rounded-[2.5rem] border-4 border-indigo-400 shadow-lg space-y-4">
                 <div class="flex items-center justify-between border-b border-indigo-800 pb-3">
                     <div>
-                        <span class="bg-amber-400 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">Paid Version Feature</span>
-                        <h3 class="text-base font-black tracking-wide mt-1">🎨 Custom Profile Avatar Studio</h3>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-slate-400">Simulation Override:</span>
-                        <input type="checkbox" id="devPremiumSimModeToggle" onchange="isPremiumUser = this.checked; saveProfilesToStorage(); renderProfileSelector(); renderProfileManagementHub(); renderAvatarStudio();" class="w-5 h-5 accent-emerald-500 rounded cursor-pointer">
-                        <label for="devPremiumSimModeToggle" class="text-xs font-black text-emerald-400">Unlock Paid System</label>
+                        <h3 class="text-base font-black tracking-wide mt-1">🎨 Custom Profile Avatar Studio Hub</h3>
                     </div>
                 </div>
                 
                 <!-- AVATAR STUDIO CONTAINER INTERFACE PANEL -->
-                <div id="avatarStudioPremiumBox" class="opacity-50 pointer-events-none transition-all flex flex-col md:flex-row gap-6 p-4 items-center">
-                    <!-- Custom SVG Dynamic Render Canvas Box -->
+                <div id="avatarStudioPremiumBox" class="transition-all flex flex-col md:flex-row gap-6 p-4 items-center">
+                    <!-- Custom Dynamic Render Canvas Box -->
                     <div class="w-36 h-36 bg-slate-800/80 rounded-full border-4 border-indigo-500/50 flex items-center justify-center relative shadow-inner overflow-hidden select-none shrink-0">
                         <div id="avatarLivePreviewBox" class="text-7xl">🧒</div>
                     </div>
@@ -564,24 +558,6 @@
 
     </div>
 
-    <!-- MOCK NATIVE GOOGLE PLAY PLAN SELECTION WALL OVERLAY MODAL -->
-    <div id="googlePlayPaywallModal" class="fixed inset-0 z-[120] flex items-center justify-center modal-blur p-4 hidden text-slate-800 select-none">
-        <div class="bg-white rounded-[2.5rem] border-4 border-indigo-500 max-w-sm w-full p-6 text-center space-y-5 shadow-2xl relative">
-            <button onclick="closePaywallModal();" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
-            <div class="text-5xl animate-pulse">🔒🚀</div>
-            <h3 class="text-xl font-black text-slate-900">Unlock Paid Version Hub</h3>
-            <p class="text-xs text-slate-400 leading-normal">Free mode is strictly limited to exactly 1 Child Profile. Upgrade now to unlock unlimited profile registers, active transactional ledger auditing, and the interactive custom **Avatar Studio Builder**!</p>
-            <div class="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl text-left space-y-2">
-                <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Safe Google Checkout Secure Overlay</span>
-                <div class="flex items-center justify-between font-black text-slate-800 text-sm">
-                    <span>Premium Lifetime Tier Asset</span>
-                    <span class="text-indigo-600">$4.99 Single Purchase</span>
-                </div>
-            </div>
-            <button onclick="simulateGooglePlayPurchaseSuccess();" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3.5 rounded-2xl shadow-md text-xs transition-all active:scale-95">Purchase Feature Package</button>
-        </div>
-    </div>
-
     <!-- DIALOG OVERLAY MODAL: CENTRALIZED HIGH-INTENSITY ALERTS PORTAL -->
     <div id="celebrationTimerOverlay" class="fixed inset-0 z-[100] flex items-center justify-center modal-blur p-4 hidden text-slate-800">
         <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-8 border-8 border-amber-400 text-center space-y-5 shadow-2xl relative">
@@ -589,6 +565,55 @@
             <h2 class="text-2xl font-black text-slate-900" id="celebrationTimerHeader">Timer Finished!</h2>
             <p class="text-xs text-slate-500 leading-normal" id="celebrationTimerText">Activity Complete</p>
             <button onclick="dismissTimerCelebration();" id="celebrationDismissBtn" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3 rounded-2xl shadow-md transition-all active:scale-95 text-xs">Awesome! Done ✔️</button>
+        </div>
+    </div>
+
+    <!-- DIALOG OVERLAY MODAL: CHOICE SELECTION SWAP POPUP -->
+    <div id="choiceSwapOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 border-4 border-indigo-400 shadow-2xl relative space-y-4">
+            <button onclick="closeSwapOverlay()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
+            <div class="text-center select-none">
+                <span class="text-3xl">🔄</span>
+                <h3 class="text-lg font-black text-slate-900 mt-2">Swap Current Activity</h3>
+                <p class="text-xs text-slate-400">Select a pre-approved option from your pool to switch with this slot.</p>
+            </div>
+            <div id="swapOverlayChoicesList" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+            <button onclick="closeSwapOverlay()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl text-xs transition-all">Cancel & Dismiss</button>
+        </div>
+    </div>
+
+    <!-- DIALOG OVERLAY MODAL: BLUEPRINT CALENDAR TARGET DISPATCHER -->
+    <div id="blueprintDispatchOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 border-4 border-emerald-400 shadow-2xl relative space-y-4">
+            <button onclick="closeBlueprintDispatcher()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
+            <span class="block text-xs font-extrabold text-emerald-600 uppercase tracking-widest leading-none">Load Blueprint Preset</span>
+            <h3 class="text-lg font-black text-slate-900" id="dispatcherTemplateName">Loading...</h3>
+            <div class="space-y-1">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Target Calendar Date:</label>
+                <input type="date" id="dispatcherTargetDate" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-emerald-500 transition-all">
+            </div>
+            <button onclick="dispatchBlueprintToTargetDay()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-2xl shadow-md text-xs">🚀 Load Template to Date</button>
+        </div>
+    </div>
+
+    <!-- DIALOG OVERLAY MODAL: IN-APP EMBEDDED IFRAME PORTAL MODAL -->
+    <div id="iframePortalModal" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-4xl h-[90vh] flex flex-col p-6 shadow-2xl relative border-4 border-indigo-400">
+            <button onclick="closeIframePortal();" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center z-50">✕</button>
+            <div class="border-b pb-3 mb-4 select-none">
+                <span class="block text-[8px] font-black text-indigo-500 uppercase tracking-widest">In-App Document Portal Preview</span>
+                <h3 class="text-base font-black text-slate-900 mt-1" id="iframePortalTitle">Loading Content File...</h3>
+            </div>
+            <div class="flex-grow bg-slate-100 rounded-2xl overflow-hidden relative border">
+                <iframe id="portalIframe" src="" class="w-full h-full border-0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+            </div>
+            <div class="flex items-center justify-between gap-4 mt-4">
+                <p class="text-[10px] text-slate-400 leading-normal max-w-sm">Some worksheets or sheets hosted on strict platforms may restrict frame embedding. If pages remain blank, use backup options on the right.</p>
+                <div class="flex gap-2 shrink-0">
+                    <button id="iframeExternalLinkBtn" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold text-xs px-4 py-2.5 rounded-xl border border-indigo-200">Open in New Tab ↗</button>
+                    <button onclick="closeIframePortal();" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl">Close Preview</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -822,26 +847,26 @@
             pink: "bg-pink-50/80 border-pink-300 shadow-pink-100"
         };
 
-        // PREMIUM EMOTICONS COMPOSITION MAP INDEX KEY
+        // PROFILE AVATAR COMPOSITION VECTOR DICTIONARY MAP
         const avatarMapIndex = {
             "Short-Brown-Casual": "👦", "Short-Black-Casual": "🧒", "Short-Blonde-Casual": "👱", "Short-Red-Casual": "🧑‍🦰",
             "Curly-Brown-Casual": "🦁", "Curly-Black-Casual": "🦱", "Curly-Blonde-Casual": "🐏", "Curly-Red-Casual": "🦊",
             "Spiky-Brown-Casual": "🦔", "Spiky-Black-Casual": "🦅", "Spiky-Blonde-Casual": "🐣", "Spiky-Red-Casual": "🔥",
             "Long-Brown-Casual": "👧", "Long-Black-Casual": "👩", "Long-Blonde-Casual": "👱‍♀️", "Long-Red-Casual": "🍂",
             
-            // Space Suit Combinations
+            // Space Variant Sets
             "Short-Brown-Space": "🧑‍🚀", "Short-Black-Space": "🚀", "Short-Blonde-Space": "🪐", "Short-Red-Space": "☄️",
             "Curly-Brown-Space": "🛸", "Curly-Black-Space": "👽", "Curly-Blonde-Space": "🌟", "Curly-Red-Space": "🌌",
             "Spiky-Brown-Space": "👾", "Spiky-Black-Space": "🛰️", "Spiky-Blonde-Space": "🌙", "Spiky-Red-Space": "☀️",
             "Long-Brown-Space": "👩‍🚀", "Long-Black-Space": "🔋", "Long-Blonde-Space": "⚡", "Long-Red-Space": "🔴",
 
-            // Safari Jungle Suit
+            // Jungle Explorer Variant Sets
             "Short-Brown-Jungle": "🤠", "Short-Black-Jungle": "🥾", "Short-Blonde-Jungle": "🦎", "Short-Red-Jungle": "🐒",
             "Curly-Brown-Jungle": "🐻", "Curly-Black-Jungle": "🦍", "Curly-Blonde-Jungle": "🐆", "Curly-Red-Jungle": "🐅",
             "Spiky-Brown-Jungle": "🌵", "Spiky-Black-Jungle": "🦏", "Spiky-Blonde-Jungle": "🦒", "Spiky-Red-Jungle": "🦜",
             "Long-Brown-Jungle": "👩‍🌾", "Long-Black-Jungle": "🌴", "Long-Blonde-Jungle": "🍌", "Long-Red-Jungle": "🍍",
 
-            // Jersey Gamer Suit
+            // Jersey Retro Variant Sets
             "Short-Brown-Arcade": "🎮", "Short-Black-Arcade": "🕹️", "Short-Blonde-Arcade": "👾", "Short-Red-Arcade": "🎧",
             "Curly-Brown-Arcade": "🛞", "Curly-Black-Arcade": "🏁", "Curly-Blonde-Arcade": "📣", "Curly-Red-Arcade": "🎈",
             "Spiky-Brown-Arcade": "⚡", "Spiky-Black-Arcade": "💥", "Spiky-Blonde-Arcade": "✨", "Spiky-Red-Arcade": "🎯",
@@ -850,8 +875,6 @@
 
         function loadProfilesFromStorage() {
             const savedProfiles = localStorage.getItem('routine_profiles_v4_marketplace');
-            isPremiumUser = localStorage.getItem('routine_premium_unlocked') === 'true';
-            document.getElementById('devPremiumSimModeToggle').checked = isPremiumUser;
 
             if (savedProfiles) {
                 profiles = JSON.parse(savedProfiles);
@@ -903,7 +926,6 @@
         function saveProfilesToStorage() {
             localStorage.setItem('routine_profiles_v4_marketplace', JSON.stringify(profiles));
             localStorage.setItem('routine_active_profile_id', activeProfileId);
-            localStorage.setItem('routine_premium_unlocked', isPremiumUser);
         }
 
         function syncGlobalPointersFromProfile() {
@@ -1007,13 +1029,7 @@
             const name = input.value.trim();
             if (!name) return;
 
-            const profileCount = Object.keys(profiles).length;
-            if (profileCount >= 1 && !isPremiumUser) {
-                openPaywallModal();
-                return;
-            }
-
-            if (profiles["default"] && profiles["default"].name === "Default Profile" && profileCount === 1) {
+            if (profiles["default"] && profiles["default"].name === "Default Profile") {
                 delete profiles["default"];
             }
 
@@ -1059,7 +1075,6 @@
             synthSound('Success Fanfare');
         }
 
-        // DYNAMIC RENDERING FOR LIVE INTERACTIVE PREMIUM AVATAR CANVAS
         function updateLiveAvatarBuild() {
             const hStyle = document.getElementById('avatarHairStyleSelect').value;
             const hColor = document.getElementById('avatarHairColorSelect').value;
@@ -1156,15 +1171,10 @@
         let autoScrollInterval = null;
         function startDragScroll(direction) {
             if (autoScrollInterval) return;
-            autoScrollInterval = setInterval(() => {
-                window.scrollBy(0, direction * 15);
-            }, 16);
+            autoScrollInterval = setInterval(() => { window.scrollBy(0, direction * 15); }, 16);
         }
         function stopDragScroll() {
-            if (autoScrollInterval) {
-                clearInterval(autoScrollInterval);
-                autoScrollInterval = null;
-            }
+            if (autoScrollInterval) { clearInterval(autoScrollInterval); autoScrollInterval = null; }
         }
 
         function renderSchedule() {
@@ -1175,7 +1185,6 @@
                 scheduleActiveDeckName = scheduleLinkedDecks[currentTargetDay];
             }
 
-            // CRITICAL FIX: Proactively guarantee targeted dictionary data arrays lists initialize securely on read
             if (!schedules[currentTargetDay]) {
                 schedules[currentTargetDay] = [];
             }
@@ -1191,14 +1200,7 @@
                 const card = document.createElement('div');
                 card.id = `card-act-${act.id}`;
                 
-                let checkCrossTintStyles = "";
-                if (isCheck) {
-                    checkCrossTintStyles = "backdrop-brightness-125 bg-emerald-50/90 border-emerald-500 scale-[0.99] shadow-inner";
-                } else if (isCross) {
-                    checkCrossTintStyles = "backdrop-brightness-75 bg-slate-900/10 border-rose-500 opacity-75 shadow-inner";
-                } else {
-                    checkCrossTintStyles = borderBgClass;
-                }
+                let checkCrossTintStyles = isCheck ? "backdrop-brightness-125 bg-emerald-50/90 border-emerald-500 scale-[0.99] shadow-inner" : (isCross ? "backdrop-brightness-75 bg-slate-900/10 border-rose-500 opacity-75 shadow-inner" : borderBgClass);
 
                 card.className = `p-4 flex flex-col gap-3 relative border-4 velcro-card text-slate-800 ${checkCrossTintStyles}`;
                 card.setAttribute('draggable', 'false');
@@ -1267,9 +1269,7 @@
                     `;
                 }
 
-                let swapButtonMarkup = act.swappable ? `
-                    <button onclick="openSwapOverlay(${act.id})" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-bold px-3 py-1.5 rounded-xl transition-all">Swap with...</button>
-                ` : '';
+                let swapButtonMarkup = act.swappable ? `<button onclick="openSwapOverlay(${act.id})" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-xs font-bold px-3 py-1.5 rounded-xl transition-all">Swap with...</button>` : '';
 
                 let linksBadgeRow = '';
                 const linksList = [];
@@ -1547,10 +1547,6 @@
             document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
         }
 
-        document.getElementById('celebrationDismissBtn').onclick = function() {
-            dismissTimerCelebration();
-        };
-
         function dismissTimerCelebration() {
             document.getElementById('celebrationTimerOverlay').classList.add('hidden');
             synthSound('Classic Ding');
@@ -1808,7 +1804,7 @@
                     row.innerHTML = `
                         <div class="flex-grow w-full">
                             <label class="block text-[8px] font-black text-slate-400 uppercase mb-0.5">Reward Title / Prize Name:</label>
-                            <input type="text" value="${item.text || ''}" onchange="updateRewardSlotValue(${idx}, 'text', this.value);" class="w-full bg-slate-50 border p-2 rounded-xl text-xs font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-indigo-500">
+                            <input type="text" value="${item.text || ''}" onchange="updateRewardSlotValue(${idx}, 'text', this.value);" class="w-full bg-slate-50 border p-2 rounded-xl text-xs font-bold text-slate-700 focus:bg-white focus:outline-none">
                         </div>
                         <div class="w-full sm:w-28 shrink-0">
                             <label class="block text-[8px] font-black text-amber-600 uppercase mb-0.5">Coin Cost Lock:</label>
@@ -1916,7 +1912,7 @@
 
                 cardNode.innerHTML = `
                     <div class="space-y-1.5">
-                        <span class="block text-[8px] font-black text-indigo-400 uppercase tracking-widest">Arcade Prize Item</span>
+                        <span class="block text-[8px] font-black text-indigo-400 uppercase tracking-widest leading-none">Arcade Prize Item</span>
                         <h4 class="text-base font-black text-slate-800 leading-snug">${prize.text || 'Unnamed Privilege Asset'}</h4>
                     </div>
                     
@@ -1937,6 +1933,17 @@
             renderTransactionHistory();
         }
 
+        // RE-ADDED SECURE REWARDS MARKETPAGE CATEGORY SELECTOR ROUTER
+        function switchMarketplacePage(pageName) {
+            const p = profiles[activeProfileId];
+            if (p) {
+                p.activeRewardPageName = pageName;
+                saveProfilesToStorage();
+                renderRewardsMarketplace();
+                synthSound('Classic Ding');
+            }
+        }
+
         function purchasePrizeAsset(cost, title) {
             if (coinBank >= cost) {
                 coinBank -= cost;
@@ -1949,7 +1956,7 @@
                         id: "tx_" + Date.now() + Math.floor(Math.random() * 1000),
                         title: title,
                         cost: cost,
-                        timestamp: new Date().toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit' })
+                        timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                     });
                 }
                 saveProfilesToStorage();
@@ -1960,7 +1967,6 @@
                 synthSound('Success Fanfare');
                 renderRewardsMarketplace();
 
-                // SPECIFICATION FIX: Swap Alert popup strings layouts matching target criteria
                 document.getElementById('celebrationIcon').innerText = "🎉🎁";
                 document.getElementById('celebrationTimerHeader').innerText = "Congratulations!";
                 document.getElementById('celebrationTimerText').innerText = `You've used ${cost} coins to claim a Reward!`;
@@ -2181,6 +2187,7 @@
             activeDispatchTemplateName = null;
         }
 
+        // RE-ADDED REUSABLE MATRIX DISPATCHER BLUEPRINT PIPELINE UTILITY INTERFACE
         function dispatchBlueprintToTargetDay() {
             const rawDateVal = document.getElementById('dispatcherTargetDate').value;
             if (!rawDateVal || !activeDispatchTemplateName) return;
@@ -2205,7 +2212,6 @@
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
             
-            // CRITICAL FUNCTION FIX: Explicitly enforce workspace re-render after parsing template contents
             renderSchedule();
             switchTab('schedule');
         }
@@ -2233,7 +2239,6 @@
 
         function generateUniqueId() { return Date.now() + Math.floor(Math.random() * 10000); }
 
-        // CRITICAL FUNCTION FIX: Safe initialize workspace dictionary target arrays prior to calling pushes
         function createNewActivity() {
             if (!schedules[currentTargetDay]) {
                 schedules[currentTargetDay] = [];
