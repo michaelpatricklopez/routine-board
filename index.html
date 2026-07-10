@@ -103,7 +103,7 @@
         <!-- CHILDREN MULTI-PROFILE SELECTION RUNTIME STRIP -->
         <div class="flex flex-col sm:flex-row items-center justify-between bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-[2rem] mb-5 gap-3">
             <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                <span class="text-2xl animate-pulse">👤</span>
+                <span id="activeAvatarInlineDisplay" class="text-3xl bg-white w-12 h-12 rounded-full border shadow-sm flex items-center justify-center select-none">🧒</span>
                 <div class="flex-grow sm:flex-grow-0">
                     <label class="block text-[9px] font-black text-indigo-500 uppercase tracking-wider leading-none mb-1">Active Child Profile</label>
                     <select id="profileSelector" onchange="switchProfile(this.value);" class="bg-white border-2 border-indigo-200 p-2 rounded-xl text-xs font-black text-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer min-w-[140px] shadow-sm">
@@ -291,7 +291,6 @@
                     
                     <div class="flex flex-col sm:flex-row items-end gap-3.5 bg-white p-4 rounded-2xl border">
                         <div class="flex-grow space-y-1">
-                            <img src="" class="hidden" alt="">
                             <label class="block text-[9px] font-bold text-slate-400 uppercase">Custom Preset Name:</label>
                             <input type="text" id="newTemplateNameInput" placeholder="e.g. High School Class Routine" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-indigo-500 transition-all">
                         </div>
@@ -329,7 +328,7 @@
                     </div>
                     <div class="border-t pt-4 space-y-3">
                         <span class="block text-[9px] font-black text-slate-400 uppercase">Create New Deck Profile:</span>
-                        <input type="text" id="createNewDeckNameInput" placeholder="Deck Name (e.g. Rainy Day)" class="w-full bg-slate-50 border p-2.5 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-indigo-500">
+                        <input type="text" id="createNewAltDeckInput" placeholder="Deck Name (e.g. Rainy Day)" class="w-full bg-slate-50 border p-2.5 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-indigo-500">
                         <button onclick="createNewAltDeckRegistry();" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow-sm transition-all">+ Create Deck</button>
                     </div>
                 </div>
@@ -356,7 +355,7 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT: CUSTOM REWARDS LIST MANAGMENT VIEW -->
+        <!-- TAB CONTENT: CUSTOM TOKEN LIST CREATOR MANAGMENT VIEW -->
         <div id="tokenListCreatorTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 space-y-2">
                 <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Token Economy Master Structure</span>
@@ -393,7 +392,7 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT: VISUAL USER-FACING REWARDS MARKETPLACE Store VIEW -->
+        <!-- TAB CONTENT: VISUAL USER-FACING REWARDS MARKETPLACE VIEW -->
         <div id="rewardsMarketplaceTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="space-y-1">
@@ -429,17 +428,47 @@
         <!-- TAB CONTENT: SYSTEM CONFIG SETTINGS -->
         <div id="settingsTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 space-y-2">
-                <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">System Settings</span>
-                <h2 class="text-lg font-black text-slate-900">Board Controls & Themes</h2>
-                <p class="text-xs text-slate-400">Customize visual representations, manage default settings, and perform administrative adjustments on token profiles.</p>
+                <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">System Settings Hub</span>
+                <h2 class="text-lg font-black text-slate-900">Board Controls & Configurations</h2>
+            </div>
+
+            <!-- PREMIUM ACCOUNT PLANNER CUSTOM AVATAR SYSTEM -->
+            <div class="bg-gradient-to-tr from-indigo-900 to-slate-900 text-white p-6 rounded-[2.5rem] border-4 border-indigo-400 shadow-lg space-y-4">
+                <div class="flex items-center justify-between border-b border-indigo-800 pb-3">
+                    <div>
+                        <span class="bg-amber-400 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">Paid Version Feature</span>
+                        <h3 class="text-base font-black tracking-wide mt-1">🎨 Custom Profile Avatar Studio</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-slate-400">Simulation Override:</span>
+                        <input type="checkbox" id="devPremiumSimModeToggle" onchange="isPremiumUser = this.checked; saveProfilesToStorage(); renderProfileSelector(); renderProfileManagementHub(); renderAvatarStudio();" class="w-5 h-5 accent-emerald-500 rounded cursor-pointer">
+                        <label for="devPremiumSimModeToggle" class="text-xs font-black text-emerald-400">Unlock Paid System</label>
+                    </div>
+                </div>
+                
+                <div id="avatarStudioPremiumBox" class="opacity-50 pointer-events-none transition-all grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                    <p class="text-xs text-slate-300 leading-normal">Assign a unique character identity emblem directly to the active child profile setup to display across dashboards.</p>
+                    <div class="flex flex-wrap gap-2 justify-end" id="avatarEmblemSelectionGrid">
+                        <!-- Loaded via loop structure -->
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- PROFILE MANAGER HUB ADMINISTRATION BOX -->
+                <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-4">
+                    <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">👥 Profile Database Administration</h3>
+                    <p class="text-xs text-slate-400">Rename misspelled labels or clean up old profiles from storage.</p>
+                    <div class="space-y-3" id="settingsProfileManagementHubContainer">
+                        <!-- Populated via javascript utility mapping loops -->
+                    </div>
+                </div>
+
                 <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-5">
                     <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">Visual Customization</h3>
                     <div class="space-y-1.5">
                         <label class="block text-xs font-bold text-slate-500 uppercase">Board Theme:</label>
-                        <select id="boardThemeSelector" onchange="updateTheme(this.value);" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-700 focus:outline-none focus:border-indigo-500">
+                        <select id="boardThemeSelector" onchange="updateTheme(this.value);" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-700 focus:outline-none">
                             <optgroup label="Playful Themes" class="font-bold text-slate-950">
                                 <option value="theme-pastel">Calming Pastel</option>
                                 <option value="theme-space">Galactic Space</option>
@@ -460,7 +489,7 @@
 
                     <div class="space-y-1.5">
                         <label class="block text-xs font-bold text-slate-500 uppercase">Font:</label>
-                        <select id="boardFontSelector" onchange="updateFont(this.value);" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-700 focus:outline-none focus:border-indigo-500">
+                        <select id="boardFontSelector" onchange="updateFont(this.value);" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-700 focus:outline-none">
                             <optgroup label="Playful Fonts" class="font-bold text-slate-950">
                                 <option value="font-rounded">Fredoka Rounded</option>
                                 <option value="font-comic">Comic Readable</option>
@@ -474,26 +503,50 @@
                         </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-4">
-                    <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">Administrative Actions</h3>
-                    <p class="text-xs text-slate-400 leading-normal">If a child's visual coins ever get desynchronized (e.g., from browser cached loads), parents can override the active totals here.</p>
-                    
-                    <div class="flex items-center gap-3">
-                        <div class="flex-grow space-y-1">
-                            <label class="block text-[9px] font-bold text-slate-400 uppercase">Manually Set Coin Count:</label>
-                            <input type="number" id="manualCoinAdjusterField" min="0" value="0" class="w-full bg-slate-50 border p-2.5 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-indigo-500 transition-all">
-                        </div>
-                        <button onclick="reconcileMysteryCoins();" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition-all shrink-0 mt-4.5">⚖️ Update Balance</button>
+            <!-- ADMINISTRATIVE MANUAL OVERRIDES -->
+            <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-4">
+                <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">Cache Overrides</h3>
+                <div class="flex items-center gap-3">
+                    <div class="flex-grow space-y-1">
+                        <label class="block text-[9px] font-bold text-slate-400 uppercase">Manually Set Coin Count:</label>
+                        <input type="number" id="manualCoinAdjusterField" min="0" value="0" class="w-full bg-slate-50 border p-2.5 rounded-xl font-bold text-slate-800 text-sm focus:outline-none">
                     </div>
-
-                    <div class="border-t pt-4">
-                        <button onclick="resetRoutineDatabaseToDefaults();" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-600 font-extrabold py-3 rounded-2xl text-xs border border-rose-200 transition-all active:scale-95">⚠️ Master System Reset (Clear Cache)</button>
-                    </div>
+                    <button onclick="reconcileMysteryCoins();" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs shrink-0 mt-4.5">⚖️ Update Balance</button>
                 </div>
+                <button onclick="resetRoutineDatabaseToDefaults();" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-600 font-extrabold py-3 rounded-2xl text-xs border border-rose-200 transition-all">⚠️ Master System Reset (Clear Cache)</button>
             </div>
         </div>
 
+    </div>
+
+    <!-- MOCK NATIVE GOOGLE PLAY PLAN SELECTION WALL OVERLAY MODAL -->
+    <div id="googlePlayPaywallModal" class="fixed inset-0 z-[120] flex items-center justify-center modal-blur p-4 hidden text-slate-800 select-none">
+        <div class="bg-white rounded-[2.5rem] border-4 border-indigo-500 max-w-sm w-full p-6 text-center space-y-5 shadow-2xl relative">
+            <button onclick="closePaywallModal();" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
+            <div class="text-5xl animate-pulse">🔒🚀</div>
+            <h3 class="text-xl font-black text-slate-900">Unlock Paid Version</h3>
+            <p class="text-xs text-slate-400 leading-normal">Free mode is limited to exactly 1 Child Profile. Upgrade now to unlock unlimited profiles, custom transaction ledgers, and the **Avatar Studio**!</p>
+            <div class="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl text-left space-y-2">
+                <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Safe Google Checkout Secure Overlay</span>
+                <div class="flex items-center justify-between font-black text-slate-800 text-sm">
+                    <span>Premium Lifetime Tier Asset</span>
+                    <span class="text-indigo-600">$4.99 Single Purchase</span>
+                </div>
+            </div>
+            <button onclick="simulateGooglePlayPurchaseSuccess();" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3.5 rounded-2xl shadow-md text-xs transition-all active:scale-95">Purchase Feature Package</button>
+        </div>
+    </div>
+
+    <!-- DIALOG OVERLAY MODAL: CENTRALIZED HIGH-INTENSITY ALERTS PORTAL -->
+    <div id="celebrationTimerOverlay" class="fixed inset-0 z-[100] flex items-center justify-center modal-blur p-4 hidden text-slate-800">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-8 border-8 border-amber-400 text-center space-y-5 shadow-2xl relative">
+            <div class="text-5xl animate-bounce" id="celebrationIcon">⏰🎉</div>
+            <h2 class="text-2xl font-black text-slate-900" id="celebrationTimerHeader">Timer Finished!</h2>
+            <p class="text-xs text-slate-500 leading-normal" id="celebrationTimerText">Activity Complete</p>
+            <button onclick="dismissTimerCelebration();" id="celebrationDismissBtn" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3 rounded-2xl shadow-md transition-all active:scale-95 text-xs">Awesome! Done ✔️</button>
+        </div>
     </div>
 
     <!-- DIALOG OVERLAY MODAL: CHOICE SELECTION SWAP POPUP -->
@@ -521,16 +574,6 @@
                 <input type="date" id="dispatcherTargetDate" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-emerald-500 transition-all">
             </div>
             <button onclick="dispatchBlueprintToTargetDay()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-2xl shadow-md transition-all active:scale-95 text-xs">🚀 Load Template to Date</button>
-        </div>
-    </div>
-
-    <!-- DIALOG OVERLAY MODAL: HIGH-INTENSITY CELEBRATION TIMER FINISH -->
-    <div id="celebrationTimerOverlay" class="fixed inset-0 z-[100] flex items-center justify-center modal-blur p-4 hidden text-slate-800">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-8 border-8 border-amber-400 text-center space-y-5 shadow-2xl relative">
-            <div class="text-5xl animate-bounce">⏰🎉</div>
-            <h2 class="text-2xl font-black text-slate-900">Timer Finished!</h2>
-            <p class="text-xs text-slate-500 leading-normal" id="celebrationTimerText">Activity Complete</p>
-            <button onclick="dismissTimerCelebration();" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3 rounded-2xl shadow-md transition-all active:scale-95 text-xs">Awesome! Done ✔️</button>
         </div>
     </div>
 
@@ -747,14 +790,14 @@
             }
         }
 
-        window.addEventListener('touchstart', () => {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }, { once: true });
-        window.addEventListener('mousedown', () => {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }, { once: true });
+        function adjustMasterGain(val) {
+            const normalized = val / 100;
+            masterGainNode.gain.setValueAtTime(normalized, audioCtx.currentTime);
+            localStorage.setItem('routine_volume', val);
+        }
 
-        // MULTI-PROFILE CENTRALIZED ARCHITECTURE DATA STRUCTURES
+        // Centralized System Settings Data Variables
+        let isPremiumUser = false;
         let profiles = {};
         let activeProfileId = "default";
 
@@ -763,7 +806,6 @@
         let activeBoardTheme = 'theme-pastel';
         let activeBoardFont = 'font-rounded';
 
-        // AUTOMATIC DATE INITIALIZATION LAUNCHER
         let activeSystemDateObj = new Date(); 
         let currentTargetDay = activeSystemDateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -776,20 +818,11 @@
         let scheduleLinkedDecks = {};
         let scheduleNames = {};
 
-        const cardColors = {
-            slate: "bg-white/80 border-slate-200/60 shadow-sm",
-            blue: "bg-sky-50/80 border-sky-300 shadow-sky-100",
-            green: "bg-emerald-50/80 border-emerald-300 shadow-emerald-100",
-            red: "bg-rose-50/80 border-rose-300 shadow-rose-100",
-            orange: "bg-orange-50/80 border-orange-300 shadow-orange-100",
-            yellow: "bg-amber-50/80 border-amber-300 shadow-amber-100",
-            purple: "bg-purple-50/80 border-purple-300 shadow-purple-100",
-            pink: "bg-pink-50/80 border-pink-300 shadow-pink-100"
-        };
-
-        // PROFILE STORAGE MIGRATOR
         function loadProfilesFromStorage() {
             const savedProfiles = localStorage.getItem('routine_profiles_v4_marketplace');
+            isPremiumUser = localStorage.getItem('routine_premium_unlocked') === 'true';
+            document.getElementById('devPremiumSimModeToggle').checked = isPremiumUser;
+
             if (savedProfiles) {
                 profiles = JSON.parse(savedProfiles);
                 activeProfileId = localStorage.getItem('routine_active_profile_id') || Object.keys(profiles)[0] || "default";
@@ -797,6 +830,7 @@
                 profiles = {
                     "default": {
                         name: "Default Profile",
+                        avatar: "🧒",
                         coinBank: parseInt(localStorage.getItem('routine_coins')) || 0,
                         alternativeDecks: JSON.parse(localStorage.getItem('routine_alt_decks')) || {
                             "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
@@ -838,6 +872,7 @@
         function saveProfilesToStorage() {
             localStorage.setItem('routine_profiles_v4_marketplace', JSON.stringify(profiles));
             localStorage.setItem('routine_active_profile_id', activeProfileId);
+            localStorage.setItem('routine_premium_unlocked', isPremiumUser);
         }
 
         function syncGlobalPointersFromProfile() {
@@ -852,9 +887,11 @@
             scheduleLinkedDecks = p.scheduleLinkedDecks || {};
             scheduleNames = p.scheduleNames || {};
             p.transactions = p.transactions || [];
+            p.avatar = p.avatar || "🧒";
 
             document.getElementById('piggyBankCoinCount').innerText = `${coinBank} Coins`;
             document.getElementById('manualCoinAdjusterField').value = coinBank;
+            document.getElementById('activeAvatarInlineDisplay').innerText = p.avatar;
         }
 
         function commitToDisk() {
@@ -868,7 +905,6 @@
             p.schedules = schedules;
             p.scheduleLinkedDecks = scheduleLinkedDecks;
             p.scheduleNames = scheduleNames;
-
             saveProfilesToStorage();
         }
 
@@ -876,6 +912,7 @@
             loadProfilesFromStorage();
             syncGlobalPointersFromProfile();
             renderProfileSelector();
+            renderAvatarStudio();
 
             activeBoardTheme = localStorage.getItem('routine_theme') || 'theme-pastel';
             activeBoardFont = localStorage.getItem('routine_font') || 'font-rounded';
@@ -910,7 +947,7 @@
             Object.keys(profiles).forEach(id => {
                 const opt = document.createElement('option');
                 opt.value = id;
-                opt.text = profiles[id].name;
+                opt.text = (profiles[id].avatar || "🧒") + " " + profiles[id].name;
                 opt.selected = (id === activeProfileId);
                 select.appendChild(opt);
             });
@@ -920,6 +957,7 @@
             activeProfileId = id;
             syncGlobalPointersFromProfile();
             renderProfileSelector();
+            renderAvatarStudio();
             
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
@@ -937,13 +975,20 @@
             const name = input.value.trim();
             if (!name) return;
 
-            if (profiles["default"]) {
+            const profileCount = Object.keys(profiles).length;
+            if (profileCount >= 1 && !isPremiumUser) {
+                openPaywallModal();
+                return;
+            }
+
+            if (profiles["default"] && profiles["default"].name === "Default Profile" && profileCount === 1) {
                 delete profiles["default"];
             }
 
             const id = "profile_" + Date.now();
             profiles[id] = {
                 name: name,
+                avatar: "🧒",
                 coinBank: 0,
                 alternativeDecks: {
                     "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
@@ -977,7 +1022,106 @@
             activeProfileId = id;
             saveProfilesToStorage();
             switchProfile(id);
+            renderProfileManagementHub();
             synthSound('Success Fanfare');
+        }
+
+        function openPaywallModal() { document.getElementById('googlePlayPaywallModal').classList.remove('hidden'); synthSound('Game Buzzer'); }
+        function closePaywallModal() { document.getElementById('googlePlayPaywallModal').classList.add('hidden'); }
+        function simulateGooglePlayPurchaseSuccess() {
+            isPremiumUser = true;
+            document.getElementById('devPremiumSimModeToggle').checked = true;
+            saveProfilesToStorage();
+            closePaywallModal();
+            renderProfileSelector();
+            renderProfileManagementHub();
+            renderAvatarStudio();
+            
+            document.getElementById('celebrationIcon').innerText = "🔒✨";
+            document.getElementById('celebrationTimerHeader').innerText = "Upgrade Successful!";
+            document.getElementById('celebrationTimerText').innerText = "Paid Version features are now completely unlocked!";
+            document.getElementById('celebrationDismissBtn').innerText = "Done";
+            document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
+            synthSound('Success Fanfare');
+        }
+
+        function renderProfileManagementHub() {
+            const container = document.getElementById('settingsProfileManagementHubContainer');
+            if (!container) return;
+            container.innerHTML = "";
+
+            Object.keys(profiles).forEach(id => {
+                const prof = profiles[id];
+                const row = document.createElement('div');
+                row.className = "bg-slate-50 p-3 rounded-xl border flex flex-col sm:flex-row items-center justify-between gap-2.5 shadow-sm shadow-slate-100/50";
+                row.innerHTML = `
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <span class="text-xl">${prof.avatar || "🧒"}</span>
+                        <input type="text" value="${prof.name}" onchange="administrativeRenameProfile('${id}', this.value)" class="bg-white font-bold text-xs p-2 rounded-lg border focus:outline-none w-full sm:w-44 text-slate-800">
+                    </div>
+                    <button onclick="administrativeDeleteProfile('${id}')" class="text-[11px] font-black text-rose-600 bg-rose-50 border border-rose-200 hover:bg-rose-100 px-3 py-1.5 rounded-lg shrink-0">Delete</button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function administrativeRenameProfile(id, newName) {
+            const clean = newName.trim();
+            if (!clean || !profiles[id]) return;
+            profiles[id].name = clean;
+            saveProfilesToStorage();
+            renderProfileSelector();
+            if (id === activeProfileId) syncGlobalPointersFromProfile();
+            synthSound('Classic Ding');
+        }
+
+        function administrativeDeleteProfile(id) {
+            if (Object.keys(profiles).length <= 1) {
+                alert("The data vault requires at least one active profile. Create another profile before wiping this slot.");
+                return;
+            }
+            if (confirm(`Permanently drop profile "${profiles[id].name}" and delete all records?`)) {
+                delete profiles[id];
+                if (activeProfileId === id) { activeProfileId = Object.keys(profiles)[0]; }
+                saveProfilesToStorage();
+                switchProfile(activeProfileId);
+                renderProfileManagementHub();
+                synthSound('Game Buzzer');
+            }
+        }
+
+        function renderAvatarStudio() {
+            const studioBox = document.getElementById('avatarStudioPremiumBox');
+            if (isPremiumUser) {
+                studioBox.classList.remove('opacity-50', 'pointer-events-none');
+            } else {
+                studioBox.classList.add('opacity-50', 'pointer-events-none');
+            }
+
+            const grid = document.getElementById('avatarEmblemSelectionGrid');
+            if (!grid) return;
+            grid.innerHTML = "";
+
+            const activeAvatar = profiles[activeProfileId]?.avatar || "🧒";
+
+            avatarList.forEach(av => {
+                const isSelected = (av === activeAvatar);
+                const btn = document.createElement('button');
+                btn.className = `w-10 h-11 border text-xl rounded-xl flex items-center justify-center transition-all shadow-sm ${isSelected ? 'bg-indigo-600 border-indigo-400 text-white scale-105' : 'bg-slate-800 border-indigo-900/40 text-slate-200 hover:bg-slate-700'}`;
+                btn.innerText = av;
+                btn.onclick = () => {
+                    if (profiles[activeProfileId]) {
+                        profiles[activeProfileId].avatar = av;
+                        saveProfilesToStorage();
+                        syncGlobalPointersFromProfile();
+                        renderProfileSelector();
+                        renderAvatarStudio();
+                        renderProfileManagementHub();
+                        synthSound('Pop');
+                    }
+                };
+                grid.appendChild(btn);
+            });
         }
 
         let draggedIndex = null;
@@ -1113,9 +1257,9 @@
                         <div class="mt-2 bg-slate-50 p-3 rounded-2xl border-2 border-dashed border-slate-200">
                             <span class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">📋 Check off Steps:</span>
                             <div class="space-y-1.5">
-                                ${act.subtasks.map(sub => `
+                                ${act.subtasks.map((sub, sIdx) => `
                                     <label class="flex items-center gap-2.5 text-xs font-bold cursor-pointer select-none">
-                                        <input type="checkbox" ${sub.completed ? 'checked' : ''} onchange="toggleSubtask(${act.id}, ${sub.id})" class="w-5 h-5 rounded-md accent-indigo-600">
+                                        <input type="checkbox" ${sub.completed ? 'checked' : ''} onchange="toggleSubtask(${act.id}, ${sIdx})" class="w-5 h-5 rounded-md accent-indigo-600">
                                         <span class="${sub.completed ? 'line-through text-slate-400' : 'text-slate-700'}">${sub.text}</span>
                                     </label>
                                 `).join('')}
@@ -1212,6 +1356,7 @@
                             <span class="block text-xs font-black text-slate-500 uppercase tracking-wide">🔗 Resource Links (Up to 3):</span>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div class="space-y-1">
+                                    <img src="" class="hidden" alt="">
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase">Link 1 Label & URL:</label>
                                     <input type="text" placeholder="Label" value="${act.link1Label || ''}" onchange="updateCard(${act.id}, 'link1Label', this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl text-xs font-bold text-slate-700 focus:outline-none">
                                     <input type="text" placeholder="URL" value="${act.link1 || ''}" onchange="updateCard(${act.id}, 'link1', this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl text-xs text-slate-600 focus:outline-none">
@@ -1312,7 +1457,7 @@
             } else {
                 deckChoices.forEach(choice => {
                     const btn = document.createElement('button');
-                    btn.className = "w-full text-left p-3.5 bg-slate-50 hover:bg-indigo-50 border rounded-2xl text-xs font-black text-slate-700 flex items-center justify-between";
+                    btn.className = "w-full text-left p-3.5 bg-slate-50 hover:bg-indigo-50 border rounded-2xl text-xs font-black text-slate-700 flex items-center justify-between mb-1.5";
                     btn.innerHTML = `<span>${choice}</span> <span class="bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full text-[10px]">Select</span>`;
                     btn.onclick = () => swapActiveCardWithAlternative(choice);
                     container.appendChild(btn);
@@ -1417,7 +1562,10 @@
         }, 1000);
 
         function triggerVisualAlert(title) {
+            document.getElementById('celebrationIcon').innerText = "⏰🎉";
+            document.getElementById('celebrationTimerHeader').innerText = "Timer Finished!";
             document.getElementById('celebrationTimerText').innerText = `Your activity "${title}" timer is done!`;
+            document.getElementById('celebrationDismissBtn').innerText = "Awesome! Done ✔️";
             document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
         }
 
@@ -1576,7 +1724,7 @@
         }
 
         function createNewAltDeckRegistry() {
-            const input = document.getElementById('createNewDeckNameInput');
+            const input = document.getElementById('createNewAltDeckInput');
             const name = input.value.trim();
             if (!name) return;
             alternativeDecks[name] = ["New Activity Card 1", "New Activity Card 2"];
@@ -1677,7 +1825,6 @@
                     row.className = "flex flex-col sm:flex-row gap-3 items-center bg-white p-3 rounded-2xl border shadow-sm w-full";
                     row.innerHTML = `
                         <div class="flex-grow w-full">
-                            <img src="" class="hidden" alt="">
                             <label class="block text-[8px] font-black text-slate-400 uppercase mb-0.5">Reward Title / Prize Name:</label>
                             <input type="text" value="${item.text || ''}" onchange="updateRewardSlotValue(${idx}, 'text', this.value);" class="w-full bg-slate-50 border p-2 rounded-xl text-xs font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-indigo-500">
                         </div>
@@ -1797,7 +1944,7 @@
                             <span class="text-xs font-black text-amber-800">${lockCost} Coins</span>
                         </div>
                         
-                        <button onclick="purchasePrizeAsset(${lockCost}, '${prize.text.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95 shadow-sm ${canAfford ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-100' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}">
+                        <button onclick="purchasePrizeAsset(${lockCost}, '${prize.text.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95 shadow-sm ${canAfford ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-100' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}" ${canAfford ? '' : 'disabled'}>
                             Exchange
                         </button>
                     </div>
@@ -1841,8 +1988,11 @@
                 synthSound('Success Fanfare');
                 renderRewardsMarketplace();
 
-                // Custom altered structural text assignment per requested specification adjustments
+                // Custom operational victory overlay panel update elements
+                document.getElementById('celebrationIcon').innerText = "🎉🎁";
+                document.getElementById('celebrationTimerHeader').innerText = "Congratulations!";
                 document.getElementById('celebrationTimerText').innerText = `You've used ${cost} coins to claim a Reward!`;
+                document.getElementById('celebrationDismissBtn').innerText = "Done";
                 document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
             } else {
                 synthSound('Game Buzzer');
@@ -1861,7 +2011,6 @@
                 return;
             }
 
-            // Append chronologically descending lists
             [...p.transactions].reverse().forEach(tx => {
                 const row = document.createElement('div');
                 row.className = "bg-white border-2 p-3.5 rounded-2xl shadow-sm flex items-center justify-between gap-3 text-xs";
@@ -1890,11 +2039,9 @@
             if (index !== -1) {
                 const targetTx = p.transactions[index];
                 
-                // Refund processing logic parameters
                 coinBank += targetTx.cost;
                 p.coinBank = coinBank;
                 
-                // Splice mutation arrays logs records
                 p.transactions.splice(index, 1);
                 saveProfilesToStorage();
 
@@ -2047,7 +2194,7 @@
 
             Object.keys(templates).forEach(key => {
                 const node = document.createElement('div');
-                node.className = "bg-white p-5 rounded-[2rem] border-2 space-y-4";
+                node.className = "bg-white p-5 rounded-[2rem] border-2 space-y-4 shadow-sm";
                 node.innerHTML = `
                     <div class="flex items-center justify-between border-b pb-2">
                         <div>
@@ -2056,7 +2203,7 @@
                         </div>
                         <span class="bg-indigo-100 text-indigo-800 text-[10px] px-2.5 py-1 rounded-full font-black">Tasks: ${templates[key].length}</span>
                     </div>
-                    <div class="flex flex-wrap gap-1.5 pt-2">
+                    <div class="flex flex-wrap gap-1.5 pt-2 select-none">
                         <button onclick="enterBlueprintDesigner('${key}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs px-3.5 py-2 rounded-xl">✏️ Edit Blueprint</button>
                         <button onclick="openBlueprintDispatcher('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-sm">🚀 Load to Date</button>
                         <button onclick="deleteTemplate('${key}')" class="text-rose-500 hover:text-rose-700 text-xs font-bold px-2 ml-auto">Delete</button>
@@ -2232,13 +2379,6 @@
             }
         }
 
-        function deployMusicWidgetHTML(source) {
-            const viewport = document.getElementById('musicIframeViewport');
-            if (source.includes('<iframe')) viewport.innerHTML = source;
-            else viewport.innerHTML = `<iframe src="${source}" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-            document.getElementById('musicUnloadControlBtn').classList.remove('hidden');
-        }
-
         function changeDate(direction) {
             const currentRef = new Date(currentTargetDay);
             if (!isNaN(currentRef.getTime())) {
@@ -2270,6 +2410,13 @@
             synthSound('Game Buzzer');
         }
 
+        function deployMusicWidgetHTML(source) {
+            const viewport = document.getElementById('musicIframeViewport');
+            if (source.includes('<iframe')) viewport.innerHTML = source;
+            else viewport.innerHTML = `<iframe src="${source}" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+            document.getElementById('musicUnloadControlBtn').classList.remove('hidden');
+        }
+
         function updateTheme(cls) {
             const body = document.getElementById('mainLayoutBody');
             body.className = body.className.replace(/\btheme-\S+/g, '');
@@ -2299,7 +2446,6 @@
             }
         }
 
-        // NAVIGATION SWITCHER TABS MANAGER
         function switchTab(tabKey) {
             activeViewTab = tabKey;
             
@@ -2340,6 +2486,7 @@
             } else if (tabKey === 'settings') {
                 document.getElementById('settingsTab').classList.remove('hidden');
                 document.getElementById('tab-settings').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
+                renderProfileManagementHub();
             }
             synthSound('Classic Ding');
         }
