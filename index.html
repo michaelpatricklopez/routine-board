@@ -446,10 +446,53 @@
                     </div>
                 </div>
                 
-                <div id="avatarStudioPremiumBox" class="opacity-50 pointer-events-none transition-all grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                    <p class="text-xs text-slate-300 leading-normal">Assign a unique character identity emblem directly to the active child profile setup to display across dashboards.</p>
-                    <div class="flex flex-wrap gap-2 justify-end" id="avatarEmblemSelectionGrid">
-                        <!-- Loaded via loop structure -->
+                <!-- AVATAR STUDIO CONTAINER INTERFACE PANEL -->
+                <div id="avatarStudioPremiumBox" class="opacity-50 pointer-events-none transition-all flex flex-col md:flex-row gap-6 p-4 items-center">
+                    <!-- Custom SVG Dynamic Render Canvas Box -->
+                    <div class="w-36 h-36 bg-slate-800/80 rounded-full border-4 border-indigo-500/50 flex items-center justify-center relative shadow-inner overflow-hidden select-none shrink-0">
+                        <div id="avatarLivePreviewBox" class="text-7xl">🧒</div>
+                    </div>
+
+                    <div class="flex-grow space-y-4 w-full">
+                        <div class="grid grid-cols-2 gap-3 text-xs text-slate-900">
+                            <div>
+                                <label class="block font-black uppercase text-indigo-300 mb-1">Hairstyle</label>
+                                <select id="avatarHairStyleSelect" onchange="updateLiveAvatarBuild();" class="w-full p-2 bg-slate-800 text-slate-100 border border-slate-700 rounded-xl font-bold focus:outline-none">
+                                    <option value="Short">Short Trim</option>
+                                    <option value="Curly">Curly Afro</option>
+                                    <option value="Spiky">Spiky Punk</option>
+                                    <option value="Long">Long Braids</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-black uppercase text-indigo-300 mb-1">Hair Color</label>
+                                <select id="avatarHairColorSelect" onchange="updateLiveAvatarBuild();" class="w-full p-2 bg-slate-800 text-slate-100 border border-slate-700 rounded-xl font-bold focus:outline-none">
+                                    <option value="Brown">Classic Brown</option>
+                                    <option value="Black">Midnight Black</option>
+                                    <option value="Blonde">Gold Blonde</option>
+                                    <option value="Red">Ginger Red</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-black uppercase text-indigo-300 mb-1">Outfit Costume</label>
+                                <select id="avatarOutfitSelect" onchange="updateLiveAvatarBuild();" class="w-full p-2 bg-slate-800 text-slate-100 border border-slate-700 rounded-xl font-bold focus:outline-none">
+                                    <option value="Casual">Casual Hoodie</option>
+                                    <option value="Space">Galactic Spacesuit</option>
+                                    <option value="Jungle">Safari Explorer</option>
+                                    <option value="Arcade">Retro Gamer Jersey</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-black uppercase text-indigo-300 mb-1">Accessory Item</label>
+                                <select id="avatarAccessorySelect" onchange="updateLiveAvatarBuild();" class="w-full p-2 bg-slate-800 text-slate-100 border border-slate-700 rounded-xl font-bold focus:outline-none">
+                                    <option value="None">None</option>
+                                    <option value="Glasses">Cool Glasses</option>
+                                    <option value="Headphones">Gamer Headset</option>
+                                    <option value="Crown">Royal Tiara Crown</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onclick="commitBuiltAvatarToActiveProfile();" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-black py-2.5 rounded-xl text-xs shadow-md transition-all">✨ Save Avatar Blueprint Config</button>
                     </div>
                 </div>
             </div>
@@ -526,8 +569,8 @@
         <div class="bg-white rounded-[2.5rem] border-4 border-indigo-500 max-w-sm w-full p-6 text-center space-y-5 shadow-2xl relative">
             <button onclick="closePaywallModal();" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
             <div class="text-5xl animate-pulse">🔒🚀</div>
-            <h3 class="text-xl font-black text-slate-900">Unlock Paid Version</h3>
-            <p class="text-xs text-slate-400 leading-normal">Free mode is limited to exactly 1 Child Profile. Upgrade now to unlock unlimited profiles, custom transaction ledgers, and the **Avatar Studio**!</p>
+            <h3 class="text-xl font-black text-slate-900">Unlock Paid Version Hub</h3>
+            <p class="text-xs text-slate-400 leading-normal">Free mode is strictly limited to exactly 1 Child Profile. Upgrade now to unlock unlimited profile registers, active transactional ledger auditing, and the interactive custom **Avatar Studio Builder**!</p>
             <div class="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl text-left space-y-2">
                 <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Safe Google Checkout Secure Overlay</span>
                 <div class="flex items-center justify-between font-black text-slate-800 text-sm">
@@ -546,55 +589,6 @@
             <h2 class="text-2xl font-black text-slate-900" id="celebrationTimerHeader">Timer Finished!</h2>
             <p class="text-xs text-slate-500 leading-normal" id="celebrationTimerText">Activity Complete</p>
             <button onclick="dismissTimerCelebration();" id="celebrationDismissBtn" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3 rounded-2xl shadow-md transition-all active:scale-95 text-xs">Awesome! Done ✔️</button>
-        </div>
-    </div>
-
-    <!-- DIALOG OVERLAY MODAL: CHOICE SELECTION SWAP POPUP -->
-    <div id="choiceSwapOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
-        <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 border-4 border-indigo-400 shadow-2xl relative space-y-4">
-            <button onclick="closeSwapOverlay()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
-            <div class="text-center select-none">
-                <span class="text-3xl">🔄</span>
-                <h3 class="text-lg font-black text-slate-900 mt-2">Swap Current Activity</h3>
-                <p class="text-xs text-slate-400">Select a pre-approved option from your pool to switch with this slot.</p>
-            </div>
-            <div id="swapOverlayChoicesList" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
-            <button onclick="closeSwapOverlay()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl text-xs transition-all">Cancel & Dismiss</button>
-        </div>
-    </div>
-
-    <!-- DIALOG OVERLAY MODAL: BLUEPRINT CALENDAR TARGET DISPATCHER -->
-    <div id="blueprintDispatchOverlay" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
-        <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 border-4 border-emerald-400 shadow-2xl relative space-y-4">
-            <button onclick="closeBlueprintDispatcher()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center">✕</button>
-            <span class="block text-xs font-extrabold text-emerald-600 uppercase tracking-widest leading-none">Load Blueprint Preset</span>
-            <h3 class="text-lg font-black text-slate-900" id="dispatcherTemplateName">Loading...</h3>
-            <div class="space-y-1">
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Target Calendar Date:</label>
-                <input type="date" id="dispatcherTargetDate" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-emerald-500 transition-all">
-            </div>
-            <button onclick="dispatchBlueprintToTargetDay()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 rounded-2xl shadow-md transition-all active:scale-95 text-xs">🚀 Load Template to Date</button>
-        </div>
-    </div>
-
-    <!-- DIALOG OVERLAY MODAL: IN-APP EMBEDDED IFRAME PORTAL MODAL -->
-    <div id="iframePortalModal" class="fixed inset-0 z-50 flex items-center justify-center modal-blur p-4 hidden text-slate-800">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-4xl h-[90vh] flex flex-col p-6 shadow-2xl relative border-4 border-indigo-400">
-            <button onclick="closeIframePortal();" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 w-8 h-8 rounded-full font-bold flex items-center justify-center z-50">✕</button>
-            <div class="border-b pb-3 mb-4 select-none">
-                <span class="block text-[8px] font-black text-indigo-500 uppercase tracking-widest">In-App Document Portal Preview</span>
-                <h3 class="text-base font-black text-slate-900 mt-1" id="iframePortalTitle">Loading Content File...</h3>
-            </div>
-            <div class="flex-grow bg-slate-100 rounded-2xl overflow-hidden relative border">
-                <iframe id="portalIframe" src="" class="w-full h-full border-0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
-            </div>
-            <div class="flex items-center justify-between gap-4 mt-4">
-                <p class="text-[10px] text-slate-400 leading-normal max-w-sm">Some worksheets or sheets hosted on strict platforms may restrict frame embedding. If pages remain blank, use backup options on the right.</p>
-                <div class="flex gap-2 shrink-0">
-                    <button id="iframeExternalLinkBtn" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold text-xs px-4 py-2.5 rounded-xl border border-indigo-200">Open in New Tab ↗</button>
-                    <button onclick="closeIframePortal();" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl">Close Preview</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -796,8 +790,7 @@
             localStorage.setItem('routine_volume', val);
         }
 
-        // Centralized System Settings Data Variables
-        let isPremiumUser = false;
+        // central model data profiles structures
         let profiles = {};
         let activeProfileId = "default";
 
@@ -818,6 +811,43 @@
         let scheduleLinkedDecks = {};
         let scheduleNames = {};
 
+        const cardColors = {
+            slate: "bg-white/80 border-slate-200/60 shadow-sm",
+            blue: "bg-sky-50/80 border-sky-300 shadow-sky-100",
+            green: "bg-emerald-50/80 border-emerald-300 shadow-emerald-100",
+            red: "bg-rose-50/80 border-rose-300 shadow-rose-100",
+            orange: "bg-orange-50/80 border-orange-300 shadow-orange-100",
+            yellow: "bg-amber-50/80 border-amber-300 shadow-amber-100",
+            purple: "bg-purple-50/80 border-purple-300 shadow-purple-100",
+            pink: "bg-pink-50/80 border-pink-300 shadow-pink-100"
+        };
+
+        // PREMIUM EMOTICONS COMPOSITION MAP INDEX KEY
+        const avatarMapIndex = {
+            "Short-Brown-Casual": "👦", "Short-Black-Casual": "🧒", "Short-Blonde-Casual": "👱", "Short-Red-Casual": "🧑‍🦰",
+            "Curly-Brown-Casual": "🦁", "Curly-Black-Casual": "🦱", "Curly-Blonde-Casual": "🐏", "Curly-Red-Casual": "🦊",
+            "Spiky-Brown-Casual": "🦔", "Spiky-Black-Casual": "🦅", "Spiky-Blonde-Casual": "🐣", "Spiky-Red-Casual": "🔥",
+            "Long-Brown-Casual": "👧", "Long-Black-Casual": "👩", "Long-Blonde-Casual": "👱‍♀️", "Long-Red-Casual": "🍂",
+            
+            // Space Suit Combinations
+            "Short-Brown-Space": "🧑‍🚀", "Short-Black-Space": "🚀", "Short-Blonde-Space": "🪐", "Short-Red-Space": "☄️",
+            "Curly-Brown-Space": "🛸", "Curly-Black-Space": "👽", "Curly-Blonde-Space": "🌟", "Curly-Red-Space": "🌌",
+            "Spiky-Brown-Space": "👾", "Spiky-Black-Space": "🛰️", "Spiky-Blonde-Space": "🌙", "Spiky-Red-Space": "☀️",
+            "Long-Brown-Space": "👩‍🚀", "Long-Black-Space": "🔋", "Long-Blonde-Space": "⚡", "Long-Red-Space": "🔴",
+
+            // Safari Jungle Suit
+            "Short-Brown-Jungle": "🤠", "Short-Black-Jungle": "🥾", "Short-Blonde-Jungle": "🦎", "Short-Red-Jungle": "🐒",
+            "Curly-Brown-Jungle": "🐻", "Curly-Black-Jungle": "🦍", "Curly-Blonde-Jungle": "🐆", "Curly-Red-Jungle": "🐅",
+            "Spiky-Brown-Jungle": "🌵", "Spiky-Black-Jungle": "🦏", "Spiky-Blonde-Jungle": "🦒", "Spiky-Red-Jungle": "🦜",
+            "Long-Brown-Jungle": "👩‍🌾", "Long-Black-Jungle": "🌴", "Long-Blonde-Jungle": "🍌", "Long-Red-Jungle": "🍍",
+
+            // Jersey Gamer Suit
+            "Short-Brown-Arcade": "🎮", "Short-Black-Arcade": "🕹️", "Short-Blonde-Arcade": "👾", "Short-Red-Arcade": "🎧",
+            "Curly-Brown-Arcade": "🛞", "Curly-Black-Arcade": "🏁", "Curly-Blonde-Arcade": "📣", "Curly-Red-Arcade": "🎈",
+            "Spiky-Brown-Arcade": "⚡", "Spiky-Black-Arcade": "💥", "Spiky-Blonde-Arcade": "✨", "Spiky-Red-Arcade": "🎯",
+            "Long-Brown-Arcade": "🎙️", "Long-Black-Arcade": "📺", "Long-Blonde-Arcade": "🎵", "Long-Red-Arcade": "🎸"
+        };
+
         function loadProfilesFromStorage() {
             const savedProfiles = localStorage.getItem('routine_profiles_v4_marketplace');
             isPremiumUser = localStorage.getItem('routine_premium_unlocked') === 'true';
@@ -831,6 +861,7 @@
                     "default": {
                         name: "Default Profile",
                         avatar: "🧒",
+                        avatarConfig: { hairStyle: "Short", hairColor: "Black", outfit: "Casual", accessory: "None" },
                         coinBank: parseInt(localStorage.getItem('routine_coins')) || 0,
                         alternativeDecks: JSON.parse(localStorage.getItem('routine_alt_decks')) || {
                             "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
@@ -888,6 +919,7 @@
             scheduleNames = p.scheduleNames || {};
             p.transactions = p.transactions || [];
             p.avatar = p.avatar || "🧒";
+            p.avatarConfig = p.avatarConfig || { hairStyle: "Short", hairColor: "Black", outfit: "Casual", accessory: "None" };
 
             document.getElementById('piggyBankCoinCount').innerText = `${coinBank} Coins`;
             document.getElementById('manualCoinAdjusterField').value = coinBank;
@@ -989,6 +1021,7 @@
             profiles[id] = {
                 name: name,
                 avatar: "🧒",
+                avatarConfig: { hairStyle: "Short", hairColor: "Black", outfit: "Casual", accessory: "None" },
                 coinBank: 0,
                 alternativeDecks: {
                     "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
@@ -1026,102 +1059,47 @@
             synthSound('Success Fanfare');
         }
 
-        function openPaywallModal() { document.getElementById('googlePlayPaywallModal').classList.remove('hidden'); synthSound('Game Buzzer'); }
-        function closePaywallModal() { document.getElementById('googlePlayPaywallModal').classList.add('hidden'); }
-        function simulateGooglePlayPurchaseSuccess() {
-            isPremiumUser = true;
-            document.getElementById('devPremiumSimModeToggle').checked = true;
+        // DYNAMIC RENDERING FOR LIVE INTERACTIVE PREMIUM AVATAR CANVAS
+        function updateLiveAvatarBuild() {
+            const hStyle = document.getElementById('avatarHairStyleSelect').value;
+            const hColor = document.getElementById('avatarHairColorSelect').value;
+            const outfit = document.getElementById('avatarOutfitSelect').value;
+            const accessory = document.getElementById('avatarAccessorySelect').value;
+
+            const compositeKey = `${hStyle}-${hColor}-${outfit}`;
+            let baseEmote = avatarMapIndex[compositeKey] || "🧒";
+
+            if (accessory === "Glasses") baseEmote += "👓";
+            if (accessory === "Headphones") baseEmote += "🎧";
+            if (accessory === "Crown") baseEmote += "👑";
+
+            document.getElementById('avatarLivePreviewBox').innerText = baseEmote;
+        }
+
+        function commitBuiltAvatarToActiveProfile() {
+            const p = profiles[activeProfileId];
+            if (!p) return;
+
+            const hStyle = document.getElementById('avatarHairStyleSelect').value;
+            const hColor = document.getElementById('avatarHairColorSelect').value;
+            const outfit = document.getElementById('avatarOutfitSelect').value;
+            const accessory = document.getElementById('avatarAccessorySelect').value;
+
+            p.avatarConfig = { hairStyle: hStyle, hairColor: hColor, outfit: outfit, accessory: accessory };
+            
+            const compositeKey = `${hStyle}-${hColor}-${outfit}`;
+            let baseEmote = avatarMapIndex[compositeKey] || "🧒";
+
+            if (accessory === "Glasses") baseEmote += "👓";
+            if (accessory === "Headphones") baseEmote += "🎧";
+            if (accessory === "Crown") baseEmote += "👑";
+
+            p.avatar = baseEmote;
             saveProfilesToStorage();
-            closePaywallModal();
+            syncGlobalPointersFromProfile();
             renderProfileSelector();
             renderProfileManagementHub();
-            renderAvatarStudio();
-            
-            document.getElementById('celebrationIcon').innerText = "🔒✨";
-            document.getElementById('celebrationTimerHeader').innerText = "Upgrade Successful!";
-            document.getElementById('celebrationTimerText').innerText = "Paid Version features are now completely unlocked!";
-            document.getElementById('celebrationDismissBtn').innerText = "Done";
-            document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
             synthSound('Success Fanfare');
-        }
-
-        function renderProfileManagementHub() {
-            const container = document.getElementById('settingsProfileManagementHubContainer');
-            if (!container) return;
-            container.innerHTML = "";
-
-            Object.keys(profiles).forEach(id => {
-                const prof = profiles[id];
-                const row = document.createElement('div');
-                row.className = "bg-slate-50 p-3 rounded-xl border flex flex-col sm:flex-row items-center justify-between gap-2.5 shadow-sm shadow-slate-100/50";
-                row.innerHTML = `
-                    <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <span class="text-xl">${prof.avatar || "🧒"}</span>
-                        <input type="text" value="${prof.name}" onchange="administrativeRenameProfile('${id}', this.value)" class="bg-white font-bold text-xs p-2 rounded-lg border focus:outline-none w-full sm:w-44 text-slate-800">
-                    </div>
-                    <button onclick="administrativeDeleteProfile('${id}')" class="text-[11px] font-black text-rose-600 bg-rose-50 border border-rose-200 hover:bg-rose-100 px-3 py-1.5 rounded-lg shrink-0">Delete</button>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        function administrativeRenameProfile(id, newName) {
-            const clean = newName.trim();
-            if (!clean || !profiles[id]) return;
-            profiles[id].name = clean;
-            saveProfilesToStorage();
-            renderProfileSelector();
-            if (id === activeProfileId) syncGlobalPointersFromProfile();
-            synthSound('Classic Ding');
-        }
-
-        function administrativeDeleteProfile(id) {
-            if (Object.keys(profiles).length <= 1) {
-                alert("The data vault requires at least one active profile. Create another profile before wiping this slot.");
-                return;
-            }
-            if (confirm(`Permanently drop profile "${profiles[id].name}" and delete all records?`)) {
-                delete profiles[id];
-                if (activeProfileId === id) { activeProfileId = Object.keys(profiles)[0]; }
-                saveProfilesToStorage();
-                switchProfile(activeProfileId);
-                renderProfileManagementHub();
-                synthSound('Game Buzzer');
-            }
-        }
-
-        function renderAvatarStudio() {
-            const studioBox = document.getElementById('avatarStudioPremiumBox');
-            if (isPremiumUser) {
-                studioBox.classList.remove('opacity-50', 'pointer-events-none');
-            } else {
-                studioBox.classList.add('opacity-50', 'pointer-events-none');
-            }
-
-            const grid = document.getElementById('avatarEmblemSelectionGrid');
-            if (!grid) return;
-            grid.innerHTML = "";
-
-            const activeAvatar = profiles[activeProfileId]?.avatar || "🧒";
-
-            avatarList.forEach(av => {
-                const isSelected = (av === activeAvatar);
-                const btn = document.createElement('button');
-                btn.className = `w-10 h-11 border text-xl rounded-xl flex items-center justify-center transition-all shadow-sm ${isSelected ? 'bg-indigo-600 border-indigo-400 text-white scale-105' : 'bg-slate-800 border-indigo-900/40 text-slate-200 hover:bg-slate-700'}`;
-                btn.innerText = av;
-                btn.onclick = () => {
-                    if (profiles[activeProfileId]) {
-                        profiles[activeProfileId].avatar = av;
-                        saveProfilesToStorage();
-                        syncGlobalPointersFromProfile();
-                        renderProfileSelector();
-                        renderAvatarStudio();
-                        renderProfileManagementHub();
-                        synthSound('Pop');
-                    }
-                };
-                grid.appendChild(btn);
-            });
         }
 
         let draggedIndex = null;
@@ -1197,6 +1175,7 @@
                 scheduleActiveDeckName = scheduleLinkedDecks[currentTargetDay];
             }
 
+            // CRITICAL FIX: Proactively guarantee targeted dictionary data arrays lists initialize securely on read
             if (!schedules[currentTargetDay]) {
                 schedules[currentTargetDay] = [];
             }
@@ -1356,7 +1335,6 @@
                             <span class="block text-xs font-black text-slate-500 uppercase tracking-wide">🔗 Resource Links (Up to 3):</span>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div class="space-y-1">
-                                    <img src="" class="hidden" alt="">
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase">Link 1 Label & URL:</label>
                                     <input type="text" placeholder="Label" value="${act.link1Label || ''}" onchange="updateCard(${act.id}, 'link1Label', this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl text-xs font-bold text-slate-700 focus:outline-none">
                                     <input type="text" placeholder="URL" value="${act.link1 || ''}" onchange="updateCard(${act.id}, 'link1', this.value)" class="w-full bg-white border border-slate-200 p-2 rounded-xl text-xs text-slate-600 focus:outline-none">
@@ -1568,6 +1546,10 @@
             document.getElementById('celebrationDismissBtn').innerText = "Awesome! Done ✔️";
             document.getElementById('celebrationTimerOverlay').classList.remove('hidden');
         }
+
+        document.getElementById('celebrationDismissBtn').onclick = function() {
+            dismissTimerCelebration();
+        };
 
         function dismissTimerCelebration() {
             document.getElementById('celebrationTimerOverlay').classList.add('hidden');
@@ -1934,17 +1916,17 @@
 
                 cardNode.innerHTML = `
                     <div class="space-y-1.5">
-                        <span class="block text-[8px] font-black text-indigo-400 uppercase tracking-widest leading-none">Arcade Prize Item</span>
+                        <span class="block text-[8px] font-black text-indigo-400 uppercase tracking-widest">Arcade Prize Item</span>
                         <h4 class="text-base font-black text-slate-800 leading-snug">${prize.text || 'Unnamed Privilege Asset'}</h4>
                     </div>
                     
-                    <div class="flex items-center justify-between border-t pt-3 mt-1">
-                        <div class="flex items-center gap-1.5 bg-amber-50 px-3 py-1 rounded-xl border border-amber-100 select-none">
+                    <div class="flex items-center justify-between border-t pt-3 mt-1 select-none">
+                        <div class="flex items-center gap-1.5 bg-amber-50 px-3 py-1 rounded-xl border border-amber-100">
                             <span class="text-base">🪙</span>
                             <span class="text-xs font-black text-amber-800">${lockCost} Coins</span>
                         </div>
                         
-                        <button onclick="purchasePrizeAsset(${lockCost}, '${prize.text.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95 shadow-sm ${canAfford ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-100' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}" ${canAfford ? '' : 'disabled'}>
+                        <button onclick="purchasePrizeAsset(${lockCost}, '${prize.text.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95 shadow-sm ${canAfford ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}" ${canAfford ? '' : 'disabled'}>
                             Exchange
                         </button>
                     </div>
@@ -1953,16 +1935,6 @@
             });
 
             renderTransactionHistory();
-        }
-
-        function switchMarketplacePage(pageName) {
-            const p = profiles[activeProfileId];
-            if (p) {
-                p.activeRewardPageName = pageName;
-                saveProfilesToStorage();
-                renderRewardsMarketplace();
-                synthSound('Classic Ding');
-            }
         }
 
         function purchasePrizeAsset(cost, title) {
@@ -1988,7 +1960,7 @@
                 synthSound('Success Fanfare');
                 renderRewardsMarketplace();
 
-                // Custom operational victory overlay panel update elements
+                // SPECIFICATION FIX: Swap Alert popup strings layouts matching target criteria
                 document.getElementById('celebrationIcon').innerText = "🎉🎁";
                 document.getElementById('celebrationTimerHeader').innerText = "Congratulations!";
                 document.getElementById('celebrationTimerText').innerText = `You've used ${cost} coins to claim a Reward!`;
@@ -2107,14 +2079,6 @@
                             <input type="number" min="0" value="${item.tokens}" onchange="updateBlueprintField(${idx}, 'tokens', parseInt(this.value))" class="w-8 bg-transparent text-center font-bold">
                         </div>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border space-y-2.5 text-xs">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <div>
-                                <input type="text" value="${item.link1Label || ''}" onchange="updateBlueprintField(${idx}, 'link1Label', this.value)" placeholder="L1 Label" class="bg-white border p-1 rounded-lg w-full mb-1 text-[11px] font-bold">
-                                <input type="text" value="${item.link1 || ''}" onchange="updateBlueprintField(${idx}, 'link1', this.value)" placeholder="L1 URL" class="bg-white border p-1 rounded-lg w-full text-[10px]">
-                            </div>
-                        </div>
-                    </div>
                     <div class="grid grid-cols-2 gap-2 text-xs">
                         <div>
                             <select onchange="updateBlueprintField(${idx}, 'color', this.value)" class="bg-slate-100 border p-1.5 rounded-xl w-full font-bold">
@@ -2144,16 +2108,6 @@
             if (activeBlueprintDesignKey && templates[activeBlueprintDesignKey]) {
                 const act = templates[activeBlueprintDesignKey][idx];
                 act[field] = val;
-                if (field === 'start' || field === 'end') {
-                    const startMins = parseTimeToMinutes(act.start);
-                    const endMins = parseTimeToMinutes(act.end);
-                    if (startMins !== null && endMins !== null) {
-                        let diff = endMins - startMins;
-                        if (diff < 0) diff += 1440;
-                        act.duration = diff;
-                        if (!act.timerActive) act.timeRemaining = diff * 60;
-                    }
-                }
                 commitToDisk();
             }
         }
@@ -2251,6 +2205,8 @@
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
             
+            // CRITICAL FUNCTION FIX: Explicitly enforce workspace re-render after parsing template contents
+            renderSchedule();
             switchTab('schedule');
         }
 
@@ -2277,12 +2233,33 @@
 
         function generateUniqueId() { return Date.now() + Math.floor(Math.random() * 10000); }
 
+        // CRITICAL FUNCTION FIX: Safe initialize workspace dictionary target arrays prior to calling pushes
         function createNewActivity() {
+            if (!schedules[currentTargetDay]) {
+                schedules[currentTargetDay] = [];
+            }
             const list = schedules[currentTargetDay];
             list.push({
-                id: generateUniqueId(), title: "Custom Activity Slot", start: "12:00 PM", end: "12:30 PM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "slate", link1: "", link1Label: "", link2: "", link2Label: "", link3: "", link3Label: "", subtasks: [], expanded: true
+                id: generateUniqueId(),
+                title: "Custom Activity Slot",
+                start: "12:00 PM",
+                end: "12:30 PM",
+                tokens: 1,
+                swappable: true,
+                completed: null,
+                mood: null,
+                duration: 30,
+                timerActive: false,
+                timeRemaining: null,
+                sound: "Classic Ding",
+                color: "slate",
+                link1: "", link1Label: "", link2: "", link2Label: "", link3: "", link3Label: "",
+                subtasks: [],
+                expanded: true
             });
-            commitToDisk(); renderSchedule();
+            commitToDisk();
+            renderSchedule();
+            synthSound('Pop');
         }
 
         function updateCard(id, field, val) {
@@ -2463,30 +2440,23 @@
             document.getElementById(`tab-rewards-marketplace`).className = "bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs sm:text-sm px-4 py-3 rounded-2xl transition-all";
             document.getElementById(`tab-settings`).className = "bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs sm:text-sm px-4 py-3 rounded-2xl transition-all";
 
+            const targetID = tabKey === 'token-list-creator' ? 'tokenListCreatorTab' : (tabKey === 'rewards-marketplace' ? 'rewardsMarketplaceTab' : tabKey + 'Tab');
+            document.getElementById(targetID).classList.remove('hidden');
+            document.getElementById(`tab-${tabKey}`).className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
+
             if (tabKey === 'schedule') {
-                document.getElementById('scheduleTab').classList.remove('hidden');
-                document.getElementById('tab-schedule').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
                 renderSchedule();
             } else if (tabKey === 'templates') {
-                document.getElementById('templatesTab').classList.remove('hidden');
-                document.getElementById('tab-templates').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
                 renderTemplateTab();
             } else if (tabKey === 'alternatives') {
-                document.getElementById('alternativesTab').classList.remove('hidden');
-                document.getElementById('tab-alternatives').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
                 renderAlternativesTabEditor();
             } else if (tabKey === 'token-list-creator') {
-                document.getElementById('tokenListCreatorTab').classList.remove('hidden');
-                document.getElementById('tab-token-list-creator').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
                 renderRewardsTabEditor();
             } else if (tabKey === 'rewards-marketplace') {
-                document.getElementById('rewardsMarketplaceTab').classList.remove('hidden');
-                document.getElementById('tab-rewards-marketplace').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
                 renderRewardsMarketplace();
             } else if (tabKey === 'settings') {
-                document.getElementById('settingsTab').classList.remove('hidden');
-                document.getElementById('tab-settings').className = "bg-indigo-600 text-white font-extrabold text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-md transition-all";
                 renderProfileManagementHub();
+                renderAvatarStudio();
             }
             synthSound('Classic Ding');
         }
@@ -2499,11 +2469,11 @@
 
             if (subTab === 'saved') {
                 document.getElementById('savedTemplatesView').classList.remove('hidden');
-                document.getElementById('subtab-saved').className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm";
+                document.getElementById('subtab-saved').className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl shadow-sm";
                 renderTemplateTab();
             } else if (subTab === 'create') {
                 document.getElementById('createTemplatesView').classList.remove('hidden');
-                document.getElementById('subtab-create').className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-sm";
+                document.getElementById('subtab-create').className = "bg-indigo-600 text-white font-extrabold text-xs px-4 py-2 rounded-xl shadow-sm";
                 renderBlueprintActivities();
             }
             synthSound('Pop');
