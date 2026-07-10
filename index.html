@@ -103,7 +103,6 @@
         <!-- CHILDREN MULTI-PROFILE SELECTION RUNTIME STRIP -->
         <div class="flex flex-col sm:flex-row items-center justify-between bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-[2rem] mb-5 gap-3">
             <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                <span class="text-2xl select-none">👤</span>
                 <div class="flex-grow sm:flex-grow-0">
                     <label class="block text-[9px] font-black text-indigo-500 uppercase tracking-wider leading-none mb-1">Active Child Profile</label>
                     <select id="profileSelector" onchange="switchProfile(this.value);" class="bg-white border-2 border-indigo-200 p-2 rounded-xl text-xs font-black text-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer min-w-[140px] shadow-sm">
@@ -433,12 +432,12 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- PROFILE MANAGER HUB ADMINISTRATION BOX -->
+                <!-- PROFILE NAMES PANEL BOX -->
                 <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-4">
-                    <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">👥 Profile Names Hub</h3>
+                    <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">👥 Profile Names</h3>
                     <p class="text-xs text-slate-400">Rename misspelled labels or clean up old profiles from storage.</p>
                     <div class="space-y-3" id="settingsProfileManagementHubContainer">
-                        <!-- Populated via javascript mapping loops -->
+                        <!-- Populated via javascript dynamic logs row -->
                     </div>
                 </div>
 
@@ -756,7 +755,7 @@
             localStorage.setItem('routine_volume', val);
         }
 
-        // Global cache parameters setup indices
+        // master system local variables initialization
         let profiles = {};
         let activeProfileId = "default";
         let activeViewTab = 'schedule';
@@ -827,7 +826,7 @@
             localStorage.setItem('routine_active_profile_id', activeProfileId);
         }
 
-        // ABSOLUTE LAYER SEPARATION FIX: Hard-wires separate arrays to erase profile cross-leak overlaps
+        // ABSOLUTE SEPARATION LAYER SOLVING CONTAMINATION OVERLAPS ACROSS CONTEXTS
         function syncGlobalPointersFromProfile() {
             const p = profiles[activeProfileId];
             if (!p) return;
@@ -849,9 +848,6 @@
             scheduleNames = p.scheduleNames;
 
             p.transactions = p.transactions || [];
-
-            document.getElementById('piggyBankCoinCount').innerText = `${coinBank} Coins`;
-            document.getElementById('manualCoinAdjusterField').value = coinBank;
         }
 
         function commitToDisk() {
@@ -920,7 +916,6 @@
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
 
-            // RE-RENDER RUNTIME TRIGGER SYNC
             renderSchedule();
             if (activeViewTab === 'token-list-creator') renderRewardsTabEditor();
             if (activeViewTab === 'rewards-marketplace') renderRewardsMarketplace();
@@ -1042,14 +1037,18 @@
             const container = document.getElementById('activityWrapper');
             container.innerHTML = "";
 
-            if (scheduleLinkedDecks[currentTargetDay] && alternativeDecks[scheduleLinkedDecks[currentTargetDay]]) {
-                scheduleActiveDeckName = scheduleLinkedDecks[currentTargetDay];
+            // ABSOLUTE ISOLATION ENFORCEMENT: Point directly into active profile's array matrix map tree
+            const activeProfile = profiles[activeProfileId];
+            if (!activeProfile) return;
+            
+            if (!activeProfile.schedules[currentTargetDay]) {
+                activeProfile.schedules[currentTargetDay] = [];
             }
+            let list = activeProfile.schedules[currentTargetDay];
 
-            if (!schedules[currentTargetDay]) {
-                schedules[currentTargetDay] = [];
+            if (activeProfile.scheduleLinkedDecks[currentTargetDay] && activeProfile.alternativeDecks[activeProfile.scheduleLinkedDecks[currentTargetDay]]) {
+                scheduleActiveDeckName = activeProfile.scheduleLinkedDecks[currentTargetDay];
             }
-            let list = schedules[currentTargetDay];
 
             list.forEach((act, index) => {
                 const isCheck = act.completed === 'check';
@@ -1084,9 +1083,8 @@
                     e.preventDefault();
                     stopDragScroll();
                     if (draggedIndex !== null && draggedIndex !== index) {
-                        const items = schedules[currentTargetDay];
-                        const movedItem = items.splice(draggedIndex, 1)[0];
-                        items.splice(index, 0, movedItem);
+                        const movedItem = list.splice(draggedIndex, 1)[0];
+                        list.splice(index, 0, movedItem);
                         draggedIndex = null;
                         commitToDisk();
                         renderSchedule();
@@ -1759,7 +1757,7 @@
 
             const rewardsArray = p.rewardPages[p.activeRewardPageName] || [];
             if (rewardsArray.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-xs text-slate-400 p-8 text-center border-2 border-dashed rounded-[2rem] bg-slate-50">No items cataloged inside this prize workspace directory.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-xs text-slate-400 p-8 text-center border-2 border-dashed rounded-[2rem] bg-slate-50">No exchange items cataloged inside this prize directory tier. Configure cards in the "Rewards List" tab!</div>`;
                 renderTransactionHistory();
                 return;
             }
@@ -1816,7 +1814,7 @@
                         id: "tx_" + Date.now() + Math.floor(Math.random() * 1000),
                         title: title,
                         cost: cost,
-                        timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                        timestamp: new Date().toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit' })
                     });
                 }
                 saveProfilesToStorage();
@@ -2047,7 +2045,10 @@
             activeDispatchTemplateName = null;
         }
 
+        // ABSOLUTE BLU-PRINT SYSTEM RESOLUTION: Enforces exact targeting to profile data array index maps
         function dispatchBlueprintToTargetDay() {
+            const p = profiles[activeProfileId];
+            if (!p) return;
             const rawDateVal = document.getElementById('dispatcherTargetDate').value;
             if (!rawDateVal || !activeDispatchTemplateName) return;
 
@@ -2055,21 +2056,21 @@
             const targetDateObj = new Date(parsedParts[0], parsedParts[1] - 1, parsedParts[2]);
             const localFormattedDayLabel = targetDateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            if (templates[activeDispatchTemplateName]) {
-                schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(templates[activeDispatchTemplateName])).map((item, index) => {
+            if (p.templates[activeDispatchTemplateName]) {
+                p.schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(p.templates[activeDispatchTemplateName])).map((item, index) => {
                     return { ...item, id: Date.now() + index + Math.floor(Math.random() * 1000) };
                 });
-                scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
+                p.scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
             }
 
-            commitToDisk();
+            saveProfilesToStorage();
             synthSound('Success Fanfare');
             closeBlueprintDispatcher();
 
             currentTargetDay = localFormattedDayLabel;
             document.getElementById('dateLabel').innerText = currentTargetDay;
             const dayInput = document.getElementById('scheduleDayNameInput');
-            if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
+            if (dayInput) dayInput.value = p.scheduleNames[currentTargetDay] || "";
             
             renderSchedule();
             switchTab('schedule');
@@ -2098,12 +2099,15 @@
 
         function generateUniqueId() { return Date.now() + Math.floor(Math.random() * 10000); }
 
+        // ABSOLUTE ACTION LOCK CORRECTION: Proactively initialize index dictionary maps before appending items
         function createNewActivity() {
-            if (!schedules[currentTargetDay]) {
-                schedules[currentTargetDay] = [];
+            const p = profiles[activeProfileId];
+            if (!p) return;
+            
+            if (!p.schedules[currentTargetDay]) {
+                p.schedules[currentTargetDay] = [];
             }
-            const list = schedules[currentTargetDay];
-            list.push({
+            p.schedules[currentTargetDay].push({
                 id: generateUniqueId(),
                 title: "Custom Activity Slot",
                 start: "12:00 PM",
@@ -2121,7 +2125,7 @@
                 subtasks: [],
                 expanded: true
             });
-            commitToDisk();
+            saveProfilesToStorage();
             renderSchedule();
             synthSound('Pop');
         }
@@ -2287,7 +2291,6 @@
             }
         }
 
-        // DYNAMIC PROFILE DATABASE UTILITY MANAGER (RENAMING / DELETING ACTIONS)
         function renderProfileManagementHub() {
             const container = document.getElementById('settingsProfileManagementHubContainer');
             if (!container) return;
@@ -2317,6 +2320,7 @@
             synthSound('Classic Ding');
         }
 
+        // ABSOLUTE REACTIVITY REPAIR: Enforces native redrawing cycles instantly upon file mutation
         function administrativeDeleteProfile(id) {
             if (Object.keys(profiles).length <= 1) {
                 alert("The system requires at least one profile to stay open.");
@@ -2324,10 +2328,19 @@
             }
             if (confirm(`Permanently drop profile "${profiles[id].name}" and delete all records?`)) {
                 delete profiles[id];
-                if (activeProfileId === id) { activeProfileId = Object.keys(profiles)[0]; }
+                
+                if (activeProfileId === id) { 
+                    activeProfileId = Object.keys(profiles)[0]; 
+                }
+                
                 saveProfilesToStorage();
-                switchProfile(activeProfileId);
+                renderProfileSelector();
                 renderProfileManagementHub();
+                
+                if (activeProfileId === id || Object.keys(profiles).length === 1) {
+                    syncGlobalPointersFromProfile();
+                    renderSchedule();
+                }
                 synthSound('Game Buzzer');
             }
         }
