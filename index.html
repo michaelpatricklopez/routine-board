@@ -33,7 +33,7 @@
             100% { border-color: rgba(239, 68, 68, 1); box-shadow: 0 0 16px 6px rgba(239, 68, 68, 0.2); }
         }
 
-        /* DYNAMIC BACKGROUND THEME VECTORS */
+        /* DYNAMIC BACKGROUND THEME SCHEMES */
         .theme-pastel {
             background-color: #f8fafc;
             background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px), radial-gradient(#e2e8f0 1.5px, #f8fafc 1.5px);
@@ -98,13 +98,13 @@
 <body class="font-rounded min-h-screen p-4 transition-all duration-300 theme-pastel" id="mainLayoutBody">
 
     <!-- MAIN INTERACTIVE BOARD CONTAINER -->
-    <div id="boardCanvasWrapper" class="max-w-5xl mx-auto bg-white rounded-[3rem] p-6 text-slate-800 shadow-2xl border-4 border-slate-100 transition-all font-rounded">
+    <div id="boardCanvasWrapper" class="max-w-5xl mx-auto bg-white rounded-[3rem] p-6 text-slate-800 shadow-2xl border-4 border-slate-100 transition-all">
         
         <!-- CHILDREN MULTI-PROFILE SELECTION RUNTIME STRIP -->
         <div class="flex flex-col sm:flex-row items-center justify-between bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-[2rem] mb-5 gap-3">
             <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                <span class="text-2xl select-none"> Central Profile:</span>
                 <div class="flex-grow sm:flex-grow-0">
+                    <label class="block text-[9px] font-black text-indigo-500 uppercase tracking-wider leading-none mb-1">Active Child Profile</label>
                     <select id="profileSelector" onchange="switchProfile(this.value);" class="bg-white border-2 border-indigo-200 p-2 rounded-xl text-xs font-black text-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer min-w-[140px] shadow-sm">
                         <!-- Loaded dynamically via scripts -->
                     </select>
@@ -253,7 +253,6 @@
                         <p class="text-xs text-slate-400 leading-normal">Paste your public Spotify album, playlist embedded code, or safe track resource iframe URL right inside the scheduler container to keep focus tunes rolling indefinitely!</p>
                         <div class="flex gap-2">
                             <input type="text" id="musicWidgetEmbedInput" placeholder="Paste Spotify embed iframe tag or URL link" class="flex-grow bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-                            <input type="image" src="" class="hidden" alt="">
                             <button onclick="loadMusicConnectWidget();" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black px-4 rounded-xl text-xs shadow-md transition-all">Link Music</button>
                         </div>
                     </div>
@@ -355,7 +354,7 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT: CUSTOM REWARDS LIST MANAGMENT VIEW -->
+        <!-- TAB CONTENT: CUSTOM TOKEN LIST CREATOR MANAGMENT VIEW -->
         <div id="tokenListCreatorTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 space-y-2">
                 <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">Token Economy Master Structure</span>
@@ -382,7 +381,7 @@
                         <h3 class="text-sm font-black text-slate-900 mt-0.5" id="rewardPageEditorTitle">List: Loading...</h3>
                     </div>
                     <div class="space-y-2.5" id="rewardSlotsInputsContainer">
-                        <!-- Custom editable fields injected here -->
+                        <!-- Custom editable type-in target fields injected here -->
                     </div>
                     <div class="flex items-center justify-between pt-3 border-t">
                         <button onclick="addCustomRewardSlot();" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-extrabold text-xs px-4 py-2.5 rounded-xl border border-indigo-200">+ Add Item Slot</button>
@@ -392,7 +391,7 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT: VISUAL USER-FACING REWARDS STORE VIEW -->
+        <!-- TAB CONTENT: VISUAL USER-FACING REWARDS MARKETPLACE VIEW -->
         <div id="rewardsMarketplaceTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="space-y-1">
@@ -425,18 +424,18 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT: SYSTEM CONFIG SETTINGS Hub -->
+        <!-- TAB CONTENT: SYSTEM CONFIG SETTINGS -->
         <div id="settingsTab" class="hidden space-y-6">
             <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-slate-200/50 space-y-2">
                 <span class="block text-[9px] font-black text-indigo-600 uppercase tracking-widest leading-none">System Settings Hub</span>
-                <h2 class="text-lg font-black text-slate-900">Board Controls & Configurations Hub</h2>
+                <h2 class="text-lg font-black text-slate-900">Board Controls & Configurations</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- PROFILE NAMES INTERFACE LIST LOG CONTAINER -->
+                <!-- PROFILE NAMES PANEL BOX -->
                 <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-4">
                     <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">👥 Profile Names</h3>
-                    <p class="text-xs text-slate-400">Rename misspelled labels or clean up old profiles from storage assets library.</p>
+                    <p class="text-xs text-slate-400">Rename misspelled labels or clean up old profiles from storage.</p>
                     <div class="space-y-3" id="settingsProfileManagementHubContainer">
                         <!-- Populated via javascript dynamic logs row -->
                     </div>
@@ -445,7 +444,7 @@
                 <div class="bg-white p-6 rounded-[2.5rem] border-2 space-y-5">
                     <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">Visual Customization</h3>
                     <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-slate-500 uppercase">Profile Theme Blueprint:</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase">Board Theme:</label>
                         <select id="boardThemeSelector" onchange="updateTheme(this.value);" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-700 focus:outline-none">
                             <optgroup label="Playful Themes" class="font-bold text-slate-950">
                                 <option value="theme-pastel">Calming Pastel</option>
@@ -466,7 +465,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-slate-500 uppercase">Profile Typography Font:</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase">Font:</label>
                         <select id="boardFontSelector" onchange="updateFont(this.value);" class="w-full bg-slate-50 border p-3 rounded-xl font-bold text-slate-700 focus:outline-none">
                             <optgroup label="Playful Fonts" class="font-bold text-slate-950">
                                 <option value="font-rounded">Fredoka Rounded</option>
@@ -488,7 +487,6 @@
                 <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest border-b pb-2">Coin Bank Overrides</h3>
                 <div class="flex items-center gap-3">
                     <div class="flex-grow space-y-1">
-                        <img src="" class="hidden" alt="">
                         <label class="block text-[9px] font-bold text-slate-400 uppercase">Manually Set Coin Count:</label>
                         <input type="number" id="manualCoinAdjusterField" min="0" value="0" class="w-full bg-slate-50 border p-2.5 rounded-xl font-bold text-slate-800 text-sm focus:outline-none">
                     </div>
@@ -559,12 +557,24 @@
         </div>
     </div>
 
-    <!-- SYSTEM SCRIPT CONFIG UTILITIES ENGINE -->
+    <!-- CLIENT RUNTIME JAVASCRIPT SYSTEM ENGINE -->
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let masterGainNode = audioCtx.createGain();
         masterGainNode.gain.setValueAtTime(0.8, audioCtx.currentTime); // default to 80%
         masterGainNode.connect(audioCtx.destination);
+
+        // Required styling configurations for Tailwind border colors
+        const cardColors = {
+            slate: "bg-slate-50 border-slate-200",
+            blue: "bg-blue-50 border-blue-200",
+            green: "bg-green-50 border-green-200",
+            red: "bg-rose-50 border-rose-200",
+            orange: "bg-orange-50 border-orange-200",
+            yellow: "bg-yellow-50 border-yellow-200",
+            purple: "bg-purple-50 border-purple-200",
+            pink: "bg-pink-50 border-pink-200"
+        };
 
         function synthSound(profile) {
             if (audioCtx.state === 'suspended') {
@@ -751,7 +761,13 @@
             }
         }
 
-        // Global cache parameters setup indices
+        function adjustMasterGain(val) {
+            const normalized = val / 100;
+            masterGainNode.gain.setValueAtTime(normalized, audioCtx.currentTime);
+            localStorage.setItem('routine_volume', val);
+        }
+
+        // Master system local variables initialization
         let profiles = {};
         let activeProfileId = "default";
         let activeViewTab = 'schedule';
@@ -781,8 +797,8 @@
                     "default": {
                         name: "Default Profile",
                         coinBank: parseInt(localStorage.getItem('routine_coins')) || 0,
-                        theme: "theme-pastel",
-                        font: "font-rounded",
+                        theme: localStorage.getItem('routine_theme') || 'theme-pastel',
+                        font: localStorage.getItem('routine_font') || 'font-rounded',
                         alternativeDecks: JSON.parse(localStorage.getItem('routine_alt_decks')) || {
                             "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
                             "Outdoor Play": ["Swing Set", "Digger Toy Sandbox", "Blowing Bubbles", "Water Gun Match"],
@@ -825,7 +841,7 @@
             localStorage.setItem('routine_active_profile_id', activeProfileId);
         }
 
-        // ABSOLUTE INDEPENDENT LAYER POINTER SYNC: Erases all reference contamination overlaps
+        // ABSOLUTE SEPARATION LAYER SOLVING CONTAMINATION OVERLAPS ACROSS CONTEXTS
         function syncGlobalPointersFromProfile() {
             const p = profiles[activeProfileId];
             if (!p) return;
@@ -848,15 +864,21 @@
 
             p.transactions = p.transactions || [];
 
-            p.theme = p.theme || "theme-pastel";
-            p.font = p.font || "font-rounded";
-            activeBoardTheme = p.theme;
-            activeBoardFont = p.font;
+            // Core Dashboard Layout Styling Profile Isolation Execution Bridge
+            activeBoardTheme = p.theme || 'theme-pastel';
+            activeBoardFont = p.font || 'font-rounded';
 
+            const themeSelectorNode = document.getElementById('boardThemeSelector');
+            const fontSelectorNode = document.getElementById('boardFontSelector');
+            if (themeSelectorNode) themeSelectorNode.value = activeBoardTheme;
+            if (fontSelectorNode) fontSelectorNode.value = activeBoardFont;
+
+            updateTheme(activeBoardTheme);
+            updateFont(activeBoardFont);
+            
+            // Re-render display states
             document.getElementById('piggyBankCoinCount').innerText = `${coinBank} Coins`;
             document.getElementById('manualCoinAdjusterField').value = coinBank;
-            document.getElementById('boardThemeSelector').value = activeBoardTheme;
-            document.getElementById('boardFontSelector').value = activeBoardFont;
         }
 
         function commitToDisk() {
@@ -877,10 +899,6 @@
             loadProfilesFromStorage();
             syncGlobalPointersFromProfile();
             renderProfileSelector();
-
-            // Profile Isolated rendering engine execution
-            updateTheme(activeBoardTheme);
-            updateFont(activeBoardFont);
 
             const savedVolume = localStorage.getItem('routine_volume');
             if (savedVolume !== null) {
@@ -918,10 +936,6 @@
             syncGlobalPointersFromProfile();
             renderProfileSelector();
             
-            // Apply unique customization variables loaded directly from target configuration profiles
-            updateTheme(activeBoardTheme);
-            updateFont(activeBoardFont);
-            
             const dayInput = document.getElementById('scheduleDayNameInput');
             if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
 
@@ -946,8 +960,8 @@
             profiles[id] = {
                 name: name,
                 coinBank: 0,
-                theme: "theme-pastel",
-                font: "font-rounded",
+                theme: 'theme-pastel',
+                font: 'font-rounded',
                 alternativeDecks: {
                     "Sensory Choices": ["Sensory Ball", "Heavy Weighted Vest", "Dim Lights", "Ambient Music Session"],
                     "Outdoor Play": ["Swing Set", "Digger Toy Sandbox", "Blowing Bubbles"]
@@ -973,7 +987,7 @@
             };
 
             profiles[id].schedules[currentTargetDay] = [
-                { id: generateUniqueId(), title: "Visual Board Routine Task", start: "8:00 AM", end: "8:30 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "blue", link1: "", link1Label: "", link2: "", link2Label: "", link3: "", link3Label: "", subtasks: [] }
+                { id: generateUniqueId(), title: "Visual Board Routine Task", start: "8:00 AM", end: "8:30 AM", tokens: 1, swappable: true, completed: null, mood: null, duration: 30, timerActive: false, timeRemaining: null, sound: "Classic Ding", color: "slate", link1: "", link1Label: "", link2: "", link2Label: "", link3: "", link3Label: "", subtasks: [] }
             ];
 
             input.value = "";
@@ -982,6 +996,66 @@
             switchProfile(id);
             renderProfileManagementHub();
             synthSound('Success Fanfare');
+        }
+
+        let draggedIndex = null;
+        let countdownIntervals = {};
+        let touchStartOffsetY = 0;
+        let touchActiveCard = null;
+
+        function initTouchDrag(cardElement, handleElement, index) {
+            handleElement.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                touchStartOffsetY = touch.clientY;
+                touchActiveCard = cardElement;
+                cardElement.style.transition = 'none';
+                cardElement.style.zIndex = '50';
+            }, { passive: true });
+
+            handleElement.addEventListener('touchmove', (e) => {
+                if (!touchActiveCard) return;
+                const touch = e.touches[0];
+                const currentY = touch.clientY;
+                const deltaY = currentY - touchStartOffsetY;
+                touchActiveCard.style.transform = `translateY(${deltaY}px)`;
+
+                const list = schedules[currentTargetDay];
+                const cards = document.querySelectorAll('.velcro-card');
+                cards.forEach((otherCard, otherIdx) => {
+                    if (otherCard === touchActiveCard) return;
+                    const rect = otherCard.getBoundingClientRect();
+                    if (currentY > rect.top && currentY < rect.bottom) {
+                        if (index !== otherIdx) {
+                            const temp = list[index];
+                            list[index] = list[otherIdx];
+                            list[otherIdx] = temp;
+                            commitToDisk();
+                            touchStartOffsetY = currentY;
+                            index = otherIdx;
+                            renderSchedule();
+                        }
+                    }
+                });
+            }, { passive: true });
+
+            handleElement.addEventListener('touchend', () => {
+                if (touchActiveCard) {
+                    touchActiveCard.style.transform = '';
+                    touchActiveCard.style.transition = '';
+                    touchActiveCard.style.zIndex = '';
+                    touchActiveCard = null;
+                    renderSchedule();
+                }
+            }, { passive: true });
+        }
+
+        let autoScrollInterval = null;
+        function startDragScroll(direction) {
+            if (autoScrollInterval) return;
+            autoScrollInterval = setInterval(() => { window.scrollBy(0, direction * 15); }, 16);
+        }
+        function stopDragScroll() {
+            if (autoScrollInterval) { clearInterval(autoScrollInterval); autoScrollInterval = null; }
         }
 
         function renderSchedule() {
@@ -1031,7 +1105,7 @@
 
                 card.addEventListener('drop', (e) => {
                     e.preventDefault();
-                    stopDragScroll();
+                    stopScroll();
                     if (draggedIndex !== null && draggedIndex !== index) {
                         const movedItem = list.splice(draggedIndex, 1)[0];
                         list.splice(index, 0, movedItem);
@@ -1974,7 +2048,7 @@
                     <div class="flex flex-wrap gap-1.5 pt-2 select-none">
                         <button onclick="enterBlueprintDesigner('${key}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs px-3.5 py-2 rounded-xl">✏️ Edit Blueprint</button>
                         <button onclick="openBlueprintDispatcher('${key}')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-sm">🚀 Load to Date</button>
-                        <button onclick="deleteTemplate('${key}')" class="text-rose-500 hover:text-rose-700 text-xs font-bold px-2 ml-auto">Delete</button>
+                        <button onclick="deleteTemplate('${key}')" class="text-rose-500 text-xs font-bold px-2 ml-auto">Delete</button>
                     </div>
                 `;
                 listGrid.appendChild(node);
@@ -1996,6 +2070,8 @@
         }
 
         function dispatchBlueprintToTargetDay() {
+            const p = profiles[activeProfileId];
+            if (!p) return;
             const rawDateVal = document.getElementById('dispatcherTargetDate').value;
             if (!rawDateVal || !activeDispatchTemplateName) return;
 
@@ -2003,21 +2079,21 @@
             const targetDateObj = new Date(parsedParts[0], parsedParts[1] - 1, parsedParts[2]);
             const localFormattedDayLabel = targetDateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            if (templates[activeDispatchTemplateName]) {
-                schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(templates[activeDispatchTemplateName])).map((item, index) => {
+            if (p.templates[activeDispatchTemplateName]) {
+                p.schedules[localFormattedDayLabel] = JSON.parse(JSON.stringify(p.templates[activeDispatchTemplateName])).map((item, index) => {
                     return { ...item, id: Date.now() + index + Math.floor(Math.random() * 1000) };
                 });
-                scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
+                p.scheduleNames[localFormattedDayLabel] = activeDispatchTemplateName;
             }
 
-            commitToDisk();
+            saveProfilesToStorage();
             synthSound('Success Fanfare');
             closeBlueprintDispatcher();
 
             currentTargetDay = localFormattedDayLabel;
             document.getElementById('dateLabel').innerText = currentTargetDay;
             const dayInput = document.getElementById('scheduleDayNameInput');
-            if (dayInput) dayInput.value = scheduleNames[currentTargetDay] || "";
+            if (dayInput) dayInput.value = p.scheduleNames[currentTargetDay] || "";
             
             renderSchedule();
             switchTab('schedule');
@@ -2046,7 +2122,6 @@
 
         function generateUniqueId() { return Date.now() + Math.floor(Math.random() * 10000); }
 
-        // ABSOLUTE ACTION LOCK CORRECTION: Points directly to targeted root objects before calling push loops
         function createNewActivity() {
             const p = profiles[activeProfileId];
             if (!p) return;
@@ -2209,27 +2284,28 @@
             document.getElementById('musicUnloadControlBtn').classList.remove('hidden');
         }
 
-        // PROFILE-ISOLATED INTERFACE CUSTOMIZATION MANAGERS
         function updateTheme(cls) {
-            const p = profiles[activeProfileId];
-            if (!p) return;
-            p.theme = cls;
-            saveProfilesToStorage();
-
             const body = document.getElementById('mainLayoutBody');
             body.className = body.className.replace(/\btheme-\S+/g, '');
             body.classList.add(cls);
+            
+            activeBoardTheme = cls;
+            if (profiles[activeProfileId]) {
+                profiles[activeProfileId].theme = cls;
+                saveProfilesToStorage();
+            }
         }
 
         function updateFont(fontClass) {
-            const p = profiles[activeProfileId];
-            if (!p) return;
-            p.font = fontClass;
-            saveProfilesToStorage();
-
             const wrapper = document.getElementById('boardCanvasWrapper');
             wrapper.className = wrapper.className.replace(/\bfont-\S+/g, '');
             wrapper.classList.add(fontClass);
+            
+            activeBoardFont = fontClass;
+            if (profiles[activeProfileId]) {
+                profiles[activeProfileId].font = fontClass;
+                saveProfilesToStorage();
+            }
         }
 
         function reconcileMysteryCoins() {
@@ -2292,8 +2368,10 @@
                 renderProfileSelector();
                 renderProfileManagementHub();
                 
-                syncGlobalPointersFromProfile();
-                renderSchedule();
+                if (activeProfileId === id || Object.keys(profiles).length === 1) {
+                    syncGlobalPointersFromProfile();
+                    renderSchedule();
+                }
                 synthSound('Game Buzzer');
             }
         }
